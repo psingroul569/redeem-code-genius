@@ -14,7 +14,78 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      sync_log: {
+        Row: {
+          code_count: number
+          hour_key: string
+          id: string
+          region: string
+          synced_at: string
+        }
+        Insert: {
+          code_count?: number
+          hour_key: string
+          id?: string
+          region: string
+          synced_at?: string
+        }
+        Update: {
+          code_count?: number
+          hour_key?: string
+          id?: string
+          region?: string
+          synced_at?: string
+        }
+        Relationships: []
+      }
+      synced_codes: {
+        Row: {
+          category: string
+          citations: Json | null
+          code: string
+          hour_key: string
+          id: string
+          likes: number
+          probability: number
+          recent_claims: number
+          region: string
+          reward: string
+          slug: string
+          status: string
+          synced_at: string
+        }
+        Insert: {
+          category?: string
+          citations?: Json | null
+          code: string
+          hour_key: string
+          id?: string
+          likes?: number
+          probability?: number
+          recent_claims?: number
+          region: string
+          reward?: string
+          slug: string
+          status?: string
+          synced_at?: string
+        }
+        Update: {
+          category?: string
+          citations?: Json | null
+          code?: string
+          hour_key?: string
+          id?: string
+          likes?: number
+          probability?: number
+          recent_claims?: number
+          region?: string
+          reward?: string
+          slug?: string
+          status?: string
+          synced_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
