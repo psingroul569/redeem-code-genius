@@ -47,6 +47,7 @@ export interface Comment {
   verified: boolean;
   timestamp?: number;
   isAi?: boolean;
+  likes?: number;
 }
 
 export interface FaqItem {

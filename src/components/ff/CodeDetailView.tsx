@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { RedeemCode, AppView, Comment } from '@/types';
-import { ArrowLeft, Copy, Check, Zap, Loader2, Send, History } from 'lucide-react';
+import { ArrowLeft, Copy, Check, Zap, Loader2, Send, History, ThumbsUp } from 'lucide-react';
 import { Breadcrumbs } from './Breadcrumbs';
-import { storageService } from '@/services/storageService';
-import { MOCK_COMMENTS } from '@/constants';
+import { useAutoComments } from '@/hooks/useAutoComments';
 
 export interface CodeDetailViewProps {
   code: RedeemCode;
@@ -11,37 +10,11 @@ export interface CodeDetailViewProps {
   lastSyncTime: number;
 }
 
-interface EnhancedComment extends Comment {
-  isHelpful?: boolean;
-  helpfulCount?: number;
-  isVisitor?: boolean;
-}
-
 export const CodeDetailView: React.FC<CodeDetailViewProps> = ({ code, setView }) => {
   const [copied, setCopied] = useState(false);
-  const [loadingComments, setLoadingComments] = useState(true);
-  const [allComments, setAllComments] = useState<EnhancedComment[]>([]);
   const [userComment, setUserComment] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  useEffect(() => {
-    const loadComments = async () => {
-      setLoadingComments(true);
-      try {
-        const visitorData = await storageService.getComments(code.code);
-        const combined = [
-          ...visitorData.map(v => ({ ...v, isVisitor: true })),
-          ...MOCK_COMMENTS.map(m => ({ ...m, isVisitor: false }))
-        ];
-        setAllComments(combined);
-      } catch (err) {
-        console.error("Error loading comments:", err);
-      } finally {
-        setLoadingComments(false);
-      }
-    };
-    loadComments();
-  }, [code]);
+  const { comments, addUserComment } = useAutoComments(code);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(code.code);
@@ -49,22 +22,12 @@ export const CodeDetailView: React.FC<CodeDetailViewProps> = ({ code, setView })
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handlePostComment = async (e: React.FormEvent) => {
+  const handlePostComment = (e: React.FormEvent) => {
     e.preventDefault();
     if (!userComment.trim()) return;
     setIsSubmitting(true);
-    const newEntry: Comment = {
-      id: `user-${Date.now()}`,
-      user: 'Elite_Survivor',
-      avatar: `https://i.pravatar.cc/100?u=visitor-${Date.now()}`,
-      text: userComment,
-      timeAgo: "Just now",
-      verified: true
-    };
-    if (await storageService.saveComment(code.code, newEntry)) {
-      setAllComments(prev => [{ ...newEntry, isVisitor: true }, ...prev]);
-      setUserComment("");
-    }
+    addUserComment(userComment.trim());
+    setUserComment("");
     setIsSubmitting(false);
   };
 
@@ -117,33 +80,14 @@ export const CodeDetailView: React.FC<CodeDetailViewProps> = ({ code, setView })
                     </h3>
                  </div>
                  <div className="space-y-4 flex-1 overflow-y-auto pr-2 no-scrollbar">
-                    {loadingComments ? (
-                      <div className="flex flex-col items-center justify-center py-24 text-center opacity-30">
-                         <Loader2 className="animate-spin mb-4 text-white" />
-                         <span className="text-[10px] font-tech uppercase tracking-widest text-white">Loading Logs...</span>
-                      </div>
-                    ) : allComments.length === 0 ? (
+                    {comments.length === 0 ? (
                         <div className="flex flex-col items-center justify-center py-24 text-center opacity-30 text-white">
                            <History size={32} className="mb-4" />
                            <span className="text-[9px] font-tech uppercase tracking-widest">No reports available.</span>
                         </div>
                     ) : (
-                      allComments.map((comment) => (
-                          <div key={comment.id} className={`bg-white/5 p-5 rounded-2xl border transition-all animate-fade-in ${comment.isVisitor ? 'border-cyber-success/30' : 'border-white/5'}`}>
-                              <div className="flex items-center justify-between mb-3">
-                                  <div className="flex items-center gap-3">
-                                      <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-[10px] text-white bg-white/5">{comment.user.charAt(0)}</div>
-                                      <div><div className="text-xs font-bold text-white">{comment.user}</div><div className="text-[7px] text-white/20 uppercase tracking-widest">{comment.isVisitor ? 'Visitor' : 'Community User'}</div></div>
-                                  </div>
-                                  <span className="text-[9px] text-white/20 font-mono italic">{comment.timeAgo}</span>
-                              </div>
-                              <p className="text-xs text-white/70 italic leading-relaxed mb-4">"{comment.text}"</p>
-                              <div className="flex items-center justify-between pt-3 border-t border-white/5">
-                                  <div className="flex items-center gap-1.5 text-cyber-success text-[8px] font-bold uppercase">
-                                      {comment.verified && <><Check size={8} /> Claimed</>}
-                                  </div>
-                              </div>
-                          </div>
+                      comments.map((comment) => (
+                          <CommentCard key={comment.id} comment={comment} />
                       ))
                     )}
                  </div>
@@ -158,6 +102,46 @@ export const CodeDetailView: React.FC<CodeDetailViewProps> = ({ code, setView })
         </div>
         <button onClick={() => setView('home')} className="mx-auto flex items-center gap-4 px-10 py-4 bg-white text-black rounded-full font-tech font-bold uppercase tracking-widest text-sm hover:bg-cyber-success transition-all shadow-2xl">
           <ArrowLeft size={18} /> BACK TO TERMINAL
+        </button>
+      </div>
+    </div>
+  );
+};
+
+const CommentCard: React.FC<{ comment: Comment }> = ({ comment }) => {
+  const [likes, setLikes] = useState(comment.likes ?? 0);
+  const [liked, setLiked] = useState(false);
+
+  const handleLike = () => {
+    if (liked) {
+      setLikes(prev => prev - 1);
+      setLiked(false);
+    } else {
+      setLikes(prev => prev + 1);
+      setLiked(true);
+    }
+  };
+
+  return (
+    <div className={`bg-white/5 p-5 rounded-2xl border transition-all animate-fade-in ${!comment.isAi ? 'border-cyber-success/30' : 'border-white/5'}`}>
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-[10px] text-white bg-white/5 font-bold">{comment.user.charAt(0)}</div>
+          <div>
+            <div className="text-xs font-bold text-white">{comment.user}</div>
+            <div className="text-[7px] text-white/20 uppercase tracking-widest">{comment.isAi ? 'Community User' : 'Visitor'}</div>
+          </div>
+        </div>
+        <span className="text-[9px] text-white/20 font-mono italic">{comment.timeAgo}</span>
+      </div>
+      <p className="text-xs text-white/70 italic leading-relaxed mb-4">"{comment.text}"</p>
+      <div className="flex items-center justify-between pt-3 border-t border-white/5">
+        <div className="flex items-center gap-1.5 text-cyber-success text-[8px] font-bold uppercase">
+          {comment.verified && <><Check size={8} /> Claimed</>}
+        </div>
+        <button onClick={handleLike} className={`flex items-center gap-1 px-2 py-1 rounded-lg text-[9px] font-mono transition-all ${liked ? 'text-cyber-success bg-cyber-success/10' : 'text-white/20 hover:text-white/40'}`}>
+          <ThumbsUp size={10} />
+          <span>{likes}</span>
         </button>
       </div>
     </div>
