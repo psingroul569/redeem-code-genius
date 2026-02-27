@@ -31,6 +31,16 @@ const Index = () => {
   const [dateStr, setDateStr] = useState('');
   const [autoDetected, setAutoDetected] = useState(false);
 
+  // Dynamic title with current date for SEO freshness
+  useEffect(() => {
+    const now = new Date();
+    const monthYear = now.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    const dayMonthYear = now.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
+    document.title = `Free Fire Redeem Code Today ${dayMonthYear} - 12+ Active Working Codes`;
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) metaDesc.setAttribute('content', `Get 12+ working Free Fire redeem codes today ${dayMonthYear}. Instant free diamonds, legendary skins & bundles. Hourly verified from official Garena servers. 100% Working.`);
+  }, []);
+
   const loadRegionData = useCallback(async (region: string) => {
     setIsLoading(true);
     try {

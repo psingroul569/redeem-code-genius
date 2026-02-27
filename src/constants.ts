@@ -100,11 +100,31 @@ export const LIVE_CODES: RedeemCode[] = [
 export const SEO_FAQS: FaqItem[] = [
   {
     question: "What is the Free Fire redeem code for today?",
-    answer: "Today's top verified codes include FF11-NJN5-YS3E and FF11-WFNP-P956. These codes provide free Diamonds and legendary Surfboard skins."
+    answer: "Today's top verified codes include FF11-NJN5-YS3E and FF11-WFNP-P956. These codes provide free Diamonds and legendary Surfboard skins. Our system verifies codes hourly from official Garena servers."
   },
   {
     question: "How do I redeem Free Fire codes?",
-    answer: "1. Navigate to the official Garena Reward Site. 2. Authenticate using your linked account. 3. Input the 12-digit code. 4. Check in-game vault."
+    answer: "1. Go to reward.ff.garena.com (the official Garena Reward Site). 2. Log in with your Facebook, Google, VK, or Apple ID linked to Free Fire. 3. Enter the 12-character redeem code. 4. Confirm and check your in-game mail within 24 hours."
+  },
+  {
+    question: "Why is my Free Fire redeem code not working?",
+    answer: "Codes may not work if: 1) They have expired (codes are time-limited). 2) They are region-locked to a specific server. 3) You have already claimed the code. 4) Server capacity has been reached. Check the status indicator on our site for real-time availability."
+  },
+  {
+    question: "How often are Free Fire redeem codes released?",
+    answer: "Garena releases new Free Fire redeem codes daily, sometimes multiple times per day during special events. Our platform checks for new codes every hour across all major server regions including India, Brazil, Indonesia, Europe, and Global."
+  },
+  {
+    question: "Can I use Free Fire redeem codes on any server?",
+    answer: "No, most Free Fire redeem codes are region-specific. A code for the India server may not work on Brazil or Europe servers. Always check the server/region label next to each code on our site before attempting to redeem."
+  },
+  {
+    question: "Are Free Fire redeem codes safe to use?",
+    answer: "Yes, all codes listed on our site are sourced from official Garena channels and verified by our automated system. We never ask for your password. Always redeem codes only through the official reward.ff.garena.com website."
+  },
+  {
+    question: "What rewards can I get from Free Fire redeem codes?",
+    answer: "Free Fire redeem codes can unlock diamonds, weapon skins, character bundles, pet food, emotes, surfboards, name change cards, custom room cards, and royale vouchers. The specific reward is mentioned next to each code."
   }
 ];
 
