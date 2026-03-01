@@ -6,7 +6,7 @@ import { CodeCard } from '@/components/ff/CodeCard';
 import { Schema } from '@/components/ff/Schema';
 import { AuthorityHub } from '@/components/ff/AuthorityHub';
 import { AppView, RedeemCode } from '@/types';
-import { Clock, Loader2, Timer, RefreshCcw, WifiOff, MapPin, Globe, AlertCircle } from 'lucide-react';
+import { Clock, Loader2, Timer, RefreshCcw, MapPin, Globe, AlertCircle } from 'lucide-react';
 import { codesSyncService } from '@/services/codesSyncService';
 import { supabase } from '@/integrations/supabase/client';
 import { LIVE_CODES } from '@/constants';
@@ -19,71 +19,114 @@ const REGION_OFFSETS: Record<string, number> = {
   'GLOBAL': 3, 'INDIA': 8, 'BRAZIL': 13, 'INDONESIA': 18, 'EUROPE': 23
 };
 
+const CACHE_TTL_MS = 75 * 60 * 1000;
+
+const detectRegionFromTimezone = (): string => {
+  const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  if (tz.includes('Calcutta') || tz.includes('Asia/Kolkata')) return 'INDIA';
+  if (tz.includes('Sao_Paulo') || tz.includes('Brazil')) return 'BRAZIL';
+  if (tz.includes('Jakarta')) return 'INDONESIA';
+  if (tz.includes('Europe')) return 'EUROPE';
+  return 'GLOBAL';
+};
+
+const getFallbackCodes = (region: string): RedeemCode[] => {
+  return LIVE_CODES.filter((c) => {
+    const s = c.server.toLowerCase();
+    if (region === 'GLOBAL') return true;
+    return s.includes(region.toLowerCase());
+  }).slice(0, 12);
+};
+
+const getRegionCacheKey = (region: string) => `region-codes-cache:${region}`;
+
+const readCachedRegion = (region: string): { codes: RedeemCode[]; lastSyncTime: string; cachedAt: number } | null => {
+  try {
+    const raw = localStorage.getItem(getRegionCacheKey(region));
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (!parsed?.codes?.length || !parsed?.cachedAt) return null;
+    if (Date.now() - parsed.cachedAt > CACHE_TTL_MS) return null;
+    return parsed;
+  } catch {
+    return null;
+  }
+};
+
+const writeCachedRegion = (region: string, codes: RedeemCode[], lastSyncTime: string) => {
+  try {
+    localStorage.setItem(getRegionCacheKey(region), JSON.stringify({
+      codes,
+      lastSyncTime,
+      cachedAt: Date.now(),
+    }));
+  } catch {
+    // ignore cache errors
+  }
+};
+
 const Index = () => {
+  const initialRegion = detectRegionFromTimezone();
+  const initialCache = readCachedRegion(initialRegion);
+
   const [currentView, setCurrentView] = useState<AppView>('home');
   const [selectedCode, setSelectedCode] = useState<RedeemCode | null>(null);
-  const [activeRegion, setActiveRegion] = useState('GLOBAL');
-  const [displayCodes, setDisplayCodes] = useState<RedeemCode[]>([]);
-  const [lastSyncTime, setLastSyncTime] = useState<string>('--:--');
-  const [isLoading, setIsLoading] = useState(false);
+  const [activeRegion, setActiveRegion] = useState(initialRegion);
+  const [displayCodes, setDisplayCodes] = useState<RedeemCode[]>(
+    initialCache?.codes?.length ? initialCache.codes : getFallbackCodes(initialRegion)
+  );
+  const [lastSyncTime, setLastSyncTime] = useState<string>(initialCache?.lastSyncTime || '--:--');
   const [nextUpdateText, setNextUpdateText] = useState('--:--');
   const [isOverdue, setIsOverdue] = useState(false);
   const [dateStr, setDateStr] = useState('');
-  const [autoDetected, setAutoDetected] = useState(false);
 
   // Dynamic title with current date for SEO freshness
   useEffect(() => {
     const now = new Date();
-    const monthYear = now.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
     const dayMonthYear = now.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
     document.title = `Free Fire Redeem Code Today ${dayMonthYear} - 12+ Active Working Codes`;
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) metaDesc.setAttribute('content', `Get 12+ working Free Fire redeem codes today ${dayMonthYear}. Instant free diamonds, legendary skins & bundles. Hourly verified from official Garena servers. 100% Working.`);
   }, []);
 
-  const loadRegionData = useCallback(async (region: string) => {
-    setIsLoading(true);
+  const loadRegionData = useCallback(async (region: string, updateUi = true) => {
     try {
-      const { codes } = await codesSyncService.getCodesByRegion(region);
-      const timeLabel = await codesSyncService.getLastSyncTime(region);
-      setLastSyncTime(timeLabel);
+      const [{ codes }, timeLabel] = await Promise.all([
+        codesSyncService.getCodesByRegion(region),
+        codesSyncService.getLastSyncTime(region),
+      ]);
+
       if (codes.length > 0) {
-        setDisplayCodes(codes);
-      } else {
-        // Fallback to hardcoded codes if DB is empty
-        const fallbacks = LIVE_CODES.filter(c => {
-          const s = c.server.toLowerCase();
-          if (region === 'GLOBAL') return true;
-          return s.includes(region.toLowerCase());
-        }).slice(0, 12);
-        setDisplayCodes(fallbacks);
+        writeCachedRegion(region, codes, timeLabel);
+        if (updateUi) {
+          setDisplayCodes(codes);
+          setLastSyncTime(timeLabel);
+        }
       }
     } catch {
-      const fallbacks = LIVE_CODES.filter(c => {
-        if (activeRegion === 'GLOBAL') return true;
-        return c.server.toLowerCase().includes(activeRegion.toLowerCase());
-      }).slice(0, 12);
-      setDisplayCodes(fallbacks);
-    } finally {
-      setIsLoading(false);
+      // Keep cached/fallback view if backend is temporarily unavailable
     }
-  }, [activeRegion]);
+  }, []);
 
-  // Auto-detect region from timezone
+  // Show cached/fallback instantly on region switch, then silently refresh from backend
   useEffect(() => {
-    if (!autoDetected) {
-      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-      if (tz.includes('Calcutta') || tz.includes('Asia/Kolkata')) setActiveRegion('INDIA');
-      else if (tz.includes('Sao_Paulo') || tz.includes('Brazil')) setActiveRegion('BRAZIL');
-      else if (tz.includes('Jakarta')) setActiveRegion('INDONESIA');
-      else if (tz.includes('Europe')) setActiveRegion('EUROPE');
-      setAutoDetected(true);
+    const cached = readCachedRegion(activeRegion);
+    if (cached?.codes?.length) {
+      setDisplayCodes(cached.codes);
+      setLastSyncTime(cached.lastSyncTime || '--:--');
+    } else {
+      setDisplayCodes(getFallbackCodes(activeRegion));
+      setLastSyncTime('--:--');
     }
-  }, [autoDetected]);
 
-  // Load data when region changes
+    loadRegionData(activeRegion, true);
+  }, [activeRegion, loadRegionData]);
+
+  // Warm all regions in background so region switching feels instant
   useEffect(() => {
-    loadRegionData(activeRegion);
+    REGIONS.forEach((region) => {
+      if (region !== activeRegion) loadRegionData(region, false);
+    });
   }, [activeRegion, loadRegionData]);
 
   // Realtime subscription — when cron syncs new codes, all users see them instantly
@@ -95,7 +138,7 @@ const Index = () => {
         { event: 'INSERT', schema: 'public', table: 'synced_codes', filter: `region=eq.${activeRegion}` },
         () => {
           // New codes inserted by cron — reload from DB
-          loadRegionData(activeRegion);
+          loadRegionData(activeRegion, true);
         }
       )
       .subscribe();
@@ -125,7 +168,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-black text-white font-sans selection:bg-cyber-success selection:text-black">
       <Schema currentView={currentView} selectedCode={selectedCode} />
-      <Header currentView={currentView} setView={handleSetView} isSyncing={isLoading} syncingRegion={isLoading ? activeRegion : null} />
+      <Header currentView={currentView} setView={handleSetView} isSyncing={false} syncingRegion={null} />
 
       <main className="w-full">
         {currentView === 'home' ? (
@@ -178,24 +221,11 @@ const Index = () => {
               </div>
             </section>
             <section id="codes" className="max-w-7xl mx-auto px-4 md:px-8 py-12 min-h-[400px]">
-              {isLoading && displayCodes.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-24 text-center">
-                  <Loader2 className="animate-spin text-cyber-success mb-4" size={40} />
-                  <p className="font-tech text-white/40 uppercase tracking-widest text-xs">Loading {activeRegion} codes from database...</p>
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                  {displayCodes.map((code, idx) => (
-                    <CodeCard key={`${activeRegion}-${idx}`} data={code} onSelect={() => { setSelectedCode(code); handleSetView('code-detail'); }} />
-                  ))}
-                </div>
-              )}
-              {!isLoading && displayCodes.length === 0 && (
-                <div className="flex flex-col items-center justify-center py-24 text-center">
-                  <WifiOff className="text-white/10 mb-4" size={48} />
-                  <p className="font-tech text-white/40 uppercase tracking-widest text-xs">No codes synced for this region yet. Next sync at :{REGION_OFFSETS[activeRegion]} every hour.</p>
-                </div>
-              )}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                {displayCodes.map((code, idx) => (
+                  <CodeCard key={`${activeRegion}-${idx}`} data={code} onSelect={() => { setSelectedCode(code); handleSetView('code-detail'); }} />
+                ))}
+              </div>
             </section>
             <AuthorityHub />
           </>
