@@ -9,7 +9,7 @@ import { AppView, RedeemCode } from '@/types';
 import { Clock, Loader2, Timer, RefreshCcw, MapPin, Globe, AlertCircle } from 'lucide-react';
 import { codesSyncService } from '@/services/codesSyncService';
 import { supabase } from '@/integrations/supabase/client';
-import { LIVE_CODES } from '@/constants';
+
 
 const ContentView = React.lazy(() => import('@/components/ff/ContentView').then(m => ({ default: m.ContentView })));
 const CodeDetailView = React.lazy(() => import('@/components/ff/CodeDetailView').then(m => ({ default: m.CodeDetailView })));
@@ -28,14 +28,6 @@ const detectRegionFromTimezone = (): string => {
   if (tz.includes('Jakarta')) return 'INDONESIA';
   if (tz.includes('Europe')) return 'EUROPE';
   return 'GLOBAL';
-};
-
-const getFallbackCodes = (region: string): RedeemCode[] => {
-  return LIVE_CODES.filter((c) => {
-    const s = c.server.toLowerCase();
-    if (region === 'GLOBAL') return true;
-    return s.includes(region.toLowerCase());
-  }).slice(0, 12);
 };
 
 const getRegionCacheKey = (region: string) => `region-codes-cache:${region}`;
@@ -72,10 +64,8 @@ const Index = () => {
   const [currentView, setCurrentView] = useState<AppView>('home');
   const [selectedCode, setSelectedCode] = useState<RedeemCode | null>(null);
   const [activeRegion, setActiveRegion] = useState(initialRegion);
-  const [displayCodes, setDisplayCodes] = useState<RedeemCode[]>(
-    initialCache?.codes?.length ? initialCache.codes : getFallbackCodes(initialRegion)
-  );
-  const [lastSyncTime, setLastSyncTime] = useState<string>(initialCache?.lastSyncTime || '--:--');
+  const [displayCodes, setDisplayCodes] = useState<RedeemCode[]>(initialCache?.codes ?? []);
+  const [lastSyncTime, setLastSyncTime] = useState<string>(initialCache?.lastSyncTime || 'WAITING');
   const [nextUpdateText, setNextUpdateText] = useState('--:--');
   const [isOverdue, setIsOverdue] = useState(false);
   const [dateStr, setDateStr] = useState('');
@@ -90,43 +80,42 @@ const Index = () => {
   }, []);
 
   const loadRegionData = useCallback(async (region: string, updateUi = true) => {
-    try {
-      const [{ codes }, timeLabel] = await Promise.all([
-        codesSyncService.getCodesByRegion(region),
-        codesSyncService.getLastSyncTime(region),
-      ]);
-
-      if (codes.length > 0) {
-        writeCachedRegion(region, codes, timeLabel);
-        if (updateUi) {
-          setDisplayCodes(codes);
-          setLastSyncTime(timeLabel);
-        }
+    const tryLoad = async (attempt = 1): Promise<{ codes: RedeemCode[]; timeLabel: string } | null> => {
+      try {
+        const [{ codes }, timeLabel] = await Promise.all([
+          codesSyncService.getCodesByRegion(region),
+          codesSyncService.getLastSyncTime(region),
+        ]);
+        if (codes.length > 0) return { codes, timeLabel };
+        return null;
+      } catch {
+        if (attempt < 3) return tryLoad(attempt + 1);
+        return null;
       }
-    } catch {
-      // Keep cached/fallback view if backend is temporarily unavailable
+    };
+
+    const loaded = await tryLoad();
+    if (loaded) {
+      writeCachedRegion(region, loaded.codes, loaded.timeLabel);
+      if (updateUi) {
+        setDisplayCodes(loaded.codes);
+        setLastSyncTime(loaded.timeLabel);
+      }
     }
   }, []);
 
-  // Show cached/fallback instantly on region switch, then silently refresh from backend
+  // Show cached snapshot instantly on region switch, then silently refresh from backend
   useEffect(() => {
     const cached = readCachedRegion(activeRegion);
     if (cached?.codes?.length) {
       setDisplayCodes(cached.codes);
-      setLastSyncTime(cached.lastSyncTime || '--:--');
+      setLastSyncTime(cached.lastSyncTime || 'WAITING');
     } else {
-      setDisplayCodes(getFallbackCodes(activeRegion));
-      setLastSyncTime('--:--');
+      setDisplayCodes([]);
+      setLastSyncTime('WAITING');
     }
 
     loadRegionData(activeRegion, true);
-  }, [activeRegion, loadRegionData]);
-
-  // Warm all regions in background so region switching feels instant
-  useEffect(() => {
-    REGIONS.forEach((region) => {
-      if (region !== activeRegion) loadRegionData(region, false);
-    });
   }, [activeRegion, loadRegionData]);
 
   // Realtime subscription — when cron syncs new codes, all users see them instantly
@@ -221,11 +210,17 @@ const Index = () => {
               </div>
             </section>
             <section id="codes" className="max-w-7xl mx-auto px-4 md:px-8 py-12 min-h-[400px]">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                {displayCodes.map((code, idx) => (
-                  <CodeCard key={`${activeRegion}-${idx}`} data={code} onSelect={() => { setSelectedCode(code); handleSetView('code-detail'); }} />
-                ))}
-              </div>
+              {displayCodes.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                  {displayCodes.map((code, idx) => (
+                    <CodeCard key={`${activeRegion}-${idx}`} data={code} onSelect={() => { setSelectedCode(code); handleSetView('code-detail'); }} />
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-24">
+                  <p className="font-tech text-white/40 uppercase tracking-widest text-xs">Live codes are temporarily unavailable for {activeRegion}. Please disable ad blocker/VPN and refresh.</p>
+                </div>
+              )}
             </section>
             <AuthorityHub />
           </>
