@@ -57,6 +57,15 @@ const writeCachedRegion = (region: string, codes: RedeemCode[], lastSyncTime: st
   }
 };
 
+const formatSyncLabel = (syncedAt: string | null): string => {
+  if (!syncedAt) return 'WAITING';
+  try {
+    return new Date(syncedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  } catch {
+    return 'WAITING';
+  }
+};
+
 const Index = () => {
   const initialRegion = detectRegionFromTimezone();
   const initialCache = readCachedRegion(initialRegion);
@@ -80,27 +89,31 @@ const Index = () => {
   }, []);
 
   const loadRegionData = useCallback(async (region: string, updateUi = true) => {
-    const tryLoad = async (attempt = 1): Promise<{ codes: RedeemCode[]; timeLabel: string } | null> => {
+    const tryLoadCodes = async (attempt = 1): Promise<{ codes: RedeemCode[]; syncedAt: string | null } | null> => {
       try {
-        const [{ codes }, timeLabel] = await Promise.all([
-          codesSyncService.getCodesByRegion(region),
-          codesSyncService.getLastSyncTime(region),
-        ]);
-        if (codes.length > 0) return { codes, timeLabel };
+        const { codes, syncedAt } = await codesSyncService.getCodesByRegion(region);
+        if (codes.length > 0) return { codes, syncedAt };
         return null;
       } catch {
-        if (attempt < 3) return tryLoad(attempt + 1);
+        if (attempt < 3) return tryLoadCodes(attempt + 1);
         return null;
       }
     };
 
-    const loaded = await tryLoad();
-    if (loaded) {
-      writeCachedRegion(region, loaded.codes, loaded.timeLabel);
-      if (updateUi) {
-        setDisplayCodes(loaded.codes);
-        setLastSyncTime(loaded.timeLabel);
-      }
+    const loaded = await tryLoadCodes();
+    if (!loaded) return;
+
+    let timeLabel = formatSyncLabel(loaded.syncedAt);
+    try {
+      timeLabel = await codesSyncService.getLastSyncTime(region);
+    } catch {
+      // Keep derived label from synced_at if sync_log request fails
+    }
+
+    writeCachedRegion(region, loaded.codes, timeLabel);
+    if (updateUi) {
+      setDisplayCodes(loaded.codes);
+      setLastSyncTime(timeLabel);
     }
   }, []);
 
@@ -117,6 +130,15 @@ const Index = () => {
 
     loadRegionData(activeRegion, true);
   }, [activeRegion, loadRegionData]);
+
+  // Retry in background while empty so users get live data as soon as connectivity returns
+  useEffect(() => {
+    if (displayCodes.length > 0) return;
+    const retry = setInterval(() => {
+      loadRegionData(activeRegion, true);
+    }, 15000);
+    return () => clearInterval(retry);
+  }, [activeRegion, displayCodes.length, loadRegionData]);
 
   // Realtime subscription — when cron syncs new codes, all users see them instantly
   useEffect(() => {
