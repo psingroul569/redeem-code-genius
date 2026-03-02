@@ -47,11 +47,15 @@ export const codesSyncService = {
     const now = new Date();
     const currentHourKey = `${now.getUTCFullYear()}-${now.getUTCMonth()}-${now.getUTCDate()}-${now.getUTCHours()}`;
 
-    // Try current hour first
+    // Most reliable path first: backend function (avoids browser REST/CORS/network blockers)
+    const functionData = await this.fetchCodesViaFunction(region);
+    if (functionData) return functionData;
+
+    // Fallback: direct table read for current hour
     let result = await this.fetchCodesForHour(region, currentHourKey);
     if (result.codes.length > 0) return result;
 
-    // Fallback: get the latest synced hour for this region
+    // Fallback: latest synced hour for this region
     const { data: latestLog } = await supabase
       .from('sync_log')
       .select('hour_key, synced_at')
@@ -64,10 +68,6 @@ export const codesSyncService = {
       result = await this.fetchCodesForHour(region, latestLog.hour_key);
       if (result.codes.length > 0) return result;
     }
-
-    // Final fallback: read through backend function (avoids direct /rest path issues)
-    const functionData = await this.fetchCodesViaFunction(region);
-    if (functionData) return functionData;
 
     return { codes: [], syncedAt: null, hourKey: null };
   },
