@@ -26,6 +26,23 @@ export const codesSyncService = {
    */
   async fetchCodesViaFunction(region: string): Promise<CodesPayload | null> {
     try {
+      const baseUrl = import.meta.env.VITE_SUPABASE_URL;
+      const url = `${baseUrl}/functions/v1/public-codes?region=${encodeURIComponent(region)}&t=${Date.now()}`;
+
+      // Primary path: simple GET request (avoids custom headers/preflight fragility in some browsers/networks)
+      const res = await fetch(url, { method: 'GET', cache: 'no-store' });
+      if (res.ok) {
+        const data = await res.json();
+        if (data?.hourKey && Array.isArray(data?.codes) && data.codes.length > 0) {
+          return {
+            codes: this.mapRowsToCodes(data.codes, region),
+            syncedAt: data.syncedAt || null,
+            hourKey: data.hourKey || null,
+          };
+        }
+      }
+
+      // Secondary path: Supabase client invoke fallback
       const { data, error } = await supabase.functions.invoke('public-codes', { body: { region } });
       if (error || !data?.hourKey || !Array.isArray(data?.codes) || data.codes.length === 0) return null;
 
