@@ -38,7 +38,7 @@ export const Footer: React.FC = () => {
               </ul>
           </div>
           <div className="col-span-1">
-              <h4 className="text-white font-bold text-sm md:text-base mb-6 tracking-[0.15em] uppercase border-b border-white/10 pb-2 inline-block">Important Links</h4>
+              <h4 className="text-white font-bold text-sm md:text-base mb-6 tracking-[0.15em] uppercase border-b border-white/10 pb-2 inline-block">Compliance</h4>
                <ul className="space-y-4 text-sm md:text-base text-cyber-muted">
                   <li><Link to="/about-us" className="hover:text-white transition-colors">About Us</Link></li>
                   <li><Link to="/disclaimer" className="hover:text-white transition-colors">Disclaimer</Link></li>
