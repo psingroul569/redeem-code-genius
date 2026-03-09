@@ -63,8 +63,8 @@ All colors MUST be HSL.
 }
 
 /* Custom styles */
-.font-display { font-family: 'Russo One', sans-serif; }
-.font-tech { font-family: 'Rajdhani', sans-serif; }
+.font-display { font-family: 'Russo One', system-ui, sans-serif; }
+.font-tech { font-family: 'Rajdhani', system-ui, sans-serif; }
 
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: #000000; }
