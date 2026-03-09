@@ -3,13 +3,13 @@ import { AppView } from '@/types';
 import { Zap } from 'lucide-react';
 
 interface HeaderProps {
-  currentView: AppView;
-  setView: (view: AppView) => void;
-  isSyncing: boolean;
-  syncingRegion: string | null;
+  currentView?: AppView;
+  setView?: (view: AppView) => void;
+  isSyncing?: boolean;
+  syncingRegion?: string | null;
 }
 
-export const Header: React.FC<HeaderProps> = ({ currentView, setView, isSyncing, syncingRegion }) => {
+export const Header: React.FC<HeaderProps> = ({ currentView = 'home', setView = () => {}, isSyncing = false, syncingRegion = null }) => {
   return (
     <header className="sticky top-0 bg-black/90 backdrop-blur-xl pt-4 pb-4 z-50 border-b border-white/5 transition-all shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
       <div className="max-w-7xl mx-auto px-4 md:px-8 flex items-center justify-between gap-4">
