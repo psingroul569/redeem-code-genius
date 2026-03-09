@@ -1,18 +1,18 @@
 import { useEffect, useState, useCallback, Suspense } from 'react';
 import React from 'react';
 import { Header } from '@/components/ff/Header';
-const Footer = React.lazy(() => import('@/components/ff/Footer').then(m => ({ default: m.Footer })));
+const Footer = React.lazy(() => import('@/components/ff/Footer').then((m) => ({ default: m.Footer })));
 import { CodeCard } from '@/components/ff/CodeCard';
 import { Schema } from '@/components/ff/Schema';
-const AuthorityHub = React.lazy(() => import('@/components/ff/AuthorityHub').then(m => ({ default: m.AuthorityHub })));
+const AuthorityHub = React.lazy(() => import('@/components/ff/AuthorityHub').then((m) => ({ default: m.AuthorityHub })));
 import { AppView, RedeemCode } from '@/types';
 import { Clock, Loader2, Timer, RefreshCcw, MapPin, Globe, AlertCircle } from 'lucide-react';
 import { codesSyncService } from '@/services/codesSyncService';
 import { supabase } from '@/integrations/supabase/client';
 
 
-const ContentView = React.lazy(() => import('@/components/ff/ContentView').then(m => ({ default: m.ContentView })));
-const CodeDetailView = React.lazy(() => import('@/components/ff/CodeDetailView').then(m => ({ default: m.CodeDetailView })));
+const ContentView = React.lazy(() => import('@/components/ff/ContentView').then((m) => ({ default: m.ContentView })));
+const CodeDetailView = React.lazy(() => import('@/components/ff/CodeDetailView').then((m) => ({ default: m.CodeDetailView })));
 
 const REGIONS = ['GLOBAL', 'INDIA', 'BRAZIL', 'INDONESIA', 'EUROPE'];
 const REGION_OFFSETS: Record<string, number> = {
@@ -32,7 +32,7 @@ const detectRegionFromTimezone = (): string => {
 
 const getRegionCacheKey = (region: string) => `region-codes-cache:${region}`;
 
-const readCachedRegion = (region: string): { codes: RedeemCode[]; lastSyncTime: string; cachedAt: number } | null => {
+const readCachedRegion = (region: string): {codes: RedeemCode[];lastSyncTime: string;cachedAt: number;} | null => {
   try {
     const raw = localStorage.getItem(getRegionCacheKey(region));
     if (!raw) return null;
@@ -50,12 +50,12 @@ const writeCachedRegion = (region: string, codes: RedeemCode[], lastSyncTime: st
     localStorage.setItem(getRegionCacheKey(region), JSON.stringify({
       codes,
       lastSyncTime,
-      cachedAt: Date.now(),
+      cachedAt: Date.now()
     }));
   } catch {
+
     // ignore cache errors
-  }
-};
+  }};
 
 const formatSyncLabel = (syncedAt: string | null): string => {
   if (!syncedAt) return 'WAITING';
@@ -89,7 +89,7 @@ const Index = () => {
   }, []);
 
   const loadRegionData = useCallback(async (region: string, updateUi = true) => {
-    const tryLoadCodes = async (attempt = 1): Promise<{ codes: RedeemCode[]; syncedAt: string | null } | null> => {
+    const tryLoadCodes = async (attempt = 1): Promise<{codes: RedeemCode[];syncedAt: string | null;} | null> => {
       try {
         const { codes, syncedAt } = await codesSyncService.getCodesByRegion(region);
         if (codes.length > 0) return { codes, syncedAt };
@@ -107,9 +107,9 @@ const Index = () => {
     try {
       timeLabel = await codesSyncService.getLastSyncTime(region);
     } catch {
+
       // Keep derived label from synced_at if sync_log request fails
     }
-
     writeCachedRegion(region, loaded.codes, timeLabel);
     if (updateUi) {
       setDisplayCodes(loaded.codes);
@@ -142,19 +142,19 @@ const Index = () => {
 
   // Realtime subscription — when cron syncs new codes, all users see them instantly
   useEffect(() => {
-    const channel = supabase
-      .channel('synced-codes-realtime')
-      .on(
-        'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'synced_codes', filter: `region=eq.${activeRegion}` },
-        () => {
-          // New codes inserted by cron — reload from DB
-          loadRegionData(activeRegion, true);
-        }
-      )
-      .subscribe();
+    const channel = supabase.
+    channel('synced-codes-realtime').
+    on(
+      'postgres_changes',
+      { event: 'INSERT', schema: 'public', table: 'synced_codes', filter: `region=eq.${activeRegion}` },
+      () => {
+        // New codes inserted by cron — reload from DB
+        loadRegionData(activeRegion, true);
+      }
+    ).
+    subscribe();
 
-    return () => { supabase.removeChannel(channel); };
+    return () => {supabase.removeChannel(channel);};
   }, [activeRegion, loadRegionData]);
 
   // Countdown timer to next sync
@@ -174,7 +174,7 @@ const Index = () => {
     return () => clearInterval(ticker);
   }, [activeRegion, lastSyncTime]);
 
-  const handleSetView = (view: AppView) => { setCurrentView(view); window.scrollTo(0, 0); };
+  const handleSetView = (view: AppView) => {setCurrentView(view);window.scrollTo(0, 0);};
 
   return (
     <div className="min-h-screen bg-black text-white font-sans selection:bg-cyber-success selection:text-black">
@@ -182,14 +182,14 @@ const Index = () => {
       <Header currentView={currentView} setView={handleSetView} isSyncing={false} syncingRegion={null} />
 
       <main className="w-full">
-        {currentView === 'home' ? (
-          <>
+        {currentView === 'home' ?
+        <>
             <section className="relative w-full pt-8 pb-2 px-4 flex flex-col items-center">
               <div className="max-w-7xl mx-auto text-center">
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/5 border border-white/10 rounded-full mb-8">
-                  <Globe size={14} className="text-cyber-success" />
-                  <span className="text-[10px] font-tech font-bold text-white/60 uppercase tracking-widest">Cron-Powered Cloud Sync • Zero Client API Calls</span>
-                </div>
+                
+
+
+              
                 <h1 className="font-display text-[clamp(2.5rem,10vw,6rem)] text-white uppercase tracking-tighter leading-[0.85] text-glow mb-6">
                   FREE FIRE REDEEM <br /> <span className="text-cyber-success italic">CODE TODAY</span>
                 </h1>
@@ -204,11 +204,11 @@ const Index = () => {
               <div className="w-full max-w-7xl mx-auto mt-12 px-4 md:px-8">
                 <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                   <div className="flex w-full md:w-auto bg-[#0a0a0a] p-1 rounded-2xl border border-white/5 overflow-x-auto no-scrollbar">
-                    {REGIONS.map((region) => (
-                      <button key={region} onClick={() => setActiveRegion(region)} className={`px-5 py-2.5 rounded-xl text-[11px] font-tech font-bold uppercase tracking-[0.15em] transition-all whitespace-nowrap ${activeRegion === region ? 'bg-white text-black' : 'text-[#444] hover:text-white/60'}`}>
+                    {REGIONS.map((region) =>
+                  <button key={region} onClick={() => setActiveRegion(region)} className={`px-5 py-2.5 rounded-xl text-[11px] font-tech font-bold uppercase tracking-[0.15em] transition-all whitespace-nowrap ${activeRegion === region ? 'bg-white text-black' : 'text-[#444] hover:text-white/60'}`}>
                         {region}
                       </button>
-                    ))}
+                  )}
                   </div>
                   <div className="flex flex-row items-center gap-3 w-full md:w-auto">
                     <div className="flex-1 md:flex-initial bg-[#0a0a0a] px-5 py-3 rounded-2xl border border-white/5 flex items-center justify-center gap-4">
@@ -232,37 +232,37 @@ const Index = () => {
               </div>
             </section>
             <section id="codes" className="max-w-7xl mx-auto px-4 md:px-8 py-12 min-h-[400px]">
-              {displayCodes.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                  {displayCodes.map((code, idx) => (
-                    <CodeCard key={`${activeRegion}-${idx}`} data={code} onSelect={() => { setSelectedCode(code); handleSetView('code-detail'); }} />
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-24">
+              {displayCodes.length > 0 ?
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                  {displayCodes.map((code, idx) =>
+              <CodeCard key={`${activeRegion}-${idx}`} data={code} onSelect={() => {setSelectedCode(code);handleSetView('code-detail');}} />
+              )}
+                </div> :
+
+            <div className="text-center py-24">
                   <p className="font-tech text-white/40 uppercase tracking-widest text-xs">Live codes are temporarily unavailable for {activeRegion}. Please disable ad blocker/VPN and refresh.</p>
                 </div>
-              )}
+            }
             </section>
             <Suspense fallback={<div className="min-h-[400px]" />}>
               <AuthorityHub />
             </Suspense>
-          </>
-        ) : (
-          <Suspense fallback={<div className="flex items-center justify-center min-h-[50vh]"><Loader2 className="animate-spin text-white" /></div>}>
-            {currentView === 'code-detail' && selectedCode ? (
-              <CodeDetailView code={selectedCode} setView={handleSetView} lastSyncTime={Date.now()} />
-            ) : (
-              <ContentView currentView={currentView} setView={handleSetView} selectedArticleId={null} setSelectedArticleId={() => {}} />
-            )}
+          </> :
+
+        <Suspense fallback={<div className="flex items-center justify-center min-h-[50vh]"><Loader2 className="animate-spin text-white" /></div>}>
+            {currentView === 'code-detail' && selectedCode ?
+          <CodeDetailView code={selectedCode} setView={handleSetView} lastSyncTime={Date.now()} /> :
+
+          <ContentView currentView={currentView} setView={handleSetView} selectedArticleId={null} setSelectedArticleId={() => {}} />
+          }
           </Suspense>
-        )}
+        }
       </main>
       <Suspense fallback={null}>
         <Footer />
       </Suspense>
-    </div>
-  );
+    </div>);
+
 };
 
 export default Index;
