@@ -4,7 +4,7 @@ import { Header } from '@/components/ff/Header';
 import { Footer } from '@/components/ff/Footer';
 import { CodeCard } from '@/components/ff/CodeCard';
 import { Schema } from '@/components/ff/Schema';
-import { AuthorityHub } from '@/components/ff/AuthorityHub';
+const AuthorityHub = React.lazy(() => import('@/components/ff/AuthorityHub').then(m => ({ default: m.AuthorityHub })));
 import { AppView, RedeemCode } from '@/types';
 import { Clock, Loader2, Timer, RefreshCcw, MapPin, Globe, AlertCircle } from 'lucide-react';
 import { codesSyncService } from '@/services/codesSyncService';
