@@ -258,7 +258,9 @@ const Index = () => {
           </Suspense>
         )}
       </main>
-      <Footer />
+      <Suspense fallback={null}>
+        <Footer />
+      </Suspense>
     </div>
   );
 };
