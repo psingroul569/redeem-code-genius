@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export const Footer: React.FC = () => {
   return (
@@ -24,26 +25,25 @@ export const Footer: React.FC = () => {
           <div className="col-span-1">
               <h4 className="text-white font-bold text-sm md:text-base mb-6 tracking-[0.15em] uppercase border-b border-white/10 pb-2 inline-block">Resources</h4>
               <ul className="space-y-4 text-sm md:text-base text-cyber-muted">
-                  <li><a href="#" className="hover:text-white transition-colors block">Live Feed</a></li>
-                  <li><a href="#guide" className="hover:text-white transition-colors block">Guide</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors block">Status</a></li>
-                  <li><a href="#faq" className="hover:text-white transition-colors block">FAQ</a></li>
+                  <li><Link to="/blogs" className="hover:text-white transition-colors block">Blogs</Link></li>
+                  <li><Link to="/how-to-guide" className="hover:text-white transition-colors block">How to Guide</Link></li>
+                  <li><Link to="/faq" className="hover:text-white transition-colors block">FAQ</Link></li>
               </ul>
           </div>
           <div className="col-span-1">
-              <h4 className="text-white font-bold text-sm md:text-base mb-6 tracking-[0.15em] uppercase border-b border-white/10 pb-2 inline-block">Support</h4>
+              <h4 className="text-white font-bold text-sm md:text-base mb-6 tracking-[0.15em] uppercase border-b border-white/10 pb-2 inline-block">Contact Us</h4>
               <ul className="space-y-4 text-sm md:text-base text-cyber-muted">
-                  <li className="flex items-center gap-3 group cursor-pointer">Help</li>
-                  <li className="flex items-center gap-3 group cursor-pointer">Email</li>
-                  <li className="text-[10px] md:text-xs text-cyber-muted/40 pt-1 tracking-widest uppercase">Verified Response: 24H</li>
+                  <li><Link to="/help" className="hover:text-white transition-colors block">Help</Link></li>
+                  <li><Link to="/contact" className="hover:text-white transition-colors block">Email</Link></li>
               </ul>
           </div>
           <div className="col-span-1">
-              <h4 className="text-white font-bold text-sm md:text-base mb-6 tracking-[0.15em] uppercase border-b border-white/10 pb-2 inline-block">Compliance</h4>
+              <h4 className="text-white font-bold text-sm md:text-base mb-6 tracking-[0.15em] uppercase border-b border-white/10 pb-2 inline-block">Important Links</h4>
                <ul className="space-y-4 text-sm md:text-base text-cyber-muted">
-                  <li><a href="#" className="hover:text-white transition-colors">Privacy</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">Terms</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">DMCA</a></li>
+                  <li><Link to="/about-us" className="hover:text-white transition-colors">About Us</Link></li>
+                  <li><Link to="/disclaimer" className="hover:text-white transition-colors">Disclaimer</Link></li>
+                  <li><Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
+                  <li><Link to="/terms" className="hover:text-white transition-colors">Terms</Link></li>
               </ul>
           </div>
         </div>
