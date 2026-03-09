@@ -244,7 +244,9 @@ const Index = () => {
                 </div>
               )}
             </section>
-            <AuthorityHub />
+            <Suspense fallback={<div className="min-h-[400px]" />}>
+              <AuthorityHub />
+            </Suspense>
           </>
         ) : (
           <Suspense fallback={<div className="flex items-center justify-center min-h-[50vh]"><Loader2 className="animate-spin text-white" /></div>}>
