@@ -8,7 +8,6 @@ const AuthorityHub = React.lazy(() => import('@/components/ff/AuthorityHub').the
 import { AppView, RedeemCode } from '@/types';
 import { Clock, Loader2, Timer, RefreshCcw, MapPin, Globe, AlertCircle } from 'lucide-react';
 import { codesSyncService } from '@/services/codesSyncService';
-import { supabase } from '@/integrations/supabase/client';
 
 
 const ContentView = React.lazy(() => import('@/components/ff/ContentView').then(m => ({ default: m.ContentView })));
@@ -142,19 +141,26 @@ const Index = () => {
 
   // Realtime subscription — when cron syncs new codes, all users see them instantly
   useEffect(() => {
-    const channel = supabase
-      .channel('synced-codes-realtime')
-      .on(
-        'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'synced_codes', filter: `region=eq.${activeRegion}` },
-        () => {
-          // New codes inserted by cron — reload from DB
-          loadRegionData(activeRegion, true);
-        }
-      )
-      .subscribe();
+    let channel: any;
+    let cancelled = false;
+    import('@/integrations/supabase/client').then(({ supabase }) => {
+      if (cancelled) return;
+      channel = supabase
+        .channel('synced-codes-realtime')
+        .on(
+          'postgres_changes',
+          { event: 'INSERT', schema: 'public', table: 'synced_codes', filter: `region=eq.${activeRegion}` },
+          () => { loadRegionData(activeRegion, true); }
+        )
+        .subscribe();
+    });
 
-    return () => { supabase.removeChannel(channel); };
+    return () => {
+      cancelled = true;
+      if (channel) {
+        import('@/integrations/supabase/client').then(({ supabase }) => { supabase.removeChannel(channel); });
+      }
+    };
   }, [activeRegion, loadRegionData]);
 
   // Countdown timer to next sync
