@@ -1,6 +1,5 @@
+import { supabase } from "@/integrations/supabase/client";
 import { RedeemCode } from "@/types";
-
-const getSupabase = () => import("@/integrations/supabase/client").then(m => m.supabase);
 
 type CodesPayload = { codes: RedeemCode[]; syncedAt: string | null; hourKey: string | null };
 
@@ -22,11 +21,15 @@ export const codesSyncService = {
     }));
   },
 
+  /**
+   * Fallback path for environments where direct /rest/v1 calls are blocked.
+   */
   async fetchCodesViaFunction(region: string): Promise<CodesPayload | null> {
     try {
       const baseUrl = import.meta.env.VITE_SUPABASE_URL;
       const url = `${baseUrl}/functions/v1/public-codes?region=${encodeURIComponent(region)}&t=${Date.now()}`;
 
+      // Primary path: simple GET request (avoids custom headers/preflight fragility in some browsers/networks)
       const res = await fetch(url, { method: 'GET', cache: 'no-store' });
       if (res.ok) {
         const data = await res.json();
@@ -39,7 +42,7 @@ export const codesSyncService = {
         }
       }
 
-      const supabase = await getSupabase();
+      // Secondary path: Supabase client invoke fallback
       const { data, error } = await supabase.functions.invoke('public-codes', { body: { region } });
       if (error || !data?.hourKey || !Array.isArray(data?.codes) || data.codes.length === 0) return null;
 
@@ -53,18 +56,23 @@ export const codesSyncService = {
     }
   },
 
+  /**
+   * Get codes for a region. Tries current hour first, falls back to latest available hour.
+   * If direct reads fail in browser network, falls back to backend function response.
+   */
   async getCodesByRegion(region: string): Promise<CodesPayload> {
     const now = new Date();
     const currentHourKey = `${now.getUTCFullYear()}-${now.getUTCMonth()}-${now.getUTCDate()}-${now.getUTCHours()}`;
 
+    // Most reliable path first: backend function (avoids browser REST/CORS/network blockers)
     const functionData = await this.fetchCodesViaFunction(region);
     if (functionData) return functionData;
 
-    const supabase = await getSupabase();
-
+    // Fallback: direct table read for current hour
     let result = await this.fetchCodesForHour(region, currentHourKey);
     if (result.codes.length > 0) return result;
 
+    // Fallback: latest synced hour for this region
     const { data: latestLog } = await supabase
       .from('sync_log')
       .select('hour_key, synced_at')
@@ -82,7 +90,6 @@ export const codesSyncService = {
   },
 
   async fetchCodesForHour(region: string, hourKey: string): Promise<CodesPayload> {
-    const supabase = await getSupabase();
     const { data, error } = await supabase
       .from('synced_codes')
       .select('*')
@@ -97,8 +104,10 @@ export const codesSyncService = {
     return { codes: this.mapRowsToCodes(data, region), syncedAt: data[0].synced_at, hourKey };
   },
 
+  /**
+   * Get last sync time label for display
+   */
   async getLastSyncTime(region: string): Promise<string> {
-    const supabase = await getSupabase();
     const { data } = await supabase
       .from('sync_log')
       .select('synced_at')
