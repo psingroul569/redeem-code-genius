@@ -2,12 +2,63 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
-
 @layer base {
+  /* Light theme (default) */
   :root {
+    --background: 220 20% 97%;
+    --foreground: 220 15% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 15% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 15% 15%;
+
+    --primary: 220 15% 15%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 24 32% 53%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 220 14% 92%;
+    --muted-foreground: 220 10% 45%;
+
+    --accent: 153 80% 32%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 13% 88%;
+    --input: 220 13% 88%;
+    --ring: 153 80% 32%;
+
+    --radius: 0.5rem;
+
+    /* Component-level tokens */
+    --surface: 220 14% 95%;
+    --surface-hover: 220 14% 90%;
+    --surface-elevated: 0 0% 100%;
+    --text-heading: 220 15% 10%;
+    --text-body: 220 10% 30%;
+    --text-muted-custom: 220 10% 55%;
+    --success: 153 80% 32%;
+    --success-bg: 153 50% 94%;
+    --success-border: 153 50% 85%;
+    --glow-opacity: 0;
+
+    --sidebar-background: 220 14% 95%;
+    --sidebar-foreground: 220 10% 30%;
+    --sidebar-primary: 220 15% 15%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 14% 90%;
+    --sidebar-accent-foreground: 220 15% 15%;
+    --sidebar-border: 220 13% 88%;
+    --sidebar-ring: 153 80% 32%;
+  }
+
+  /* Dark theme */
+  .dark {
     --background: 0 0% 0%;
     --foreground: 210 40% 98%;
 
@@ -36,7 +87,17 @@ All colors MUST be HSL.
     --input: 0 0% 10%;
     --ring: 153 100% 50%;
 
-    --radius: 0.5rem;
+    /* Component-level tokens */
+    --surface: 0 0% 4%;
+    --surface-hover: 0 0% 8%;
+    --surface-elevated: 0 0% 6%;
+    --text-heading: 0 0% 100%;
+    --text-body: 0 0% 70%;
+    --text-muted-custom: 0 0% 40%;
+    --success: 153 100% 50%;
+    --success-bg: 153 100% 5%;
+    --success-border: 153 100% 15%;
+    --glow-opacity: 1;
 
     --sidebar-background: 0 0% 2%;
     --sidebar-foreground: 0 0% 80%;
@@ -47,8 +108,6 @@ All colors MUST be HSL.
     --sidebar-border: 0 0% 10%;
     --sidebar-ring: 153 100% 50%;
   }
-
-  /* Dark mode is the default - no separate dark class needed */
 }
 
 @layer base {
@@ -67,19 +126,19 @@ All colors MUST be HSL.
 .font-tech { font-family: 'Rajdhani', system-ui, sans-serif; }
 
 ::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #000000; }
-::-webkit-scrollbar-thumb { background: #222; border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background: #333; }
+::-webkit-scrollbar-track { background: hsl(var(--background)); }
+::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: hsl(var(--muted-foreground)); }
 
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
 .text-glow {
-  text-shadow: 0 0 15px rgba(255, 255, 255, 0.4), 0 0 30px rgba(255, 255, 255, 0.2);
+  text-shadow: 0 0 15px hsl(var(--foreground) / calc(0.4 * var(--glow-opacity))), 0 0 30px hsl(var(--foreground) / calc(0.2 * var(--glow-opacity)));
 }
 
 .date-glow {
-  text-shadow: 0 0 15px rgba(176, 125, 98, 0.4);
+  text-shadow: 0 0 15px hsl(24 32% 53% / calc(0.4 * var(--glow-opacity)));
 }
 
 .animate-fade-in {
