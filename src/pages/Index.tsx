@@ -8,7 +8,6 @@ const AuthorityHub = React.lazy(() => import('@/components/ff/AuthorityHub').the
 import { AppView, RedeemCode } from '@/types';
 import { Clock, Loader2, Timer, RefreshCcw, MapPin, Globe, AlertCircle } from 'lucide-react';
 import { codesSyncService } from '@/services/codesSyncService';
-import { supabase } from '@/integrations/supabase/client';
 
 
 const ContentView = React.lazy(() => import('@/components/ff/ContentView').then(m => ({ default: m.ContentView })));
