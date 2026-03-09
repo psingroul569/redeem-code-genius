@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback, Suspense } from 'react';
 import React from 'react';
 import { Header } from '@/components/ff/Header';
-import { Footer } from '@/components/ff/Footer';
+const Footer = React.lazy(() => import('@/components/ff/Footer').then(m => ({ default: m.Footer })));
 import { CodeCard } from '@/components/ff/CodeCard';
 import { Schema } from '@/components/ff/Schema';
 const AuthorityHub = React.lazy(() => import('@/components/ff/AuthorityHub').then(m => ({ default: m.AuthorityHub })));
@@ -258,7 +258,9 @@ const Index = () => {
           </Suspense>
         )}
       </main>
-      <Footer />
+      <Suspense fallback={null}>
+        <Footer />
+      </Suspense>
     </div>
   );
 };
