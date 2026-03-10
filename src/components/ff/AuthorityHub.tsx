@@ -79,7 +79,7 @@ export const AuthorityHub: React.FC = () => {
           <div className="lg:col-span-7 space-y-8">
             <div className="bg-card border border-border rounded-3xl p-8">
               <h3 className="text-xl font-display text-foreground uppercase italic tracking-tight mb-8 flex items-center gap-3">
-                <UserCheck className="text-success" /> The Verification Chain
+                <UserCheck className="text-success" /> Codes Verification Process
               </h3>
               <div className="relative">
                 <div className="absolute top-8 left-0 w-full h-0.5 bg-border hidden md:block"></div>
