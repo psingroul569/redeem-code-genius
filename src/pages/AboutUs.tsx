@@ -3,9 +3,7 @@ import { Footer } from '@/components/ff/Footer';
 import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 
-const AboutUs = () => (
-  <div className="min-h-screen bg-background text-foreground font-tech">
-    <Header />
+
     <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -371,8 +369,6 @@ Hundreds of players are redeeming free skins and diamonds daily. Don't miss toda
 
 </body>
 </html>
-    <Footer />
-  </div>
-);
+ 
 
 export default AboutUs;
