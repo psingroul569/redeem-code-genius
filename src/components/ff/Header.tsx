@@ -64,12 +64,6 @@ export const Header: React.FC<HeaderProps> = ({
               
               HOME
             </button>
-            <button
-              onClick={() => setView("content")}
-              className={`px-4 md:px-6 py-2.5 rounded-xl text-[10px] md:text-xs font-tech font-bold tracking-widest transition-all border shadow-sm ${["content", "article"].includes(currentView) ? "bg-primary text-primary-foreground border-primary" : "text-t-muted hover:text-foreground border-border hover:bg-surface"}`}>
-              
-              GUIDES
-            </button>
           </nav>
           <ThemeToggle theme={theme} onToggle={onToggleTheme} />
         </div>
