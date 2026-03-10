@@ -47,11 +47,11 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
             <div className="flex items-center gap-2 mt-1">
               <span className="text-[9px] text-t-muted tracking-[0.25em] font-tech uppercase font-bold truncate">
-                Free Fire Redeem Code Today
+                Free Fire Working Redeem Codes
               </span>
               <div className="h-px w-8 bg-border"></div>
               <span className="text-[8px] text-success font-tech font-bold uppercase tracking-widest animate-pulse">
-                V4.0 LIVE
+                Today
               </span>
             </div>
           </div>
