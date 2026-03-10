@@ -36,10 +36,10 @@ export const Header: React.FC<HeaderProps> = ({
           <div className="hidden md:flex flex-col min-w-0">
             <div className="flex items-baseline gap-0.5">
               <span className="font-display text-lg sm:text-2xl tracking-tighter text-t-muted leading-none font-black italic">
-                Free Fire
+                FF
               </span>
               <span className="font-display text-lg sm:text-2xl tracking-tighter text-foreground leading-none font-black italic uppercase">
-                REDEEM CODE
+                REDEEMCODE
               </span>
               <span className="font-display text-lg sm:text-2xl tracking-tighter text-success leading-none font-black italic uppercase">
                 TODAY
