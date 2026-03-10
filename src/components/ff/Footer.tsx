@@ -99,7 +99,7 @@ export const Footer: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="max-w-7xl mx-auto px-6 text-center">
+      <div className="max-w-7xl mx-auto px-10 text-center">
         <p className="text-xs text-t-muted/60 leading-relaxed uppercase tracking-[0.25em] mb-6 max-w-3xl mx-auto px-4">
           This platform is an independent resource for gaming enthusiasts. We are not officially affiliated with Garena
           International. All trademarks belong to their respective owners.
