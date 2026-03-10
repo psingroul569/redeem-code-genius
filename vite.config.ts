@@ -27,6 +27,8 @@ export default defineConfig(({ mode }) => ({
           'vendor-query': ['@tanstack/react-query'],
           'vendor-supabase': ['@supabase/supabase-js'],
           'vendor-ui': ['@radix-ui/react-toast', '@radix-ui/react-tooltip', 'sonner', 'cmdk'],
+          'vendor-icons': ['lucide-react'],
+          'vendor-recharts': ['recharts'],
         },
       },
     },
