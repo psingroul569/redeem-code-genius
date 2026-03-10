@@ -4,7 +4,7 @@ import { ShieldCheck, UserCheck, Award, Terminal, Twitter, MessageCircle, CheckC
 
 export const AuthorityHub: React.FC = () => {
   return (
-    <section className="py-10 bg-muted border-y border-border">
+    <section className="py-6 bg-muted border-y border-border">
       <div className="max-w-7xl mx-auto px-4 md:px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-display text-foreground uppercase italic tracking-tight">
