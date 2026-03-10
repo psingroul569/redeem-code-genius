@@ -7,6 +7,7 @@ const Index = lazy(() => import("./pages/Index"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const Blogs = lazy(() => import("./pages/Blogs"));
 const HowToGuide = lazy(() => import("./pages/HowToGuide"));
+const GuidesPage = lazy(() => import("./pages/Guides"));
 const FAQ = lazy(() => import("./pages/FAQ"));
 const Help = lazy(() => import("./pages/Help"));
 const Contact = lazy(() => import("./pages/Contact"));
