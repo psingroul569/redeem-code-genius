@@ -8,7 +8,10 @@ export const Footer: React.FC = () => {
         <p className="text-center text-t-muted text-xs uppercase tracking-[0.3em] mb-6">As Seen On</p>
         <div className="flex flex-wrap justify-center items-center gap-x-10 gap-y-6 md:gap-x-16 opacity-30 grayscale hover:grayscale-0 transition-all duration-500 px-4">
           {["GAMINGWEEK", "ESPORTSDAILY", "FF WIKIA", "REDDIT", "DISCORD PRO"].map((brand) => (
-            <span key={brand} className="text-base md:text-xl font-display text-foreground tracking-tighter whitespace-nowrap">
+            <span
+              key={brand}
+              className="text-base md:text-xl font-display text-foreground tracking-tighter whitespace-nowrap"
+            >
               {brand}
             </span>
           ))}
@@ -21,13 +24,12 @@ export const Footer: React.FC = () => {
               FF REDEEM CODE TODAY
             </h3>
             <p className="text-t-muted text-sm md:text-base leading-relaxed mb-6 max-w-md">
-              Your trusted intelligence hub for Garena Free Fire rewards. We verify every code on live server nodes for maximum accuracy.
+              Your trusted intelligence hub for Garena Free Fire rewards. We verify every code on live server nodes for
+              maximum accuracy.
             </p>
             <div className="flex items-center gap-3">
               <div className="w-2.5 h-2.5 rounded-full bg-success animate-pulse"></div>
-              <span className="text-xs text-success/80 font-bold uppercase tracking-widest">
-                Global Sync Active
-              </span>
+              <span className="text-xs text-success/80 font-bold uppercase tracking-widest">Global Sync Active</span>
             </div>
           </div>
           <div className="col-span-1">
@@ -36,13 +38,19 @@ export const Footer: React.FC = () => {
             </h4>
             <ul className="space-y-4 text-sm md:text-base text-t-muted">
               <li>
-                <Link to="/blogs" className="hover:text-foreground transition-colors block">Blogs</Link>
+                <Link to="/blogs" className="hover:text-foreground transition-colors block">
+                  Blogs
+                </Link>
               </li>
               <li>
-                <Link to="/how-to-guide" className="hover:text-foreground transition-colors block">How to Guide</Link>
+                <Link to="/how-to-guide" className="hover:text-foreground transition-colors block">
+                  Guide
+                </Link>
               </li>
               <li>
-                <Link to="/faq" className="hover:text-foreground transition-colors block">FAQ</Link>
+                <Link to="/faq" className="hover:text-foreground transition-colors block">
+                  FAQ
+                </Link>
               </li>
             </ul>
           </div>
@@ -52,10 +60,14 @@ export const Footer: React.FC = () => {
             </h4>
             <ul className="space-y-4 text-sm md:text-base text-t-muted">
               <li>
-                <Link to="/help" className="hover:text-foreground transition-colors block">Help</Link>
+                <Link to="/help" className="hover:text-foreground transition-colors block">
+                  Help
+                </Link>
               </li>
               <li>
-                <Link to="/contact" className="hover:text-foreground transition-colors block">Email</Link>
+                <Link to="/contact" className="hover:text-foreground transition-colors block">
+                  Email
+                </Link>
               </li>
               <li className="text-[10px] md:text-xs text-t-muted/40 pt-1 tracking-widest uppercase">
                 Verified Response: 24H
@@ -68,16 +80,24 @@ export const Footer: React.FC = () => {
             </h4>
             <ul className="space-y-4 text-sm md:text-base text-t-muted">
               <li>
-                <Link to="/about-us" className="hover:text-foreground transition-colors block">About Us</Link>
+                <Link to="/about-us" className="hover:text-foreground transition-colors block">
+                  About Us
+                </Link>
               </li>
               <li>
-                <Link to="/disclaimer" className="hover:text-foreground transition-colors block">Disclaimer</Link>
+                <Link to="/disclaimer" className="hover:text-foreground transition-colors block">
+                  Disclaimer
+                </Link>
               </li>
               <li>
-                <Link to="/privacy-policy" className="hover:text-foreground transition-colors block">Privacy Policy</Link>
+                <Link to="/privacy-policy" className="hover:text-foreground transition-colors block">
+                  Privacy Policy
+                </Link>
               </li>
               <li>
-                <Link to="/terms" className="hover:text-foreground transition-colors block">Terms</Link>
+                <Link to="/terms" className="hover:text-foreground transition-colors block">
+                  Terms
+                </Link>
               </li>
             </ul>
           </div>
@@ -85,7 +105,8 @@ export const Footer: React.FC = () => {
       </div>
       <div className="max-w-7xl mx-auto px-6 text-center">
         <p className="text-xs text-t-muted/60 leading-relaxed uppercase tracking-[0.25em] mb-6 max-w-3xl mx-auto px-4">
-          This platform is an independent resource for gaming enthusiasts. We are not officially affiliated with Garena International. All trademarks belong to their respective owners.
+          This platform is an independent resource for gaming enthusiasts. We are not officially affiliated with Garena
+          International. All trademarks belong to their respective owners.
         </p>
         <div className="text-xs md:text-sm text-muted-foreground uppercase tracking-[0.4em] font-bold">
           &copy; {new Date().getFullYear()} FF REDEEM CODE TODAY
