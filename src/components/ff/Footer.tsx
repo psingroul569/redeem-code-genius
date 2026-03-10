@@ -7,14 +7,14 @@ export const Footer: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 mb-12">
         <p className="text-center text-t-muted text-xs uppercase tracking-[0.3em] mb-6">As Seen On</p>
         <div className="flex flex-wrap justify-center items-center gap-x-10 gap-y-6 md:gap-x-16 opacity-30 grayscale hover:grayscale-0 transition-all duration-500 px-4">
-          {["GAMINGWEEK", "ESPORTSDAILY", "FF WIKIA", "REDDIT", "DISCORD PRO"].map((brand) => (
-            <span
-              key={brand}
-              className="text-base md:text-xl font-display text-foreground tracking-tighter whitespace-nowrap"
-            >
+          {["GAMINGWEEK", "ESPORTSDAILY", "FF WIKIA", "REDDIT", "DISCORD PRO"].map((brand) =>
+          <span
+            key={brand}
+            className="text-base md:text-xl font-display text-foreground tracking-tighter whitespace-nowrap">
+            
               {brand}
             </span>
-          ))}
+          )}
         </div>
       </div>
       <div className="max-w-7xl mx-auto px-6 mb-12 border-b border-border pb-12">
@@ -27,10 +27,10 @@ export const Footer: React.FC = () => {
               Your trusted intelligence hub for Garena Free Fire rewards. We verify every code on live server nodes for
               maximum accuracy.
             </p>
-            <div className="flex items-center gap-3">
-              <div className="w-2.5 h-2.5 rounded-full bg-success animate-pulse"></div>
-              <span className="text-xs text-success/80 font-bold uppercase tracking-widest">Global Sync Active</span>
-            </div>
+            
+
+
+            
           </div>
           <div className="col-span-1">
             <h4 className="text-foreground font-bold text-sm md:text-base mb-6 tracking-[0.15em] uppercase border-b border-border pb-2 inline-block">
@@ -112,6 +112,6 @@ export const Footer: React.FC = () => {
           &copy; {new Date().getFullYear()} FF REDEEM CODE TODAY
         </div>
       </div>
-    </footer>
-  );
+    </footer>);
+
 };
