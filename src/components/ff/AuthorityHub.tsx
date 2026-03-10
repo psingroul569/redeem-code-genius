@@ -90,8 +90,8 @@ export const AuthorityHub: React.FC = () => {
                       title: "Discovery",
                       desc: "Our AI and Team monitor 150+ official Garena social channels.",
                     },
-                    { num: 2, title: "Latency Test", desc: "Engineers test code validity on 5 regional server nodes." },
-                    { num: 3, title: "Publication", desc: "Code is pushed live with a probability score." },
+                    { num: 2, title: "Latency Test", desc: "Team test code validity on 5 regional server nodes." },
+                    { num: 3, title: "Publication", desc: "Codes are published live with a probability score." },
                   ].map((step) => (
                     <div
                       key={step.num}
