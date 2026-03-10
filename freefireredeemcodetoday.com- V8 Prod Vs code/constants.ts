@@ -21,14 +21,14 @@ export const LEAD_AUTHOR: AuthorProfile = {
   name: "Alex 'Falcon' Mercer",
   role: "Lead Game Economist & Rewards Analyst",
   experience: "7 Years (Since Beta 2017)",
-  bio: "Alex is a Free Fire analyst and specialist with deep knowledge of Garena in-game event and update system. He specializes in analyzing event and new updates with patterns and predicting reward code drops ahead of time. His Free Fire Redeem Code verification Process help gaming communities track accurate Free Fire updates and redeem codes.",
+  bio: "Alex is a Free Fire analyst and specialist with deep knowledge of Garena in-game event and update system. He specializes in analyzing event and new updates with patterns and predicting reward code drops 24 hours in advance. His Free Fire Redeem Code verification Process help gaming communities track accurate Free Fire updates and redeem codes.",
   badges: ["Ex-Garena Moderator", "Verified Wiki Contributor", "Esports Analyst"],
   image: "https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&q=80&w=200",
   socialHandle: "@FalconFF_Real",
 };
 
 export const TRUST_METRICS: TrustMetric[] = [
-  { label: "Codes Verified", value: "42,800+", icon: "CheckCircle", description: "Since platform launch" },
+  { label: "Codes Verified", value: "42,800+", icon: "CheckCircle", description: "Since platform launch in 2023" },
   { label: "Community Trust", value: "98.5%", icon: "Shield", description: "Positive feedback on active codes" },
   { label: "Uptime", value: "99.9%", icon: "Zap", description: "Always ready for server resets" },
 ];
