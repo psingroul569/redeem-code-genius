@@ -32,7 +32,7 @@ const App = () => (
       </Suspense>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
+          <Route path="/" element={<Suspense fallback={null}><Index /></Suspense>} />
           <Route path="/blogs" element={<Wrap><Blogs /></Wrap>} />
           <Route path="/how-to-guide" element={<Wrap><HowToGuide /></Wrap>} />
           <Route path="/faq" element={<Wrap><FAQ /></Wrap>} />
