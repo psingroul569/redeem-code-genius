@@ -18,10 +18,10 @@ export const DEFAULT_URL = "https://freefireredeemcodetoday.com";
 // --- NEW E-E-A-T DATA ---
 
 export const LEAD_AUTHOR: AuthorProfile = {
-  name: "Alex 'Falcon' Mercer",
+  name: "Jaxon Lee",
   role: "Lead Game Economist & Rewards Analyst",
   experience: "7 Years (Since Beta 2017)",
-  bio: "Alex is a Free Fire analyst and Community specialist with deep knowledge of Garena in-game event and update system. He specializes in analyzing event and new updates with patterns and predicting reward code drops 24 hours in advance. His Free Fire Redeem Code verification Process help gaming communities track accurate Free Fire updates and redeem codes.",
+  bio: "Jaxon is a Free Fire analyst and Community specialist with deep knowledge of Garena in-game event and update system. He specializes in analyzing event and new updates with patterns and predicting reward code drops 24 hours in advance. His Free Fire Redeem Code verification Process help gaming communities track accurate Free Fire updates and redeem codes.",
   badges: ["Ex-FF Esports Athlete", "Verified Wiki Contributor", "Esports Analyst"],
   image: "https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&q=80&w=200",
   socialHandle: "@FalconFF_Real",
