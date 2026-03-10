@@ -17,7 +17,7 @@ export const AuthorityHub: React.FC = () => {
           </p>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-          <div className="lg:col-span-5 space-y-8">
+          <div className="lg:col-span-5 space-y-2">
             <div className="bg-card border border-border rounded-3xl p-8 relative overflow-hidden group">
               <div className="absolute top-0 right-0 w-64 h-64 bg-success/5 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-success/10 transition-all duration-700"></div>
               <div className="relative z-10">
