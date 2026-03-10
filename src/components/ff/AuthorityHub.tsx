@@ -88,7 +88,7 @@ export const AuthorityHub: React.FC = () => {
                     {
                       num: 1,
                       title: "Discovery",
-                      desc: "Our Team and Our AI monitor 150+ official Garena social and Community channels.",
+                      desc: "Our AI and Team monitor 150+ official Garena social channels.",
                     },
                     { num: 2, title: "Latency Test", desc: "Engineers test code validity on 5 regional server nodes." },
                     { num: 3, title: "Publication", desc: "Code is pushed live with a probability score." },
