@@ -18,7 +18,7 @@ export const Header: React.FC<HeaderProps> = ({
   isSyncing = false,
   syncingRegion = null,
   theme = "light",
-  onToggleTheme = () => {}
+  onToggleTheme = () => {},
 }) => {
   return (
     <header className="sticky top-0 bg-background/90 backdrop-blur-xl pt-4 pb-4 z-50 border-b border-border transition-all shadow-sm">
@@ -36,9 +36,15 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Mobile: centered text */}
           <div className="flex md:hidden flex-col min-w-0">
             <div className="flex items-baseline gap-0.5">
-              <span className="font-display text-base tracking-tighter text-t-muted leading-none font-black italic">FF</span>
-              <span className="font-display text-base tracking-tighter text-foreground leading-none font-black italic uppercase">REDEEMCODE</span>
-              <span className="font-display text-base tracking-tighter text-success leading-none font-black italic uppercase">TODAY</span>
+              <span className="font-display text-base tracking-tighter text-t-muted leading-none font-black italic">
+                FF
+              </span>
+              <span className="font-display text-base tracking-tighter text-foreground leading-none font-black italic uppercase">
+                REDEEMCODE
+              </span>
+              <span className="font-display text-base tracking-tighter text-success leading-none font-black italic uppercase">
+                TODAY
+              </span>
             </div>
           </div>
           {/* Desktop: full branding */}
@@ -48,15 +54,17 @@ export const Header: React.FC<HeaderProps> = ({
                 Free Fire
               </span>
               <span className="font-display text-lg sm:text-2xl tracking-tighter text-foreground leading-none font-black italic uppercase">
-                {" "}Redeem Code
+                {" "}
+                Redeem Code
               </span>
               <span className="font-display text-lg sm:text-2xl tracking-tighter text-success leading-none font-black italic uppercase">
-                {" "}Today
+                {" "}
+                Today
               </span>
             </div>
             <div className="flex items-center gap-2 mt-1">
               <span className="text-[10px] text-t-muted tracking-[0.25em] font-tech uppercase font-bold truncate">
-                Free Fire Working Redeem Codes
+                Free Fire Working Redeem Codes For
               </span>
               <span className="text-[10px] text-success font-tech font-bold uppercase tracking-widest animate-pulse">
                 Today
@@ -65,17 +73,9 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
         </div>
         <div className="flex items-center gap-3 md:gap-6 flex-shrink-0">
-          
-
-
-
-
-
-
-          
           <ThemeToggle theme={theme} onToggle={onToggleTheme} />
         </div>
       </div>
-    </header>);
-
+    </header>
+  );
 };
