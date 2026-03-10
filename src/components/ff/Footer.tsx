@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export const Footer: React.FC = () => {
   return (
-    <footer className="bg-background border-t border-border pt-10 pb-10 relative z-10 font-tech">
+    <footer className="bg-background border-t border-border pt-8 pb-8 relative z-10 font-tech">
       <div className="max-w-7xl mx-auto px-4 mb-10">
         <p className="text-center text-t-muted text-xs uppercase tracking-[0.3em] mb-6">As Seen On</p>
         <div className="flex flex-wrap justify-center items-center gap-x-10 gap-y-6 md:gap-x-16 opacity-60 grayscale hover:grayscale-0 transition-all duration-500 px-4">
