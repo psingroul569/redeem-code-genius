@@ -18,7 +18,7 @@ export const Header: React.FC<HeaderProps> = ({
   isSyncing = false,
   syncingRegion = null,
   theme = "light",
-  onToggleTheme = () => {},
+  onToggleTheme = () => {}
 }) => {
   return (
     <header className="sticky top-0 bg-background/90 backdrop-blur-xl pt-4 pb-4 z-50 border-b border-border transition-all shadow-sm">
@@ -57,17 +57,17 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
         </div>
         <div className="flex items-center gap-3 md:gap-6 flex-shrink-0">
-          <nav className="flex items-center space-x-2 md:space-x-4">
-            <button
-              onClick={() => setView("home")}
-              className={`px-4 md:px-6 py-2.5 rounded-xl text-[10px] md:text-xs font-tech font-bold tracking-widest transition-all border shadow-sm ${currentView === "home" ? "bg-primary text-primary-foreground border-primary" : "text-t-muted hover:text-foreground border-border hover:bg-surface"}`}
-            >
-              HOME
-            </button>
-          </nav>
+          
+
+
+
+
+
+
+          
           <ThemeToggle theme={theme} onToggle={onToggleTheme} />
         </div>
       </div>
-    </header>
-  );
+    </header>);
+
 };
