@@ -29,8 +29,8 @@ export const AuthorityHub: React.FC = () => {
                     <img
                       src={LEAD_AUTHOR.image}
                       alt={LEAD_AUTHOR.name}
-                      className="w-24 h-24 rounded-2xl object-cover border-2 border-border shadow-2xl"
-                    />
+                      className="w-24 h-24 rounded-2xl object-cover border-2 border-border shadow-2xl" />
+                    
                     <div className="absolute -bottom-2 -right-2 bg-success text-primary-foreground p-1.5 rounded-lg border border-background">
                       <CheckCircle2 size={16} />
                     </div>
@@ -49,15 +49,15 @@ export const AuthorityHub: React.FC = () => {
                 </p>
                 <p className="text-t-body text-sm leading-relaxed mb-6">{LEAD_AUTHOR.bio}</p>
                 <div className="space-y-3">
-                  {LEAD_AUTHOR.badges.map((badge, idx) => (
-                    <div
-                      key={idx}
-                      className="flex items-center gap-3 text-sm text-foreground bg-surface p-3 rounded-lg border border-border"
-                    >
+                  {LEAD_AUTHOR.badges.map((badge, idx) =>
+                  <div
+                    key={idx}
+                    className="flex items-center gap-3 text-sm text-foreground bg-surface p-3 rounded-lg border border-border">
+                    
                       <Award size={16} className="text-secondary" />
                       {badge}
                     </div>
-                  ))}
+                  )}
                 </div>
                 <div className="mt-8 pt-6 border-t border-border flex items-center justify-between">
                   <span className="text-[10px] text-t-muted font-tech uppercase tracking-widest">
@@ -70,12 +70,12 @@ export const AuthorityHub: React.FC = () => {
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
-              {TRUST_METRICS.slice(0, 2).map((metric, idx) => (
-                <div key={idx} className="bg-card border border-border p-5 rounded-2xl text-center">
+              {TRUST_METRICS.slice(0, 2).map((metric, idx) =>
+              <div key={idx} className="bg-card border border-border p-5 rounded-2xl text-center">
                   <h4 className="font-display text-2xl text-foreground mb-1">{metric.value}</h4>
                   <p className="text-[9px] text-t-muted font-tech uppercase tracking-widest">{metric.label}</p>
                 </div>
-              ))}
+              )}
             </div>
           </div>
           <div className="lg:col-span-7 space-y-8">
@@ -87,25 +87,25 @@ export const AuthorityHub: React.FC = () => {
                 <div className="absolute top-8 left-0 w-full h-0.5 bg-border hidden md:block"></div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
                   {[
-                    {
-                      num: 1,
-                      title: "Discovery",
-                      desc: "Our Team and Our AI monitor 150+ official Garena social and Community channels.",
-                    },
-                    { num: 2, title: "Latency Test", desc: "Engineers test code validity on 5 regional server nodes." },
-                    { num: 3, title: "Publication", desc: "Code is pushed live with a probability score." },
-                  ].map((step) => (
-                    <div
-                      key={step.num}
-                      className="bg-background border border-border p-6 rounded-2xl relative group hover:border-success/30 transition-all"
-                    >
+                  {
+                    num: 1,
+                    title: "Discovery",
+                    desc: "Our Team and Our AI monitor 150+ official Garena social and Community channels."
+                  },
+                  { num: 2, title: "Latency Test", desc: "Engineers test code validity on 5 regional server nodes." },
+                  { num: 3, title: "Publication", desc: "Code is pushed live with a probability score." }].
+                  map((step) =>
+                  <div
+                    key={step.num}
+                    className="bg-background border border-border p-6 rounded-2xl relative group hover:border-success/30 transition-all">
+                    
                       <div className="w-16 h-16 bg-surface rounded-full flex items-center justify-center mb-6 mx-auto border-4 border-card group-hover:bg-success-bg group-hover:text-success transition-colors text-t-muted">
                         {step.num}
                       </div>
                       <h4 className="text-foreground font-bold text-center mb-2">{step.title}</h4>
                       <p className="text-xs text-center text-t-muted">{step.desc}</p>
                     </div>
-                  ))}
+                  )}
                 </div>
               </div>
             </div>
@@ -115,25 +115,25 @@ export const AuthorityHub: React.FC = () => {
                   Community Validated
                 </h3>
                 <div className="flex -space-x-2">
-                  {[1, 2, 3, 4].map((i) => (
-                    <div
-                      key={i}
-                      className="w-6 h-6 rounded-full bg-surface border border-background flex items-center justify-center text-[8px] text-foreground"
-                    >
+                  {[1, 2, 3, 4].map((i) =>
+                  <div
+                    key={i}
+                    className="w-6 h-6 rounded-full bg-surface border border-background flex items-center justify-center text-[8px] text-foreground">
+                    
                       {i}
                     </div>
-                  ))}
+                  )}
                   <div className="w-6 h-6 rounded-full bg-success text-primary-foreground flex items-center justify-center text-[8px] font-bold border border-background">
                     +9k
                   </div>
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {COMMUNITY_TESTIMONIALS.map((t, idx) => (
-                  <div
-                    key={idx}
-                    className="bg-surface border border-border p-4 rounded-xl flex flex-col justify-between hover:bg-surface-hover transition-colors"
-                  >
+                {COMMUNITY_TESTIMONIALS.map((t, idx) =>
+                <div
+                  key={idx}
+                  className="bg-surface border border-border p-4 rounded-xl flex flex-col justify-between hover:bg-surface-hover transition-colors">
+                  
                     <p className="text-sm text-t-body italic mb-4">"{t.comment}"</p>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
@@ -148,26 +148,26 @@ export const AuthorityHub: React.FC = () => {
                       </div>
                     </div>
                   </div>
-                ))}
-                <div className="bg-gradient-to-br from-surface to-background border border-border p-4 rounded-xl flex flex-col justify-center items-center text-center">
-                  <p className="text-[9px] text-foreground font-tech uppercase tracking-widest mb-2">
-                    Official Partners
-                  </p>
-                  <div className="flex items-center gap-3 opacity-70 grayscale hover:grayscale-0 transition-all">
-                    <span className="font-display text-lg text-foreground">
-                      FF<span className="text-t-muted">MANIA</span>
-                    </span>
-                    <span className="w-px h-4 bg-border"></span>
-                    <span className="font-display text-lg text-foreground">
-                      ESPORTS<span className="text-t-muted">GG</span>
-                    </span>
-                  </div>
-                </div>
+                )}
+                
+
+
+
+
+
+
+
+
+
+
+
+
+                
               </div>
             </div>
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>);
+
 };
