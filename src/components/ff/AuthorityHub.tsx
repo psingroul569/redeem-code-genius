@@ -7,9 +7,9 @@ export const AuthorityHub: React.FC = () => {
     <section className="py-20 bg-muted border-y border-border">
       <div className="max-w-7xl mx-auto px-4 md:px-8">
         <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-secondary/10 border border-secondary/20 rounded text-secondary text-[10px] font-tech font-bold uppercase tracking-widest mb-6">
-            <ShieldCheck size={14} /> TRUST & AUTHORITY PROTOCOL
-          </div>
+          
+
+          
           <h2 className="text-4xl md:text-5xl font-display text-foreground uppercase italic tracking-tight">
             Verified by{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-foreground to-success">Experts</span>
