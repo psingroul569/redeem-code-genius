@@ -18,7 +18,7 @@ export const Header: React.FC<HeaderProps> = ({
   isSyncing = false,
   syncingRegion = null,
   theme = "light",
-  onToggleTheme = () => {}
+  onToggleTheme = () => {},
 }) => {
   return (
     <header className="sticky top-0 bg-background/90 backdrop-blur-xl pt-4 pb-4 z-50 border-b border-border transition-all shadow-sm">
@@ -36,10 +36,10 @@ export const Header: React.FC<HeaderProps> = ({
           <div className="hidden md:flex flex-col min-w-0">
             <div className="flex items-baseline gap-0.5">
               <span className="font-display text-lg sm:text-2xl tracking-tighter text-t-muted leading-none font-black italic">
-                FF
+                Free Fire
               </span>
               <span className="font-display text-lg sm:text-2xl tracking-tighter text-foreground leading-none font-black italic uppercase">
-                REDEEMCODE
+                REDEEM CODE
               </span>
               <span className="font-display text-lg sm:text-2xl tracking-tighter text-success leading-none font-black italic uppercase">
                 TODAY
@@ -49,7 +49,7 @@ export const Header: React.FC<HeaderProps> = ({
               <span className="text-[10px] text-t-muted tracking-[0.25em] font-tech uppercase font-bold truncate">
                 Free Fire Working Redeem Codes
               </span>
-              
+
               <span className="text-[10px] text-success font-tech font-bold uppercase tracking-widest animate-pulse">
                 Today
               </span>
@@ -60,14 +60,14 @@ export const Header: React.FC<HeaderProps> = ({
           <nav className="flex items-center space-x-2 md:space-x-4">
             <button
               onClick={() => setView("home")}
-              className={`px-4 md:px-6 py-2.5 rounded-xl text-[10px] md:text-xs font-tech font-bold tracking-widest transition-all border shadow-sm ${currentView === "home" ? "bg-primary text-primary-foreground border-primary" : "text-t-muted hover:text-foreground border-border hover:bg-surface"}`}>
-              
+              className={`px-4 md:px-6 py-2.5 rounded-xl text-[10px] md:text-xs font-tech font-bold tracking-widest transition-all border shadow-sm ${currentView === "home" ? "bg-primary text-primary-foreground border-primary" : "text-t-muted hover:text-foreground border-border hover:bg-surface"}`}
+            >
               HOME
             </button>
           </nav>
           <ThemeToggle theme={theme} onToggle={onToggleTheme} />
         </div>
       </div>
-    </header>);
-
+    </header>
+  );
 };
