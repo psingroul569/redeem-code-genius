@@ -36,6 +36,7 @@ const App = () => (
           <Route path="/" element={<Suspense fallback={null}><Index /></Suspense>} />
           <Route path="/blogs" element={<Wrap><Blogs /></Wrap>} />
           <Route path="/how-to-guide" element={<Wrap><HowToGuide /></Wrap>} />
+          <Route path="/guides" element={<Wrap><GuidesPage /></Wrap>} />
           <Route path="/faq" element={<Wrap><FAQ /></Wrap>} />
           <Route path="/help" element={<Wrap><Help /></Wrap>} />
           <Route path="/contact" element={<Wrap><Contact /></Wrap>} />
