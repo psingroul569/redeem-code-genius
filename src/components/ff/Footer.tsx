@@ -50,26 +50,26 @@ export const Footer: React.FC = () => {
               </li>
             </ul>
           </div>
-          <div className="col-span-1">
-            <h4 className="text-foreground font-bold text-sm md:text-base mb-6 tracking-[0.15em] uppercase border-b border-border pb-2 inline-block">
-              Contact Us
-            </h4>
-            <ul className="space-y-4 text-sm md:text-base text-t-muted">
-              <li>
-                <Link to="/help" className="hover:text-foreground transition-colors block">
-                  Help
-                </Link>
-              </li>
-              <li>
-                <Link to="/contact" className="hover:text-foreground transition-colors block">
-                  Email
-                </Link>
-              </li>
-              
+          
 
-              
-            </ul>
-          </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
           <div className="col-span-1">
             <h4 className="text-foreground font-bold text-sm md:text-base mb-6 tracking-[0.15em] uppercase border-b border-border pb-2 inline-block">
               Compliance
