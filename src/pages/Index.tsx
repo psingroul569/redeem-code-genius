@@ -158,12 +158,12 @@ const Index = () => {
   }, [activeRegion, loadRegionData]);
 
   useEffect(() => {
-    if (displayCodes.length > 0) return;
+    if (!isPlaceholder) return;
     const retry = setInterval(() => {
       loadRegionData(activeRegion, true);
     }, 15000);
     return () => clearInterval(retry);
-  }, [activeRegion, displayCodes.length, loadRegionData]);
+  }, [activeRegion, isPlaceholder, loadRegionData]);
 
   useEffect(() => {
     const channel = supabase.
