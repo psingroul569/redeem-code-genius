@@ -147,9 +147,11 @@ const Index = () => {
     const cached = readCachedRegion(activeRegion);
     if (cached?.codes?.length) {
       setDisplayCodes(cached.codes);
+      setIsPlaceholder(false);
       setLastSyncTime(cached.lastSyncTime || 'WAITING');
     } else {
-      setDisplayCodes([]);
+      setDisplayCodes(generatePlaceholderCodes(activeRegion));
+      setIsPlaceholder(true);
       setLastSyncTime('WAITING');
     }
     loadRegionData(activeRegion, true);
