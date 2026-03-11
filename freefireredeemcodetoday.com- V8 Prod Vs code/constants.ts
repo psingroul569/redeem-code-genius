@@ -23,7 +23,7 @@ export const LEAD_AUTHOR: AuthorProfile = {
   experience: "7 Years (Since Beta 2017)",
   bio: "Jaxon is a Free Fire analyst and Community specialist with deep knowledge of Garena in-game event and update system. He specializes in analyzing event and new updates with patterns and predicting reward code drops 24 hours in advance. His Free Fire Redeem Code verification Process help gaming communities track accurate Free Fire updates and redeem codes.",
   badges: ["Ex-FF Esports Athlete", "Verified Wiki Contributor", "Esports Analyst"],
-  image: "https://i.ibb.co/Hpgymg6W/Jaxon-Free-Fire.webp?auto=format&fit=crop&q=80&w=96",
+  image: "https://i.ibb.co/Kxc3C8Ts/Jaxon-Free-Fire-1.jpg?auto=format&fit=crop&q=80&w=96",
   socialHandle: "@FalconFF_Real",
 };
 
