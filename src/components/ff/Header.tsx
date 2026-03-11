@@ -40,6 +40,14 @@ export const Header: React.FC<HeaderProps> = ({
               <span className="font-display text-[15px] tracking-tight text-foreground leading-none font-black uppercase">REDEEM CODE</span>
               <span className="font-display text-[15px] tracking-tight text-success leading-none font-black italic uppercase">TODAY</span>
             </div>
+            <div className="flex items-center gap-1 mt-0.5">
+              <span className="text-[8px] text-t-muted tracking-[0.15em] font-tech uppercase font-bold truncate">
+                Free Fire Working Redeem Codes For
+              </span>
+              <span className="text-[8px] text-success font-tech font-bold uppercase tracking-widest animate-pulse">
+                Today
+              </span>
+            </div>
           </div>
           {/* Desktop: full branding with subtitle */}
           <div className="hidden md:flex flex-col min-w-0">
