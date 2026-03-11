@@ -33,37 +33,23 @@ export const Header: React.FC<HeaderProps> = ({
               </div>
             </div>
           </div>
-          {/* Mobile: centered text */}
+          {/* Mobile: compact centered branding */}
           <div className="flex md:hidden flex-col min-w-0">
-            <div className="flex items-baseline gap-0.5">
-              <span className="font-display text-base tracking-tighter text-t-muted leading-none font-black italic">
-                FF
-              </span>
-              <span className="font-display text-base tracking-tighter text-foreground leading-none font-black italic uppercase">
-                REDEEMCODE
-              </span>
-              <span className="font-display text-base tracking-tighter text-success leading-none font-black italic uppercase">
-                TODAY
-              </span>
+            <div className="flex items-baseline gap-1">
+              <span className="font-display text-[15px] tracking-tight text-t-muted leading-none font-black italic">Free Fire</span>
+              <span className="font-display text-[15px] tracking-tight text-foreground leading-none font-black uppercase">REDEEM CODE</span>
+              <span className="font-display text-[15px] tracking-tight text-success leading-none font-black italic uppercase">TODAY</span>
             </div>
           </div>
-          {/* Desktop: full branding */}
+          {/* Desktop: full branding with subtitle */}
           <div className="hidden md:flex flex-col min-w-0">
-            <div className="flex items-baseline gap-0.5">
-              <span className="font-display text-lg sm:text-2xl tracking-tighter text-t-muted leading-none font-black italic">
-                Free Fire
-              </span>
-              <span className="font-display text-lg sm:text-2xl tracking-tighter text-foreground leading-none font-black italic uppercase">
-                {" "}
-                Redeem Code
-              </span>
-              <span className="font-display text-lg sm:text-2xl tracking-tighter text-success leading-none font-black italic uppercase">
-                {" "}
-                Today
-              </span>
+            <div className="flex items-baseline gap-1.5">
+              <span className="font-display text-2xl tracking-tight text-t-muted leading-none font-black italic">Free Fire</span>
+              <span className="font-display text-2xl tracking-tight text-foreground leading-none font-black uppercase">REDEEM CODE</span>
+              <span className="font-display text-2xl tracking-tight text-success leading-none font-black italic uppercase">TODAY</span>
             </div>
-            <div className="flex items-center gap-2 mt-1">
-              <span className="text-[10px] text-t-muted tracking-[0.25em] font-tech uppercase font-bold truncate">
+            <div className="flex items-center gap-1.5 mt-1">
+              <span className="text-[10px] text-t-muted tracking-[0.2em] font-tech uppercase font-bold truncate">
                 Free Fire Working Redeem Codes For
               </span>
               <span className="text-[10px] text-success font-tech font-bold uppercase tracking-widest animate-pulse">
