@@ -138,6 +138,7 @@ const Index = () => {
     writeCachedRegion(region, loaded.codes, timeLabel);
     if (updateUi) {
       setDisplayCodes(loaded.codes);
+      setIsPlaceholder(false);
       setLastSyncTime(timeLabel);
     }
   }, []);
