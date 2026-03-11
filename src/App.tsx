@@ -2,7 +2,7 @@ import React, { Suspense, lazy } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { TooltipProvider } from "@/components/ui/tooltip";
-const Index = lazy(() => import("./pages/Index"));
+import Index from "./pages/Index";
 
 const NotFound = lazy(() => import("./pages/NotFound"));
 const Blogs = lazy(() => import("./pages/Blogs"));
@@ -33,17 +33,7 @@ const App = () => (
       </Suspense>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={
-            <Suspense fallback={
-              <div className="min-h-screen bg-background flex flex-col items-center justify-center">
-                <h1 className="font-display text-[clamp(2.5rem,10vw,6rem)] text-foreground uppercase tracking-tighter leading-[0.85] text-center">
-                  FREE FIRE REDEEM<br /><span className="text-success italic">CODE TODAY</span>
-                </h1>
-              </div>
-            }>
-              <Index />
-            </Suspense>
-          } />
+          <Route path="/" element={<Index />} />
           <Route path="/blogs" element={<Wrap><Blogs /></Wrap>} />
           <Route path="/how-to-guide" element={<Wrap><HowToGuide /></Wrap>} />
           <Route path="/guides" element={<Wrap><GuidesPage /></Wrap>} />
