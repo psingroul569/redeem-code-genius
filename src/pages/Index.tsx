@@ -67,6 +67,30 @@ const formatSyncLabel = (syncedAt: string | null): string => {
   }
 };
 
+const PLACEHOLDER_REWARDS = [
+  'Diamond Royale Voucher', 'Exclusive Bundle', 'Weapon Royale Voucher', 'Legendary Skin',
+  'Pet Skin', 'Custom Room Card', 'Gold Royale Voucher', 'Backpack Skin',
+  'Emote Pack', 'Surfboard Skin', 'Gloo Wall Skin', 'Loot Crate'
+];
+const PLACEHOLDER_CATEGORIES: Array<'Voucher'|'Bundle'|'Skin'|'Pet'> = ['Voucher','Bundle','Skin','Pet','Voucher','Voucher','Voucher','Bundle','Skin','Voucher','Bundle','Voucher'];
+
+const generatePlaceholderCodes = (region: string): RedeemCode[] => {
+  return PLACEHOLDER_REWARDS.map((reward, i) => ({
+    code: '????????????',
+    reward,
+    category: PLACEHOLDER_CATEGORIES[i] || 'Bundle',
+    slug: `placeholder-${region}-${i}`,
+    server: region,
+    status: 'Working' as const,
+    probability: 85,
+    lastTested: 'Loading...',
+    likes: 0,
+    recentClaims: 0,
+    releaseDate: new Date().toLocaleDateString('en-US', { day: '2-digit', month: 'long', year: 'numeric' }),
+    citations: [],
+  }));
+};
+
 const Index = () => {
   const { theme, toggleTheme } = useTheme();
   const initialRegion = detectRegionFromTimezone();
@@ -75,7 +99,8 @@ const Index = () => {
   const [currentView, setCurrentView] = useState<AppView>('home');
   const [selectedCode, setSelectedCode] = useState<RedeemCode | null>(null);
   const [activeRegion, setActiveRegion] = useState(initialRegion);
-  const [displayCodes, setDisplayCodes] = useState<RedeemCode[]>(initialCache?.codes ?? []);
+  const [displayCodes, setDisplayCodes] = useState<RedeemCode[]>(initialCache?.codes ?? generatePlaceholderCodes(initialRegion));
+  const [isPlaceholder, setIsPlaceholder] = useState(!initialCache?.codes?.length);
   const [lastSyncTime, setLastSyncTime] = useState<string>(initialCache?.lastSyncTime || 'WAITING');
   const [nextUpdateText, setNextUpdateText] = useState('--:--');
   const [isOverdue, setIsOverdue] = useState(false);
