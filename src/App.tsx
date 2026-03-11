@@ -33,17 +33,7 @@ const App = () => (
       </Suspense>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={
-            <Suspense fallback={
-              <div className="min-h-screen bg-background flex flex-col items-center justify-center">
-                <h1 className="font-display text-[clamp(2.5rem,10vw,6rem)] text-foreground uppercase tracking-tighter leading-[0.85] text-center">
-                  FREE FIRE REDEEM<br /><span className="text-success italic">CODE TODAY</span>
-                </h1>
-              </div>
-            }>
-              <Index />
-            </Suspense>
-          } />
+          <Route path="/" element={<Index />} />
           <Route path="/blogs" element={<Wrap><Blogs /></Wrap>} />
           <Route path="/how-to-guide" element={<Wrap><HowToGuide /></Wrap>} />
           <Route path="/guides" element={<Wrap><GuidesPage /></Wrap>} />
