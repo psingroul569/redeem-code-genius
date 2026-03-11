@@ -37,7 +37,7 @@ export const Header: React.FC<HeaderProps> = ({
           <div className="flex md:hidden flex-col min-w-0">
             <div className="flex items-baseline gap-1">
               <span className="font-display text-[15px] tracking-tight text-t-muted leading-none font-black italic">Free Fire</span>
-              <span className="font-display text-[15px] tracking-tight text-foreground leading-none font-black uppercase">REDEEM CODE</span>
+              <span className="font-display text-[15px] tracking-tight text-foreground leading-none font-black italic uppercase">REDEEM CODE</span>
               <span className="font-display text-[15px] tracking-tight text-success leading-none font-black italic uppercase">TODAY</span>
             </div>
             <div className="flex items-center gap-1 mt-0.5">
@@ -53,7 +53,7 @@ export const Header: React.FC<HeaderProps> = ({
           <div className="hidden md:flex flex-col min-w-0">
             <div className="flex items-baseline gap-1.5">
               <span className="font-display text-2xl tracking-tight text-t-muted leading-none font-black italic">Free Fire</span>
-              <span className="font-display text-2xl tracking-tight text-foreground leading-none font-black uppercase">REDEEM CODE</span>
+              <span className="font-display text-2xl tracking-tight text-foreground leading-none font-black italic uppercase">REDEEM CODE</span>
               <span className="font-display text-2xl tracking-tight text-success leading-none font-black italic uppercase">TODAY</span>
             </div>
             <div className="flex items-center gap-1.5 mt-1">
