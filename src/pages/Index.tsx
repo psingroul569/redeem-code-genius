@@ -67,6 +67,30 @@ const formatSyncLabel = (syncedAt: string | null): string => {
   }
 };
 
+const PLACEHOLDER_REWARDS = [
+  'Diamond Royale Voucher', 'Exclusive Bundle', 'Weapon Royale Voucher', 'Legendary Skin',
+  'Pet Skin', 'Custom Room Card', 'Gold Royale Voucher', 'Backpack Skin',
+  'Emote Pack', 'Surfboard Skin', 'Gloo Wall Skin', 'Loot Crate'
+];
+const PLACEHOLDER_CATEGORIES: Array<'Voucher'|'Bundle'|'Skin'|'Pet'> = ['Voucher','Bundle','Skin','Pet','Voucher','Voucher','Voucher','Bundle','Skin','Voucher','Bundle','Voucher'];
+
+const generatePlaceholderCodes = (region: string): RedeemCode[] => {
+  return PLACEHOLDER_REWARDS.map((reward, i) => ({
+    code: '????????????',
+    reward,
+    category: PLACEHOLDER_CATEGORIES[i] || 'Bundle',
+    slug: `placeholder-${region}-${i}`,
+    server: region,
+    status: 'Working' as const,
+    probability: 85,
+    lastTested: 'Loading...',
+    likes: 0,
+    recentClaims: 0,
+    releaseDate: new Date().toLocaleDateString('en-US', { day: '2-digit', month: 'long', year: 'numeric' }),
+    citations: [],
+  }));
+};
+
 const Index = () => {
   const { theme, toggleTheme } = useTheme();
   const initialRegion = detectRegionFromTimezone();
@@ -75,7 +99,8 @@ const Index = () => {
   const [currentView, setCurrentView] = useState<AppView>('home');
   const [selectedCode, setSelectedCode] = useState<RedeemCode | null>(null);
   const [activeRegion, setActiveRegion] = useState(initialRegion);
-  const [displayCodes, setDisplayCodes] = useState<RedeemCode[]>(initialCache?.codes ?? []);
+  const [displayCodes, setDisplayCodes] = useState<RedeemCode[]>(initialCache?.codes ?? generatePlaceholderCodes(initialRegion));
+  const [isPlaceholder, setIsPlaceholder] = useState(!initialCache?.codes?.length);
   const [lastSyncTime, setLastSyncTime] = useState<string>(initialCache?.lastSyncTime || 'WAITING');
   const [nextUpdateText, setNextUpdateText] = useState('--:--');
   const [isOverdue, setIsOverdue] = useState(false);
@@ -113,6 +138,7 @@ const Index = () => {
     writeCachedRegion(region, loaded.codes, timeLabel);
     if (updateUi) {
       setDisplayCodes(loaded.codes);
+      setIsPlaceholder(false);
       setLastSyncTime(timeLabel);
     }
   }, []);
@@ -121,21 +147,23 @@ const Index = () => {
     const cached = readCachedRegion(activeRegion);
     if (cached?.codes?.length) {
       setDisplayCodes(cached.codes);
+      setIsPlaceholder(false);
       setLastSyncTime(cached.lastSyncTime || 'WAITING');
     } else {
-      setDisplayCodes([]);
+      setDisplayCodes(generatePlaceholderCodes(activeRegion));
+      setIsPlaceholder(true);
       setLastSyncTime('WAITING');
     }
     loadRegionData(activeRegion, true);
   }, [activeRegion, loadRegionData]);
 
   useEffect(() => {
-    if (displayCodes.length > 0) return;
+    if (!isPlaceholder) return;
     const retry = setInterval(() => {
       loadRegionData(activeRegion, true);
     }, 15000);
     return () => clearInterval(retry);
-  }, [activeRegion, displayCodes.length, loadRegionData]);
+  }, [activeRegion, isPlaceholder, loadRegionData]);
 
   useEffect(() => {
     const channel = supabase.
@@ -221,16 +249,11 @@ const Index = () => {
               </div>
             </section>
             <section id="codes" className="max-w-7xl mx-auto px-4 md:px-8 py-12 min-h-[1200px] lg:min-h-[1600px]">
-              {displayCodes.length > 0 ?
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                  {displayCodes.map((code, idx) =>
-              <CodeCard key={`${activeRegion}-${idx}`} data={code} onSelect={() => {setSelectedCode(code);handleSetView('code-detail');}} />
-              )}
-                </div> :
-            <div className="text-center py-24">
-                  <p className="font-tech text-t-muted uppercase tracking-widest text-xs">Live codes are temporarily unavailable for {activeRegion}. Please disable ad blocker/VPN and refresh.</p>
-                </div>
-            }
+              <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 ${isPlaceholder ? 'animate-pulse opacity-60' : ''}`}>
+                {displayCodes.map((code, idx) =>
+                  <CodeCard key={`${activeRegion}-${idx}`} data={code} onSelect={() => { if (!isPlaceholder) { setSelectedCode(code); handleSetView('code-detail'); } }} />
+                )}
+              </div>
             </section>
             <Suspense fallback={<div className="min-h-[400px]" />}>
               <AuthorityHub />
