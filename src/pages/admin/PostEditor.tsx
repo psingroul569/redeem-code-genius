@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowLeft, Save, Loader2, Eye, Globe } from "lucide-react";
+import MarkdownEditor from "@/components/admin/MarkdownEditor";
 
 interface PostData {
   title: string;
@@ -154,7 +155,7 @@ const PostEditor = () => {
           </div>
           <div className="space-y-2">
             <Label>Content (Markdown supported)</Label>
-            <Textarea value={post.content} onChange={(e) => updateField("content", e.target.value)} placeholder="Write your post content here... Supports Markdown." className="min-h-[400px] font-mono text-sm" />
+            <MarkdownEditor value={post.content} onChange={(v) => updateField("content", v)} placeholder="Write your post content here... Supports full Markdown with preview." />
           </div>
           <div className="space-y-2">
             <Label>Excerpt</Label>

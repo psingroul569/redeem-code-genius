@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Header } from "@/components/ff/Header";
 import { Footer } from "@/components/ff/Footer";
+import MarkdownRenderer from "@/components/MarkdownRenderer";
 import { ArrowLeft, Clock, Calendar, Loader2 } from "lucide-react";
 
 interface Post {
@@ -21,22 +22,6 @@ interface Post {
   og_image: string | null;
   category_id: string | null;
 }
-
-// Simple markdown-like renderer
-const renderContent = (content: string) => {
-  const lines = content.split("\n");
-  return lines.map((line, i) => {
-    if (line.startsWith("### ")) return <h3 key={i} className="text-xl font-bold text-foreground mt-6 mb-3">{line.slice(4)}</h3>;
-    if (line.startsWith("## ")) return <h2 key={i} className="text-2xl font-bold text-foreground mt-8 mb-4">{line.slice(3)}</h2>;
-    if (line.startsWith("# ")) return <h2 key={i} className="text-3xl font-bold text-foreground mt-8 mb-4">{line.slice(2)}</h2>;
-    if (line.startsWith("- ")) return <li key={i} className="text-foreground/80 ml-6 mb-1">• {line.slice(2)}</li>;
-    if (line.startsWith("```")) return <div key={i} className="bg-muted rounded p-3 font-mono text-sm my-4" />;
-    if (line.trim() === "") return <br key={i} />;
-    // Bold
-    const formatted = line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-    return <p key={i} className="text-foreground/80 leading-relaxed mb-3" dangerouslySetInnerHTML={{ __html: formatted }} />;
-  });
-};
 
 const BlogPost = () => {
   const { slug } = useParams();
@@ -113,8 +98,8 @@ const BlogPost = () => {
           )}
         </div>
 
-        <article className="prose prose-invert max-w-none">
-          {renderContent(post.content || "")}
+        <article className="max-w-none">
+          <MarkdownRenderer content={post.content || ""} />
         </article>
       </main>
       <Footer />
