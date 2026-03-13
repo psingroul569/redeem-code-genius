@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowLeft, Save, Loader2, Eye, Globe } from "lucide-react";
+import MarkdownEditor from "@/components/admin/MarkdownEditor";
 
 interface PostData {
   title: string;
