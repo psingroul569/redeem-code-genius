@@ -53,6 +53,7 @@ const MarkdownRenderer = ({ content, className = "" }: MarkdownRendererProps) =>
   >
     {content}
   </ReactMarkdown>
+  </div>
 );
 
 export default MarkdownRenderer;
