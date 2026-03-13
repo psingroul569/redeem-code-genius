@@ -8,10 +8,10 @@ interface MarkdownRendererProps {
 }
 
 const MarkdownRenderer = ({ content, className = "" }: MarkdownRendererProps) => (
+  <div className={className}>
   <ReactMarkdown
     remarkPlugins={[remarkGfm]}
     rehypePlugins={[rehypeRaw]}
-    className={className}
     components={{
       h1: ({ children }) => <h1 className="text-3xl font-bold text-foreground mt-8 mb-4">{children}</h1>,
       h2: ({ children }) => <h2 className="text-2xl font-bold text-foreground mt-8 mb-3">{children}</h2>,
