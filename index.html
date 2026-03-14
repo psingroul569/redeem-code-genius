@@ -48,29 +48,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://qfhupdvvjsfbzttuhzui.supabase.co" />
     <link rel="dns-prefetch" href="https://qfhupdvvjsfbzttuhzui.supabase.co" />
-    <link rel="dns-prefetch" href="https://fundingchoicesmessages.google.com" />
-    <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
-    <!-- Preload critical font files to prevent CLS from font swapping -->
+    <!-- Ad network DNS prefetch deferred - not needed for initial paint -->
+    <!-- Preload only the primary display font for LCP text -->
     <link
       rel="preload"
       as="font"
       type="font/woff2"
       crossorigin
       href="https://fonts.gstatic.com/s/russoone/v18/Z9XUDmZRWg6M1LvRYsHOz8mJvLuL9A.woff2"
-    />
-    <link
-      rel="preload"
-      as="font"
-      type="font/woff2"
-      crossorigin
-      href="https://fonts.gstatic.com/s/rajdhani/v17/LDI2apCSOBg7S-QT7pa8FvOreefkkbIx.woff2"
-    />
-    <link
-      rel="preload"
-      as="font"
-      type="font/woff2"
-      crossorigin
-      href="https://fonts.gstatic.com/s/rajdhani/v17/LDI2apCSOBg7S-QT7pb0EPOreefkkbIx.woff2"
     />
     <link
       rel="preload"
@@ -93,12 +78,16 @@
       name="twitter:description"
       content="Get 12+ working Free Fire redeem codes today . Instant free diamonds, legendary skins &amp; bundles. Hourly verified from official Garena servers. 100% Working."
     />
-    <!-- AdSense - deferred to improve LCP -->
-    <script
-      async
-      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4839187196632541"
-      crossorigin="anonymous"
-    ></script>
+    <!-- AdSense - deferred until after load to avoid blocking FCP/LCP -->
+    <script>
+      addEventListener('load', function(){
+        var a=document.createElement('script');
+        a.src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4839187196632541';
+        a.async=true;
+        a.crossOrigin='anonymous';
+        document.head.appendChild(a);
+      });
+    </script>
     <!-- Inline critical CSS for instant first paint / LCP -->
     <style>
       *,*::before,*::after{box-sizing:border-box}
