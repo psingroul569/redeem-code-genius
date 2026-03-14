@@ -6,7 +6,7 @@ import { CodeCard } from '@/components/ff/CodeCard';
 import { Schema } from '@/components/ff/Schema';
 const AuthorityHub = React.lazy(() => import('@/components/ff/AuthorityHub').then((m) => ({ default: m.AuthorityHub })));
 import { AppView, RedeemCode } from '@/types';
-import { Clock, Loader2, Timer, RefreshCcw, MapPin, Globe, AlertCircle } from 'lucide-react';
+import { Clock, Loader2, Timer, RefreshCcw, MapPin, AlertCircle } from 'lucide-react';
 import { codesSyncService } from '@/services/codesSyncService';
 import { supabase } from '@/integrations/supabase/client';
 import { useTheme } from '@/hooks/useTheme';
