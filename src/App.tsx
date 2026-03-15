@@ -76,6 +76,9 @@ const App = () => (
             <Route path="settings" element={<SiteSettings />} />
           </Route>
 
+          {/* Dynamic CMS pages - must be before catch-all */}
+          <Route path="/:slug" element={<Wrap><DynamicPage /></Wrap>} />
+
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<Suspense fallback={null}><NotFound /></Suspense>} />
         </Routes>
