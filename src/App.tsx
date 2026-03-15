@@ -29,6 +29,7 @@ const MediaLibrary = lazy(() => import("./pages/admin/MediaLibrary"));
 const MenusManager = lazy(() => import("./pages/admin/MenusManager"));
 const RedirectsManager = lazy(() => import("./pages/admin/RedirectsManager"));
 const SiteSettings = lazy(() => import("./pages/admin/SiteSettings"));
+const DynamicPage = lazy(() => import("./pages/DynamicPage"));
 
 const Toaster = lazy(() => import("@/components/ui/toaster").then(m => ({ default: m.Toaster })));
 const Sonner = lazy(() => import("@/components/ui/sonner").then(m => ({ default: m.Toaster })));
