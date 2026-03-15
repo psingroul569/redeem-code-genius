@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Header } from '@/components/ff/Header';
 import { Footer } from '@/components/ff/Footer';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Search, ChevronUp, ChevronDown, HelpCircle } from 'lucide-react';
+import { DEFAULT_URL, SITE_NAME } from '@/constants';
+
 
 interface FAQItem {
   id: number;
@@ -12,72 +14,348 @@ interface FAQItem {
 }
 
 const faqData: FAQItem[] = [
-  { id: 1, question: "What are Free Fire redeem codes and how do they work?", answer: "Free Fire redeem codes are 12-character alphanumeric codes that unlock exclusive rewards like diamonds, skins, and characters. These codes work through Garena's official redemption system at reward.ff.garena.com.", category: "codes" },
-  { id: 2, question: "How do you ensure your codes actually work?", answer: "We generate fresh codes using authentic patterns learned from 3+ years of Free Fire gaming. Our team has personally tested over 10,000 codes and achieved a 70-80% success rate.", category: "codes" },
-  { id: 3, question: "Why might a redeem code not work for me?", answer: "Codes may fail due to: server region differences, daily redemption limits (typically 3-5 codes per day), account-specific restrictions, or timing issues. We recommend trying codes during off-peak hours.", category: "troubleshooting" },
-  { id: 4, question: "Are these codes safe for my Free Fire account?", answer: "Absolutely safe! All our codes follow official Garena patterns and use the legitimate redemption system. We never use hacks, generators, or unofficial methods that could risk your account.", category: "safety" },
-  { id: 5, question: "How many codes can I redeem in a day?", answer: "You can typically redeem 3-5 different codes per day. Each unique code works only once per account. We recommend spacing redemptions by 10-15 minutes to avoid server timeouts.", category: "codes" },
-  { id: 6, question: "When are the best times to redeem codes?", answer: "Early morning (6-9 AM IST) and evening (6-9 PM IST) have the highest success rates when servers are less congested.", category: "codes" },
-  { id: 7, question: "What's the most effective way to redeem codes?", answer: "Visit reward.ff.garena.com, login with the same method you use in-game, copy-paste codes to avoid typos, complete captcha carefully, and check in-game mail within 24 hours.", category: "redemption" },
-  { id: 8, question: "What rewards have you personally unlocked?", answer: "Our team has personally unlocked over ₹100,000 worth of rewards including 50,000+ free diamonds, DJ Alok character, Chrono skins, legendary weapon skins, exclusive emotes, and premium bundles.", category: "rewards" },
-  { id: 9, question: "Do codes work in all regions and servers?", answer: "Our team primarily tests codes on Indian servers. Codes may work differently on other regional servers (Indonesia, Brazil, etc.).", category: "regions" },
-  { id: 10, question: "How long do codes remain valid?", answer: "Codes typically remain valid for 24-48 hours. We generate fresh codes every refresh using authentic patterns, so you don't need to worry about expiration.", category: "expiration" },
-  { id: 11, question: "Can I share Garena Free Fire Max Redeem Codes with friends?", answer: "Yes, but most codes have limited redemptions. Once the maximum number of users have redeemed a code, it becomes invalid for everyone else.", category: "sharing" },
-  { id: 12, question: "Why do some Free Fire codes say 'already redeemed'?", answer: "This happens when you've already used that specific code or a very similar one before. Try using different codes from our updated list.", category: "troubleshooting" },
-  { id: 13, question: "What is the difference between Free Fire and Free Fire MAX codes?", answer: "Free Fire and Free Fire MAX generally use the same redeem codes. However, some exclusive MAX codes may only work for Free Fire MAX players.", category: "codes" },
-  { id: 14, question: "How many Garena Free Fire Max Redeem Codes can I use per day?", answer: "There's no official daily limit on how many different codes you can redeem. However, you can only use each unique code once.", category: "limits" },
-  { id: 15, question: "Do I need to spend money to get Garena Free Fire Max Redeem Codes?", answer: "No, legitimate codes are always free. Never pay anyone for codes or provide personal information to get them.", category: "safety" },
-  { id: 16, question: "Can Garena Free Fire Max Redeem Codes give me diamonds?", answer: "Yes, many Free Fire redeem codes provide free diamonds ranging from 100 to 2000 diamonds.", category: "rewards" },
-  { id: 17, question: "What should I do if Garena Free Fire Max Redeem Code doesn't work?", answer: "Check for typos, ensure you're using the correct login method, try a different code, clear your browser cache, check if the code is region-specific, or wait and try again later.", category: "troubleshooting" },
-  { id: 18, question: "Are there Garena Free Fire Max Redeem Codes for specific characters?", answer: "Yes, some codes provide specific characters like Alok, K, Chrono, or character-related items. These are usually released during character events or collaborations.", category: "rewards" },
-  { id: 19, question: "How do I know if a Garena Free Fire Max Redeem Code is legitimate?", answer: "Legitimate codes are 12 characters long, contain letters and numbers, come from official sources, don't require payment, and can be redeemed on the official Garena website.", category: "safety" },
-  { id: 20, question: "Can I get banned for using Garena Free Fire Max Redeem Codes?", answer: "No, you cannot get banned for using legitimate Free Fire redeem codes from official sources.", category: "safety" },
-  { id: 21, question: "Do Garena Free Fire Max Redeem Codes work on all devices?", answer: "Yes, codes work regardless of your device (Android, iOS, PC). Redemption is done through the web browser on the official Garena website.", category: "devices" },
-  { id: 22, question: "What are the most valuable Garena Free Fire Max Redeem Codes rewards?", answer: "The most valuable rewards include free diamonds (1000+), exclusive character skins, legendary weapon skins, rare emotes, premium bundles, and limited-time collaboration items.", category: "rewards" },
-  { id: 23, question: "How can I get notified about new Garena Free Fire Max Redeem Codes?", answer: "Follow our website for regular updates and bookmark our Free Fire codes page. We update codes automatically and remove expired ones.", category: "notifications" },
-  { id: 24, question: "Are there Garena Free Fire Max Redeem Codes for weapon skins?", answer: "Yes, many codes provide weapon skins ranging from common to legendary rarity for popular weapons like AK47, M1014, AWM, and others.", category: "rewards" },
-  { id: 25, question: "Can I use Garena Free Fire Max Redeem Codes multiple times?", answer: "No, each code can only be used once per account.", category: "limits" },
-  { id: 26, question: "What happens if I enter a code incorrectly?", answer: "You'll get an 'Invalid Code' error message. Double-check the code for typos and try again with all 12 characters exactly as shown.", category: "troubleshooting" },
-  { id: 27, question: "Do Garena Free Fire Max Redeem Codes expire at a specific time?", answer: "Most codes expire at midnight UTC, but some may expire at different times depending on when they were released.", category: "expiration" },
-  { id: 28, question: "Can I redeem Free Fire codes without logging into the game?", answer: "Yes, you can redeem codes through the web browser. However, you'll need to log into the game later to claim rewards from your in-game mailbox.", category: "redemption" },
-  { id: 29, question: "Are there Garena Free Fire Max Redeem Codes for pets?", answer: "Yes, some codes provide pets, pet skins, or pet-related items, usually released during special pet events.", category: "rewards" },
-  { id: 30, question: "What should I do if Free Fire redeem rewards don't appear?", answer: "Wait up to 24 hours, check your in-game mailbox, look in your inventory/vault, restart the game, or contact Garena support if items are still missing.", category: "troubleshooting" },
-  { id: 31, question: "How do Google Play codes work for gaming?", answer: "Google Play redeem codes add credit to your Play Store account, which you can use to purchase Free Fire diamonds, battle passes, and other premium content.", category: "gprc" },
-  { id: 32, question: "How do you generate working Play Store codes?", answer: "We generate fresh GPRC codes using patterns learned from legitimate promotional campaigns. We refresh codes every few hours to ensure maximum availability.", category: "gprc" },
-  { id: 33, question: "Can I buy Free Fire diamonds with Play Store balance?", answer: "Yes! Once you redeem a GPRC code, the balance appears instantly and can be used for Free Fire diamonds, elite passes, character bundles, or any other in-app purchase.", category: "gprc" },
-  { id: 34, question: "Are Google Play redeem codes region-specific?", answer: "Most codes work globally, but some may be region-locked. If a code doesn't work, try another one from our updated list.", category: "gprc" },
-  { id: 35, question: "What if my Google Play redeem code is already used?", answer: "GPRC codes have limited redemptions and work first-come-first-served. Simply try another code from our list.", category: "gprc" },
-  { id: 36, question: "Do Google Play redeem codes expire?", answer: "Yes, most expire at the end of each day, which is why we refresh our list multiple times daily.", category: "gprc" },
-  { id: 37, question: "How do I redeem Google Play codes?", answer: "Open Google Play Store, tap Menu → Redeem, enter the code, tap 'Redeem' button. Balance is added instantly.", category: "gprc" },
-  { id: 38, question: "What can I buy with Google Play balance?", answer: "Free Fire diamonds, PUBG Mobile UC, premium apps and games, movies, TV shows, books, audiobooks, music, and any digital content on the Play Store.", category: "gprc" },
-  { id: 39, question: "Are Google Play codes safe to use?", answer: "Yes, all our Google Play redeem codes are sourced from legitimate promotional campaigns. Using these codes is completely safe.", category: "gprc" },
-  { id: 40, question: "Can I combine multiple Google Play codes?", answer: "Yes, each code adds its value to your existing balance, and you can use the combined amount for purchases.", category: "gprc" },
-  { id: 41, question: "Are you affiliated with Garena or any official company?", answer: "No, we're an independent community of passionate Free Fire gamers. We're not affiliated with Garena, Google, or any official company.", category: "general" },
-  { id: 42, question: "Do you charge money for codes or have hidden fees?", answer: "Never! All our codes are completely free. We're gamers helping gamers - no hidden fees, no premium memberships, no paid tiers.", category: "general" },
-  { id: 43, question: "How do you create authentic working codes?", answer: "We generate codes using authentic patterns learned from 3+ years of active Free Fire gaming, official tournaments, community events, and promotional campaigns.", category: "general" },
-  { id: 44, question: "Can I submit codes to your website?", answer: "Currently, we don't accept user-submitted codes to maintain quality and authenticity.", category: "general" },
-  { id: 45, question: "Why do some codes work for others but not for me?", answer: "Codes may not work due to regional restrictions, limited redemptions, account-specific restrictions, server differences, or timing.", category: "troubleshooting" },
-  { id: 46, question: "Do you have codes for other games?", answer: "Currently, we focus specifically on Free Fire redeem codes and Google Play codes. We may expand to other games in the future.", category: "general" },
-  { id: 47, question: "How can I get help or share feedback?", answer: "You can reach our team through our contact form or email us at contact@todayesports.com. We typically respond within 24-48 hours.", category: "general" },
-  { id: 48, question: "Do you have a mobile app for easier access?", answer: "We don't have a separate mobile app, but our website is fully optimized for mobile. You can install it as a PWA for a native app-like experience.", category: "general" },
-  { id: 49, question: "What's your actual success rate with codes?", answer: "Based on community feedback and our own testing, we achieve a 70-80% success rate. This is significantly higher than most other platforms.", category: "general" },
-  { id: 50, question: "What's the best way to stay updated with fresh codes?", answer: "Bookmark our website and check back regularly. We generate fresh codes every refresh and update multiple times throughout the day.", category: "general" },
+  // --- Free Fire Codes ---
+  {
+    id: 1,
+    question: "What are Free Fire redeem codes?",
+    answer: "Redeem codes are 12-character codes (mix of letters and numbers) released by Garena. You enter them on the official rewards site — reward.ff.garena.com — and get free stuff like diamonds, skins, emotes, and more sent straight to your in-game mail. We track these codes daily on our site so you don't have to hunt for them.",
+    category: "codes"
+  },
+  {
+    id: 2,
+    question: "How often do you update the codes on this site?",
+    answer: "We refresh our code list every hour. Our team monitors official Garena channels, social media drops, and community reports round the clock. If a new code goes live, it usually shows up here within minutes.",
+    category: "codes"
+  },
+  {
+    id: 3,
+    question: "Are the codes on freefireredeemcodetoday.com legit?",
+    answer: "Yes — every code listed here comes from official Garena sources like their social media pages, in-game events, and partner promotions. We never post fake or fan-made codes. Each one is verified by our team before it goes live on the site.",
+    category: "codes"
+  },
+  {
+    id: 4,
+    question: "How many codes can I use per day?",
+    answer: "There's no hard daily limit on how many different codes you can redeem, but each individual code only works once per account. So if we list 10 codes today, you can try all 10 — just know that popular ones get claimed fast.",
+    category: "codes"
+  },
+  {
+    id: 5,
+    question: "Why did a code stop working so quickly?",
+    answer: "Most codes have a limited number of redemptions (say, 500 or 1,000 uses globally). Once that cap is hit, the code expires for everyone. That's why we always say: redeem as soon as you see it. We mark expired codes clearly so you don't waste time.",
+    category: "codes"
+  },
+  {
+    id: 6,
+    question: "What's the difference between Free Fire and Free Fire MAX codes?",
+    answer: "In most cases, the same codes work for both Free Fire and Free Fire MAX since both games share the same account system. Occasionally Garena releases MAX-exclusive codes during special events, and we label those separately on our site.",
+    category: "codes"
+  },
+  {
+    id: 7,
+    question: "When is the best time to check for new codes?",
+    answer: "Garena typically drops new codes between 6–9 AM IST (during server resets) and around major event launches. We recommend checking our site first thing in the morning or right after a game update. You can also bookmark our homepage — it auto-refreshes with the latest codes.",
+    category: "codes"
+  },
+  {
+    id: 8,
+    question: "Can redeem codes give me free diamonds?",
+    answer: "Absolutely. Diamond codes are among the most common rewards — they can range from 100 to 2,000 diamonds per code. We tag diamond codes clearly on our homepage so they're easy to spot.",
+    category: "codes"
+  },
+
+  // --- Redemption Process ---
+  {
+    id: 9,
+    question: "How do I redeem a Free Fire code step by step?",
+    answer: "Here's the quick version: 1) Go to reward.ff.garena.com, 2) Log in with the same account you use in-game (Facebook, Google, VK, etc.), 3) Paste the 12-character code in the text box, 4) Hit Confirm, 5) Open Free Fire and check your in-game mailbox. Rewards usually arrive within 5–30 minutes. We also have a detailed how-to guide on our site if you need screenshots.",
+    category: "redemption"
+  },
+  {
+    id: 10,
+    question: "Can I redeem codes from my phone browser?",
+    answer: "Yes, the Garena rewards site works fine on mobile browsers — Chrome, Safari, whatever you use. Just make sure you're logged into the same account linked to your game. No need to open the game first.",
+    category: "redemption"
+  },
+  {
+    id: 11,
+    question: "Do I need to be logged into Free Fire to redeem a code?",
+    answer: "You don't need the game open, but you do need to log in on the rewards website (reward.ff.garena.com) using the same method you use in-game — Facebook, Google, Apple ID, etc. After redeeming, open the game later to collect rewards from your mailbox.",
+    category: "redemption"
+  },
+  {
+    id: 12,
+    question: "How long does it take for rewards to show up?",
+    answer: "Usually 5 to 30 minutes. During peak hours (like right after a big event launch), it might take up to 24 hours. If you still don't see anything after 24 hours, double-check that you used the right login method.",
+    category: "redemption"
+  },
+  {
+    id: 13,
+    question: "Where do I find my redeemed rewards in the game?",
+    answer: "Open Free Fire, tap the mail icon (top-right corner on the lobby screen), and look under the 'Claim' tab. Items like skins or characters go directly to your vault/inventory, while diamonds are added to your balance automatically.",
+    category: "redemption"
+  },
+  {
+    id: 14,
+    question: "Can I redeem codes without a Garena account?",
+    answer: "You need some form of linked account — Facebook, Google, Apple ID, VK, or Huawei. Guest accounts can't redeem codes because there's no way to verify your identity on the rewards site. If you're on a guest account, link it to one of these platforms first in your game settings.",
+    category: "redemption"
+  },
+
+  // --- Troubleshooting ---
+  {
+    id: 15,
+    question: "Why does it say 'This code is invalid or redeemed'?",
+    answer: "This usually means the code has already hit its redemption limit or has expired. It can also happen if you've already used that exact code before. Try a different code from our updated list — we remove expired ones regularly.",
+    category: "troubleshooting"
+  },
+  {
+    id: 16,
+    question: "The code says 'not available for your region' — what now?",
+    answer: "Some codes are region-locked (India only, Brazil only, etc.). We label region-specific codes on our site. If a code doesn't work for your server, scroll through our list — we usually have codes for multiple regions including India, Indonesia, Brazil, and Global servers.",
+    category: "troubleshooting"
+  },
+  {
+    id: 17,
+    question: "I redeemed successfully but didn't get my reward. What do I do?",
+    answer: "First, wait up to 24 hours — delays happen during high traffic. Check your in-game mailbox AND your inventory/vault (some items skip the mailbox). If it's still missing after 24 hours, contact Garena support with your player ID and a screenshot of the successful redemption.",
+    category: "troubleshooting"
+  },
+  {
+    id: 18,
+    question: "Why can't I log in on the rewards website?",
+    answer: "Make sure you're using the exact same login method as your game — if you play via Facebook login, use Facebook on the website too. Also try clearing your browser cache or using incognito mode. VPN users should disconnect first, as it can cause login issues.",
+    category: "troubleshooting"
+  },
+  {
+    id: 19,
+    question: "I accidentally entered a code wrong. Can I retry?",
+    answer: "Yes, just re-enter it correctly. There's no penalty for typos. We recommend copying the code directly from our site (tap the copy button) instead of typing it manually to avoid mistakes.",
+    category: "troubleshooting"
+  },
+  {
+    id: 20,
+    question: "Codes work for my friend but not for me. Why?",
+    answer: "A few possible reasons: different server regions, your account might have already used a similar code, or you might be hitting a temporary server issue. Try waiting a few minutes and retry. Also confirm you're both on the same server (India, Indonesia, etc.).",
+    category: "troubleshooting"
+  },
+  {
+    id: 21,
+    question: "What should I do if the redemption site is down?",
+    answer: "Garena's reward site occasionally goes down during maintenance or heavy traffic (especially during big events). Bookmark the page and try again in 15–30 minutes. The codes don't expire that fast, so you won't miss out.",
+    category: "troubleshooting"
+  },
+
+  // --- Safety & Security ---
+  {
+    id: 22,
+    question: "Is it safe to use redeem codes from this website?",
+    answer: "100% safe. We only list codes that go through the official Garena redemption system at reward.ff.garena.com. We never ask for your password, never use third-party tools, and never modify game files. Your account stays completely secure.",
+    category: "safety"
+  },
+  {
+    id: 23,
+    question: "Can I get banned for using redeem codes?",
+    answer: "No. Redeem codes are an official feature built by Garena themselves. Using them is completely within the game's terms of service. You'd only risk a ban by using hacks, mods, or unofficial third-party generators — which we have nothing to do with.",
+    category: "safety"
+  },
+  {
+    id: 24,
+    question: "Do you ask for my Free Fire password?",
+    answer: "Never. We will never ask for your password, player ID, or any personal login details. All you need to do is visit the official Garena rewards site and log in there yourself. If any site asks for your password to 'redeem codes,' it's a scam.",
+    category: "safety"
+  },
+  {
+    id: 25,
+    question: "How do I spot fake redeem code websites?",
+    answer: "Red flags include: asking for your password, requiring you to download apps, showing 'human verification' surveys, promising unlimited diamonds, or codes longer/shorter than 12 characters. Stick to our site and the official Garena rewards page — that's all you need.",
+    category: "safety"
+  },
+  {
+    id: 26,
+    question: "Do I need to pay anything to get codes here?",
+    answer: "Nope, everything on our site is completely free. We don't have premium tiers, paid memberships, or any hidden charges. If someone's asking you to pay for Free Fire codes, walk away — legit codes are always free.",
+    category: "safety"
+  },
+
+  // --- Google Play Codes ---
+  {
+    id: 27,
+    question: "What are Google Play redeem codes?",
+    answer: "Google Play redeem codes add credit to your Play Store account balance. You can use that balance to buy Free Fire diamonds, elite passes, or any in-app purchase without needing a credit card. We share working codes when they're available from official promotions.",
+    category: "gprc"
+  },
+  {
+    id: 28,
+    question: "How do I redeem a Google Play code?",
+    answer: "Open the Google Play Store app on your phone, tap your profile icon, select 'Payments & subscriptions' → 'Redeem gift code,' paste the code, and tap Redeem. The balance shows up instantly and you can use it right away for Free Fire purchases.",
+    category: "gprc"
+  },
+  {
+    id: 29,
+    question: "Can I use Google Play balance to buy Free Fire diamonds?",
+    answer: "Yes! Once the balance is in your Play Store account, open Free Fire, go to the diamond top-up section, and select Google Play as your payment method. The balance will be applied automatically.",
+    category: "gprc"
+  },
+  {
+    id: 30,
+    question: "Do Google Play codes work in every country?",
+    answer: "Most Google Play codes are region-specific. A code generated for India might not work in Indonesia or Brazil. We label the region for each code when available. If one doesn't work, try another from the list.",
+    category: "gprc"
+  },
+  {
+    id: 31,
+    question: "Why did my Google Play code say 'already redeemed'?",
+    answer: "Google Play codes are single-use — once someone else claims it, it's gone for everyone. These codes go fast, so redeem them as soon as you see them on our site.",
+    category: "gprc"
+  },
+  {
+    id: 32,
+    question: "Are the Google Play codes on your site safe?",
+    answer: "Yes. We only share codes from legitimate sources like official Google promotions, brand partnerships, and giveaways. They're redeemed through the official Google Play Store — no third-party apps needed.",
+    category: "gprc"
+  },
+
+  // --- Rewards ---
+  {
+    id: 33,
+    question: "What kind of rewards can I get from redeem codes?",
+    answer: "The rewards vary — you can get free diamonds, weapon skins (AK47, M1014, AWM), character unlocks (like Alok or Chrono), emotes, pets, bundles, vouchers, and event-exclusive items. We list the exact reward next to each code so you know what you're getting.",
+    category: "rewards"
+  },
+  {
+    id: 34,
+    question: "Are there codes for specific characters like DJ Alok?",
+    answer: "Character codes do show up, but they're rare and usually tied to special events or collaborations. When they drop, they get claimed very fast. Keep an eye on our homepage — we highlight character codes prominently.",
+    category: "rewards"
+  },
+  {
+    id: 35,
+    question: "Can I get legendary weapon skins from codes?",
+    answer: "Yes, Garena occasionally releases codes for weapon skins — sometimes even legendary-tier ones. These are usually event-specific and have very limited redemptions, so speed matters.",
+    category: "rewards"
+  },
+  {
+    id: 36,
+    question: "Do codes ever give pets or pet skins?",
+    answer: "They do, though it's less common. Pet-related codes usually appear during pet-themed events. We tag these clearly so pet collectors can grab them quickly.",
+    category: "rewards"
+  },
+  {
+    id: 37,
+    question: "What's the most valuable reward you've seen from a code?",
+    answer: "We've tracked codes giving out 2,000+ diamonds, exclusive collaboration bundles, and even legendary character skins. The best drops usually happen during anniversary events and major game updates.",
+    category: "rewards"
+  },
+
+  // --- Region / Server ---
+  {
+    id: 38,
+    question: "Do all codes work on the Indian server?",
+    answer: "Not all of them. Some codes are Global, some are region-locked to specific servers. We label each code with its server region (India, Indonesia, Brazil, Europe, etc.) so you can quickly find the ones that work for you.",
+    category: "regions"
+  },
+  {
+    id: 39,
+    question: "I play on the Indonesia server. Do you have codes for me?",
+    answer: "Yes, we track codes for all major servers including Indonesia, India, Brazil, Europe, and MENA. Use the server filter on our homepage to see codes specific to your region.",
+    category: "regions"
+  },
+  {
+    id: 40,
+    question: "Can I use a VPN to redeem region-locked codes?",
+    answer: "We don't recommend it. Garena checks your account's registered region, not your IP address. Using a VPN can actually cause login problems on the rewards site. Stick to codes meant for your server.",
+    category: "regions"
+  },
+
+  // --- General / About ---
+  {
+    id: 41,
+    question: "Who runs freefireredeemcodetoday.com?",
+    answer: "We're an independent team of Free Fire players and gaming enthusiasts who've been playing since 2017. We built this site because we were tired of hunting through dozens of sources for working codes. We're not affiliated with Garena — just fans making life easier for the community.",
+    category: "general"
+  },
+  {
+    id: 42,
+    question: "Are you affiliated with Garena or Free Fire officially?",
+    answer: "No, we're completely independent. We're not sponsored by or partnered with Garena. All codes we list come from publicly available official sources. We just organize and verify them in one place for the community.",
+    category: "general"
+  },
+  {
+    id: 43,
+    question: "How can I contact your team?",
+    answer: "Head over to our Contact page — you can reach us through the form there or email us at contact@todayesports.com. We usually respond within 24–48 hours. We love hearing feedback and suggestions from the community.",
+    category: "general"
+  },
+  {
+    id: 44,
+    question: "Do you have a mobile app?",
+    answer: "Not a standalone app, but our website works great on mobile browsers and you can add it to your home screen for quick access (works like a PWA). We designed it mobile-first since most Free Fire players are on their phones.",
+    category: "general"
+  },
+  {
+    id: 45,
+    question: "Can I share codes from your site with friends?",
+    answer: "Of course! Just keep in mind that most codes have limited redemptions, so share quickly. You can copy any code with one tap and send it to your squad. The sooner everyone redeems, the better.",
+    category: "general"
+  },
+  {
+    id: 46,
+    question: "Do you cover other games besides Free Fire?",
+    answer: "Right now we're focused entirely on Free Fire and Free Fire MAX. We want to do one thing really well rather than spread thin across multiple games. We may expand in the future based on community demand.",
+    category: "general"
+  },
+  {
+    id: 47,
+    question: "How do I stay updated with the latest codes?",
+    answer: "The easiest way is to bookmark our homepage — it auto-updates with fresh codes throughout the day. You can also check back during server reset times (early morning IST) for the newest drops.",
+    category: "general"
+  },
+  {
+    id: 48,
+    question: "Can I submit a code I found to your site?",
+    answer: "We don't accept user-submitted codes at the moment to keep our quality standards high. But if you've found a working code from an official source, feel free to share it with us through our contact page and we'll verify it.",
+    category: "general"
+  },
+  {
+    id: 49,
+    question: "How do I redeem codes on iPhone/iOS?",
+    answer: "The process is the same — open Safari or Chrome, go to reward.ff.garena.com, log in with your linked account, and paste the code. iOS doesn't change anything about how redemption works since it's all browser-based.",
+    category: "devices"
+  },
+  {
+    id: 50,
+    question: "Do codes work on PC (emulator) players?",
+    answer: "Yes. Since codes are tied to your account and not your device, they work whether you play on Android, iOS, or PC via an emulator. Just make sure you redeem using the same login method linked to your game account.",
+    category: "devices"
+  },
 ];
 
 const categories = [
   { id: 'all', name: 'All Questions' },
   { id: 'codes', name: 'Free Fire Codes' },
   { id: 'gprc', name: 'Google Play Codes' },
-  { id: 'redemption', name: 'Redemption Process' },
+  { id: 'redemption', name: 'How to Redeem' },
   { id: 'troubleshooting', name: 'Troubleshooting' },
   { id: 'safety', name: 'Safety & Security' },
+  { id: 'rewards', name: 'Rewards' },
+  { id: 'regions', name: 'Regions & Servers' },
+  { id: 'devices', name: 'Devices' },
   { id: 'general', name: 'General' },
 ];
 
 const FAQ = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [openItems, setOpenItems] = useState<number[]>([]);
+  const [openItems, setOpenItems] = useState<number[]>([1]);
   const [selectedCategory, setSelectedCategory] = useState('all');
+
+  useEffect(() => {
+    document.title = "Free Fire Redeem Code FAQ — 50+ Answers | " + SITE_NAME;
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute('content', 'Get answers to 50+ common questions about Free Fire redeem codes, how to redeem them, troubleshooting tips, and more. Updated daily.');
+    }
+  }, []);
 
   const filteredFAQs = faqData.filter(item => {
     const matchesSearch = item.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -93,20 +371,58 @@ const FAQ = () => {
   const getCategoryCount = (catId: string) =>
     catId === 'all' ? faqData.length : faqData.filter(i => i.category === catId).length;
 
+  // FAQ Schema for SEO - all questions included for Google rich results
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqData.map(item => ({
+      "@type": "Question",
+      "name": item.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.answer
+      }
+    }))
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": DEFAULT_URL },
+      { "@type": "ListItem", "position": 2, "name": "FAQ", "item": `${DEFAULT_URL}/faq` }
+    ]
+  };
+
+  const webPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Free Fire Redeem Code FAQ",
+    "description": "Get answers to 50+ common questions about Free Fire redeem codes, how to redeem them, troubleshooting tips, and more.",
+    "url": `${DEFAULT_URL}/faq`,
+    "isPartOf": { "@type": "WebSite", "name": SITE_NAME, "url": DEFAULT_URL },
+    "breadcrumb": breadcrumbSchema
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground font-tech">
+      {/* JSON-LD Schema for SEO */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
+
       <Header />
       <main className="max-w-4xl mx-auto px-4 md:px-8 py-16">
-        <Link to="/" className="inline-flex items-center gap-2 text-t-muted hover:text-foreground mb-8 text-sm uppercase tracking-widest transition-colors">
+        <Link to="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground mb-8 text-sm uppercase tracking-widest transition-colors">
           <ArrowLeft className="w-4 h-4" /> Back to Home
         </Link>
 
         <div className="text-center mb-10">
           <h1 className="text-3xl md:text-4xl font-display uppercase tracking-tight text-foreground mb-4">
-            Frequently Asked Questions
+            Free Fire Redeem Code FAQ
           </h1>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Get expert answers from experienced Free Fire gamers. 50+ detailed answers based on real gaming experience.
+            50+ real answers from experienced Free Fire players. No fluff — just what you need to know about redeem codes, rewards, and troubleshooting.
           </p>
         </div>
 
@@ -120,6 +436,7 @@ const FAQ = () => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-10 pr-4 py-3 border border-border rounded-lg bg-background text-foreground focus:ring-2 focus:ring-accent focus:border-transparent"
+              aria-label="Search FAQ questions"
             />
           </div>
         </div>
@@ -142,7 +459,7 @@ const FAQ = () => {
         </div>
 
         {/* FAQ Items */}
-        <div className="space-y-3">
+        <div className="space-y-3" itemScope itemType="https://schema.org/FAQPage">
           {filteredFAQs.length === 0 ? (
             <div className="text-center py-12">
               <HelpCircle className="mx-auto text-muted-foreground mb-4" size={48} />
@@ -151,12 +468,19 @@ const FAQ = () => {
             </div>
           ) : (
             filteredFAQs.map(item => (
-              <div key={item.id} className="bg-card rounded-lg border border-border overflow-hidden">
+              <div
+                key={item.id}
+                className="bg-card rounded-lg border border-border overflow-hidden"
+                itemScope
+                itemProp="mainEntity"
+                itemType="https://schema.org/Question"
+              >
                 <button
                   onClick={() => toggleItem(item.id)}
                   className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-muted/50 transition-colors"
+                  aria-expanded={openItems.includes(item.id)}
                 >
-                  <h3 className="font-semibold text-foreground pr-4">{item.question}</h3>
+                  <h3 className="font-semibold text-foreground pr-4" itemProp="name">{item.question}</h3>
                   {openItems.includes(item.id) ? (
                     <ChevronUp className="text-accent flex-shrink-0" size={20} />
                   ) : (
@@ -164,9 +488,14 @@ const FAQ = () => {
                   )}
                 </button>
                 {openItems.includes(item.id) && (
-                  <div className="px-6 pb-4">
+                  <div
+                    className="px-6 pb-4"
+                    itemScope
+                    itemProp="acceptedAnswer"
+                    itemType="https://schema.org/Answer"
+                  >
                     <div className="border-t border-border pt-4">
-                      <p className="text-muted-foreground leading-relaxed">{item.answer}</p>
+                      <p className="text-muted-foreground leading-relaxed" itemProp="text">{item.answer}</p>
                     </div>
                   </div>
                 )}
@@ -177,15 +506,15 @@ const FAQ = () => {
 
         {/* Contact CTA */}
         <div className="mt-12 bg-accent/10 border border-accent/20 rounded-lg p-8 text-center">
-          <h2 className="text-2xl font-bold text-foreground mb-3">Need More Gaming Help?</h2>
+          <h2 className="text-2xl font-bold text-foreground mb-3">Still have questions?</h2>
           <p className="mb-6 text-muted-foreground">
-            Can't find the answer you're looking for? Our experienced gaming team is here to help!
+            Can't find what you're looking for? Drop us a message and our team will get back to you.
           </p>
           <Link
             to="/contact"
             className="inline-block bg-accent text-accent-foreground px-6 py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity"
           >
-            Contact Gaming Team
+            Contact Us
           </Link>
         </div>
       </main>
