@@ -407,9 +407,6 @@ const FAQ = () => {
   return (
     <div className="min-h-screen bg-background text-foreground font-tech">
       {/* JSON-LD Schema for SEO */}
-      <Helmet>
-        <link rel="canonical" href={`${DEFAULT_URL}/faq`} />
-      </Helmet>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
