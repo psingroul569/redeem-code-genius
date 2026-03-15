@@ -4,7 +4,7 @@ import { Footer } from '@/components/ff/Footer';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Search, ChevronUp, ChevronDown, HelpCircle } from 'lucide-react';
 import { DEFAULT_URL, SITE_NAME } from '@/constants';
-import { Helmet } from 'react-helmet-async';
+
 
 interface FAQItem {
   id: number;
