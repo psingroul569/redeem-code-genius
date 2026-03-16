@@ -256,6 +256,9 @@ const Index = () => {
                 )}
               </div>
             </section>
+            <Suspense fallback={<div className="min-h-[200px]" />}>
+              <OnPageContent />
+            </Suspense>
             <Suspense fallback={<div className="min-h-[400px]" />}>
               <AuthorityHub />
             </Suspense>
