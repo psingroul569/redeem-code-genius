@@ -14,6 +14,7 @@ import { useTheme } from '@/hooks/useTheme';
 
 const ContentView = React.lazy(() => import('@/components/ff/ContentView').then((m) => ({ default: m.ContentView })));
 const CodeDetailView = React.lazy(() => import('@/components/ff/CodeDetailView').then((m) => ({ default: m.CodeDetailView })));
+const OnPageContent = React.lazy(() => import('@/components/ff/OnPageContent'));
 
 const REGIONS = ['GLOBAL', 'INDIA', 'BRAZIL', 'INDONESIA', 'EUROPE'];
 const REGION_OFFSETS: Record<string, number> = {
