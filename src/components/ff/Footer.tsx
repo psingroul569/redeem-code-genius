@@ -78,7 +78,7 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <Link to="/terms" className="hover:text-foreground transition-colors block">
-                  Terms
+                  Terms & Conditions
                 </Link>
               </li>
             </ul>
