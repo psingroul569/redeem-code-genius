@@ -30,7 +30,7 @@ const MarkdownToolbar = ({ textareaRef, onInsert, previewMode, onTogglePreview }
   ];
 
   return (
-    <div className="flex items-center gap-0.5 flex-wrap bg-muted/50 border border-border rounded-t-md p-1.5">
+    <div className="flex items-center gap-0.5 flex-wrap flex-1">
       {tools.map((tool, i) =>
         tool === null ? (
           <div key={`sep-${i}`} className="w-px h-6 bg-border mx-1" />
