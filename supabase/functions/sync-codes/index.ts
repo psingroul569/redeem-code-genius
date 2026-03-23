@@ -50,7 +50,7 @@ serve(async (req) => {
     const loc = REGIONS[region];
     const today = now.toLocaleDateString('en-US', { day: '2-digit', month: 'long', year: 'numeric' });
 
-    // Call Gemini API directly
+    // Call Gemini API directly (using gemini-1.5-flash for reliable free tier access)
     const aiResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
