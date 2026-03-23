@@ -51,7 +51,7 @@ serve(async (req) => {
     const today = now.toLocaleDateString('en-US', { day: '2-digit', month: 'long', year: 'numeric' });
 
     // Call Gemini API directly (using gemini-1.5-flash for reliable free tier access)
-    const aiResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${GEMINI_API_KEY}`, {
+    const aiResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
