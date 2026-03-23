@@ -23,8 +23,8 @@ serve(async (req) => {
       return new Response(JSON.stringify({ error: 'Invalid region' }), { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
 
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-    if (!LOVABLE_API_KEY) throw new Error('LOVABLE_API_KEY not configured');
+    const GEMINI_API_KEY = Deno.env.get('GEMINI_API_KEY');
+    if (!GEMINI_API_KEY) throw new Error('GEMINI_API_KEY not configured');
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
@@ -50,91 +50,62 @@ serve(async (req) => {
     const loc = REGIONS[region];
     const today = now.toLocaleDateString('en-US', { day: '2-digit', month: 'long', year: 'numeric' });
 
-    // Call Lovable AI Gateway with tool calling for structured output
-    const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+    // Call Gemini API directly
+    const aiResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`, {
       method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
-        messages: [
-          {
-            role: 'system',
-            content: `You are a rewards verification bot. Find active Free Fire redeem codes. Date: ${today}.`
-          },
-          {
-            role: 'user',
-            content: `Find 12 active Free Fire redeem codes. ${loc.query} Codes MUST be for the ${region} server only. Each code is typically 12-16 alphanumeric characters, sometimes with hyphens.`
-          }
-        ],
-        tools: [
-          {
-            type: 'function',
-            function: {
-              name: 'submit_codes',
-              description: 'Submit discovered Free Fire redeem codes',
-              parameters: {
-                type: 'object',
-                properties: {
-                  codes: {
-                    type: 'array',
-                    items: {
-                      type: 'object',
-                      properties: {
-                        code: { type: 'string', description: 'The redeem code (e.g. FFXX-YYYY-ZZZZ)' },
-                        reward: { type: 'string', description: 'What the code gives (e.g. 2x Diamond Royale Voucher)' },
-                        category: { type: 'string', enum: ['Diamond', 'Skin', 'Bundle', 'Voucher', 'Pet'] }
-                      },
-                      required: ['code', 'reward', 'category'],
-                      additionalProperties: false
-                    }
-                  }
-                },
-                required: ['codes'],
-                additionalProperties: false
-              }
-            }
-          }
-        ],
-        tool_choice: { type: 'function', function: { name: 'submit_codes' } },
+        contents: [{
+          parts: [{
+            text: `You are a rewards verification bot. Date: ${today}.
+Find 12 active Free Fire redeem codes. ${loc.query} Codes MUST be for the ${region} server only. Each code is typically 12-16 alphanumeric characters, sometimes with hyphens.
+
+Return ONLY a valid JSON array with this exact format, no other text:
+[{"code": "XXXX-XXXX-XXXX", "reward": "description of reward", "category": "Diamond|Skin|Bundle|Voucher|Pet"}]`
+          }]
+        }],
+        tools: [{ google_search: {} }],
+        generationConfig: {
+          temperature: 0.7,
+          maxOutputTokens: 2048,
+        }
       }),
     });
 
     if (!aiResponse.ok) {
       const errText = await aiResponse.text();
-      console.error('AI Gateway error:', aiResponse.status, errText);
+      console.error('Gemini API error:', aiResponse.status, errText);
       if (aiResponse.status === 429) {
         return new Response(JSON.stringify({ error: 'Rate limited, will retry next cycle' }), {
           status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         });
       }
-      throw new Error(`AI Gateway failed: ${aiResponse.status}`);
+      throw new Error(`Gemini API failed: ${aiResponse.status}`);
     }
 
     const aiData = await aiResponse.json();
     
-    // Extract structured data from tool call
+    // Extract text from Gemini response
     let discovered: any[] = [];
     try {
-      const toolCall = aiData.choices?.[0]?.message?.tool_calls?.[0];
-      if (toolCall?.function?.arguments) {
-        const parsed = JSON.parse(toolCall.function.arguments);
-        discovered = parsed.codes || [];
+      const text = aiData.candidates?.[0]?.content?.parts
+        ?.map((p: any) => p.text || '')
+        .join('') || '';
+      
+      if (text) {
+        const jsonMatch = text.match(/\[\s*\{[\s\S]*\}\s*\]/);
+        if (jsonMatch) {
+          discovered = JSON.parse(jsonMatch[0]);
+        } else {
+          const cleanText = text.replace(/```json/g, '').replace(/```/g, '').trim();
+          discovered = JSON.parse(cleanText);
+        }
       }
     } catch (parseErr) {
-      // Fallback: try parsing from content
-      const text = aiData.choices?.[0]?.message?.content || '';
-      console.error('Tool call parse failed, trying content:', text.substring(0, 300));
-      try {
-        const jsonMatch = text.match(/\[\s*\{[\s\S]*\}\s*\]/);
-        if (jsonMatch) discovered = JSON.parse(jsonMatch[0]);
-      } catch {
-        return new Response(JSON.stringify({ error: 'parse_failed' }), {
-          status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        });
-      }
+      console.error('Parse error:', parseErr);
+      return new Response(JSON.stringify({ error: 'parse_failed' }), {
+        status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
     }
 
     if (!Array.isArray(discovered) || discovered.length === 0) {
@@ -142,6 +113,12 @@ serve(async (req) => {
         status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
+
+    // Extract citations from grounding metadata
+    const citations = aiData.candidates?.[0]?.groundingMetadata?.groundingChunks?.map((chunk: any) => ({
+      uri: chunk.web?.uri || '',
+      title: chunk.web?.title || ''
+    })).filter((c: any) => c.uri) || [];
 
     // Insert codes into DB
     const rows = discovered.map((item: any) => ({
@@ -152,10 +129,10 @@ serve(async (req) => {
       category: item.category || 'Bundle',
       slug: `${region.toLowerCase()}-${hourKey}-${(item.code || '').toLowerCase().replace(/[^a-z0-9]/g, '')}`,
       status: 'Working',
-      probability: 85,
+      probability: citations.length > 0 ? 99 : 85,
       recent_claims: Math.floor(Math.random() * 1000) + 300,
       likes: Math.floor(Math.random() * 500) + 150,
-      citations: [],
+      citations: citations,
     }));
 
     const { error: insertError } = await supabase
