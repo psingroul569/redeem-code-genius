@@ -55,8 +55,9 @@ serve(async (req) => {
     const prompt = `You are a rewards verification bot. Date: ${today}.
 Find 12 active Free Fire redeem codes. ${loc.query} Codes MUST be for the ${region} server only. Each code is typically 12-16 alphanumeric characters, sometimes with hyphens.
 
-CRITICAL: Your ENTIRE response must be ONLY a valid JSON array. No explanation, no markdown, no text before or after.
-Format: [{"code":"XXXX-XXXX-XXXX","reward":"description","category":"Diamond|Skin|Bundle|Voucher|Pet"}]`;
+You MUST respond with ONLY a JSON array. No explanations. No markdown code blocks. Just the raw JSON array.
+Example format: [{"code":"FF12-ABCD-5678","reward":"500 Diamonds","category":"Diamond"}]
+Categories allowed: Diamond, Skin, Bundle, Voucher, Pet`;
 
     // Try each model until one works
     let aiData: any = null;
