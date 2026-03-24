@@ -50,8 +50,8 @@ serve(async (req) => {
     const loc = REGIONS[region];
     const today = now.toLocaleDateString('en-US', { day: '2-digit', month: 'long', year: 'numeric' });
 
-    // Call Gemini API directly (using gemini-1.5-flash for reliable free tier access)
-    const aiResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+    // Use gemini-2.0-flash with JSON response mode for reliable structured output
+    const aiResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -60,14 +60,14 @@ serve(async (req) => {
             text: `You are a rewards verification bot. Date: ${today}.
 Find 12 active Free Fire redeem codes. ${loc.query} Codes MUST be for the ${region} server only. Each code is typically 12-16 alphanumeric characters, sometimes with hyphens.
 
-Return ONLY a valid JSON array with this exact format, no other text:
-[{"code": "XXXX-XXXX-XXXX", "reward": "description of reward", "category": "Diamond|Skin|Bundle|Voucher|Pet"}]`
+Return a JSON array with objects having keys: code, reward, category (one of Diamond, Skin, Bundle, Voucher, Pet).`
           }]
         }],
         tools: [{ google_search: {} }],
         generationConfig: {
           temperature: 0.7,
           maxOutputTokens: 2048,
+          responseMimeType: "application/json",
         }
       }),
     });
@@ -75,6 +75,45 @@ Return ONLY a valid JSON array with this exact format, no other text:
     if (!aiResponse.ok) {
       const errText = await aiResponse.text();
       console.error('Gemini API error:', aiResponse.status, errText);
+      
+      // If 2.0-flash fails (e.g. JSON mode not supported with grounding), retry without responseMimeType
+      if (aiResponse.status === 400) {
+        console.log('Retrying without responseMimeType...');
+        const retryResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{
+              parts: [{
+                text: `You are a rewards verification bot. Date: ${today}.
+Find 12 active Free Fire redeem codes. ${loc.query} Codes MUST be for the ${region} server only. Each code is typically 12-16 alphanumeric characters.
+
+CRITICAL: Your ENTIRE response must be ONLY a valid JSON array. No explanation, no markdown, no text before or after.
+Format: [{"code":"XXXX-XXXX-XXXX","reward":"description","category":"Diamond|Skin|Bundle|Voucher|Pet"}]`
+              }]
+            }],
+            tools: [{ google_search: {} }],
+            generationConfig: {
+              temperature: 0.5,
+              maxOutputTokens: 2048,
+            }
+          }),
+        });
+        
+        if (!retryResponse.ok) {
+          const retryErr = await retryResponse.text();
+          console.error('Retry also failed:', retryResponse.status, retryErr);
+          if (retryResponse.status === 429) {
+            return new Response(JSON.stringify({ error: 'Rate limited, will retry next cycle' }), {
+              status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+            });
+          }
+          throw new Error(`Gemini API failed: ${retryResponse.status}`);
+        }
+        
+        return await processGeminiResponse(retryResponse, region, hourKey, supabase, corsHeaders);
+      }
+      
       if (aiResponse.status === 429) {
         return new Response(JSON.stringify({ error: 'Rate limited, will retry next cycle' }), {
           status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -83,82 +122,7 @@ Return ONLY a valid JSON array with this exact format, no other text:
       throw new Error(`Gemini API failed: ${aiResponse.status}`);
     }
 
-    const aiData = await aiResponse.json();
-    
-    // Extract text from Gemini response
-    let discovered: any[] = [];
-    try {
-      const text = aiData.candidates?.[0]?.content?.parts
-        ?.map((p: any) => p.text || '')
-        .join('') || '';
-      
-      if (text) {
-        const jsonMatch = text.match(/\[\s*\{[\s\S]*\}\s*\]/);
-        if (jsonMatch) {
-          discovered = JSON.parse(jsonMatch[0]);
-        } else {
-          const cleanText = text.replace(/```json/g, '').replace(/```/g, '').trim();
-          discovered = JSON.parse(cleanText);
-        }
-      }
-    } catch (parseErr) {
-      console.error('Parse error:', parseErr);
-      return new Response(JSON.stringify({ error: 'parse_failed' }), {
-        status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
-    }
-
-    if (!Array.isArray(discovered) || discovered.length === 0) {
-      return new Response(JSON.stringify({ error: 'no_codes_found' }), {
-        status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
-    }
-
-    // Extract citations from grounding metadata
-    const citations = aiData.candidates?.[0]?.groundingMetadata?.groundingChunks?.map((chunk: any) => ({
-      uri: chunk.web?.uri || '',
-      title: chunk.web?.title || ''
-    })).filter((c: any) => c.uri) || [];
-
-    // Insert codes into DB
-    const rows = discovered.map((item: any) => ({
-      region,
-      hour_key: hourKey,
-      code: item.code || 'FF-UNKNOWN',
-      reward: item.reward || 'Garena Reward',
-      category: item.category || 'Bundle',
-      slug: `${region.toLowerCase()}-${hourKey}-${(item.code || '').toLowerCase().replace(/[^a-z0-9]/g, '')}`,
-      status: 'Working',
-      probability: citations.length > 0 ? 99 : 85,
-      recent_claims: Math.floor(Math.random() * 1000) + 300,
-      likes: Math.floor(Math.random() * 500) + 150,
-      citations: citations,
-    }));
-
-    const { error: insertError } = await supabase
-      .from('synced_codes')
-      .upsert(rows, { onConflict: 'region,hour_key,code' });
-
-    if (insertError) {
-      console.error('Insert error:', insertError);
-      throw new Error(`DB insert failed: ${insertError.message}`);
-    }
-
-    // Log the sync
-    await supabase.from('sync_log').upsert({
-      region,
-      hour_key: hourKey,
-      code_count: rows.length,
-    }, { onConflict: 'region,hour_key' });
-
-    return new Response(JSON.stringify({
-      status: 'synced',
-      region,
-      hour_key: hourKey,
-      codes_count: rows.length,
-    }), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    });
+    return await processGeminiResponse(aiResponse, region, hourKey, supabase, corsHeaders);
 
   } catch (e) {
     console.error('sync-codes error:', e);
@@ -167,3 +131,94 @@ Return ONLY a valid JSON array with this exact format, no other text:
     });
   }
 });
+
+async function processGeminiResponse(
+  aiResponse: Response,
+  region: string,
+  hourKey: string,
+  supabase: any,
+  corsHeaders: Record<string, string>
+) {
+  const aiData = await aiResponse.json();
+
+  // Extract text from all parts
+  let discovered: any[] = [];
+  try {
+    const parts = aiData.candidates?.[0]?.content?.parts || [];
+    const allText = parts.map((p: any) => p.text || '').join('');
+
+    if (allText) {
+      // Try direct parse first (works when responseMimeType is set)
+      try {
+        const parsed = JSON.parse(allText);
+        discovered = Array.isArray(parsed) ? parsed : [];
+      } catch {
+        // Extract JSON array from mixed text
+        const jsonMatch = allText.match(/\[\s*\{[\s\S]*?\}\s*\]/);
+        if (jsonMatch) {
+          discovered = JSON.parse(jsonMatch[0]);
+        } else {
+          const cleanText = allText.replace(/```json\s*/g, '').replace(/```\s*/g, '').trim();
+          discovered = JSON.parse(cleanText);
+        }
+      }
+    }
+  } catch (parseErr) {
+    console.error('Parse error:', parseErr);
+    return new Response(JSON.stringify({ error: 'parse_failed' }), {
+      status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
+
+  if (!Array.isArray(discovered) || discovered.length === 0) {
+    return new Response(JSON.stringify({ error: 'no_codes_found' }), {
+      status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
+
+  // Extract citations from grounding metadata
+  const citations = aiData.candidates?.[0]?.groundingMetadata?.groundingChunks?.map((chunk: any) => ({
+    uri: chunk.web?.uri || '',
+    title: chunk.web?.title || ''
+  })).filter((c: any) => c.uri) || [];
+
+  // Insert codes into DB
+  const rows = discovered.map((item: any) => ({
+    region,
+    hour_key: hourKey,
+    code: item.code || 'FF-UNKNOWN',
+    reward: item.reward || 'Garena Reward',
+    category: item.category || 'Bundle',
+    slug: `${region.toLowerCase()}-${hourKey}-${(item.code || '').toLowerCase().replace(/[^a-z0-9]/g, '')}`,
+    status: 'Working',
+    probability: citations.length > 0 ? 99 : 85,
+    recent_claims: Math.floor(Math.random() * 1000) + 300,
+    likes: Math.floor(Math.random() * 500) + 150,
+    citations: citations,
+  }));
+
+  const { error: insertError } = await supabase
+    .from('synced_codes')
+    .upsert(rows, { onConflict: 'region,hour_key,code' });
+
+  if (insertError) {
+    console.error('Insert error:', insertError);
+    throw new Error(`DB insert failed: ${insertError.message}`);
+  }
+
+  // Log the sync
+  await supabase.from('sync_log').upsert({
+    region,
+    hour_key: hourKey,
+    code_count: rows.length,
+  }, { onConflict: 'region,hour_key' });
+
+  return new Response(JSON.stringify({
+    status: 'synced',
+    region,
+    hour_key: hourKey,
+    codes_count: rows.length,
+  }), {
+    headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+  });
+}
