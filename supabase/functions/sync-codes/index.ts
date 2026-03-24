@@ -116,16 +116,28 @@ Categories allowed: Diamond, Skin, Bundle, Voucher, Pet`;
     let discovered: any[] = [];
     try {
       const parts = aiData.candidates?.[0]?.content?.parts || [];
-      const allText = parts.map((p: any) => p.text || '').join('');
+      // Filter out thinking parts (gemini-2.5-flash has thought:true parts)
+      const textParts = parts.filter((p: any) => !p.thought && p.text);
+      const allText = textParts.map((p: any) => p.text || '').join('');
+      
+      console.log('Raw response text length:', allText.length, 'First 300 chars:', allText.substring(0, 300));
 
       if (allText) {
+        // Try direct parse first
         try {
-          const parsed = JSON.parse(allText);
+          const parsed = JSON.parse(allText.trim());
           discovered = Array.isArray(parsed) ? parsed : [];
         } catch {
-          const jsonMatch = allText.match(/\[\s*\{[\s\S]*?\}\s*\]/);
+          // Extract JSON array from mixed text — greedy match
+          const jsonMatch = allText.match(/\[[\s\S]*\]/);
           if (jsonMatch) {
-            discovered = JSON.parse(jsonMatch[0]);
+            try {
+              discovered = JSON.parse(jsonMatch[0]);
+            } catch {
+              // Try cleaning control characters
+              const cleaned = jsonMatch[0].replace(/[\x00-\x1F\x7F]/g, ' ');
+              discovered = JSON.parse(cleaned);
+            }
           } else {
             const cleanText = allText.replace(/```json\s*/g, '').replace(/```\s*/g, '').trim();
             discovered = JSON.parse(cleanText);
