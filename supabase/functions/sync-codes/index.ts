@@ -14,8 +14,43 @@ const REGIONS: Record<string, { query: string; server: string }> = {
   'EUROPE': { query: 'Free Fire Europe (EU) server redeem codes. Exclude other regions.', server: 'EUROPE (EU)' },
 };
 
-// Models to try in order — free tier availability varies by API key
-const MODELS = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash'];
+const MODELS = ['gemini-2.5-flash', 'gemini-1.5-flash'];
+
+function extractJsonArray(text: string): any[] | null {
+  // Clean control characters
+  const clean = text.replace(/[\x00-\x09\x0B\x0C\x0E-\x1F\x7F]/g, ' ');
+  
+  // Try direct parse
+  try {
+    const parsed = JSON.parse(clean.trim());
+    if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+  } catch {}
+
+  // Find all JSON array candidates and return the longest valid one
+  const regex = /\[[\s\S]*?\}\s*\]/g;
+  let best: any[] | null = null;
+  let match;
+  
+  while ((match = regex.exec(clean)) !== null) {
+    try {
+      const arr = JSON.parse(match[0]);
+      if (Array.isArray(arr) && arr.length > 0) {
+        if (!best || arr.length > best.length) best = arr;
+      }
+    } catch {}
+  }
+  
+  if (best) return best;
+
+  // Try after stripping markdown
+  const stripped = clean.replace(/```json\s*/g, '').replace(/```\s*/g, '').trim();
+  try {
+    const parsed = JSON.parse(stripped);
+    if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+  } catch {}
+
+  return null;
+}
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
@@ -56,13 +91,12 @@ serve(async (req) => {
 Find 12 active Free Fire redeem codes. ${loc.query} Codes MUST be for the ${region} server only. Each code is typically 12-16 alphanumeric characters, sometimes with hyphens.
 
 You MUST respond with ONLY a JSON array. No explanations. No markdown code blocks. Just the raw JSON array.
-Example format: [{"code":"FF12-ABCD-5678","reward":"500 Diamonds","category":"Diamond"}]
+Example: [{"code":"FF12-ABCD-5678","reward":"500 Diamonds","category":"Diamond"}]
 Categories allowed: Diamond, Skin, Bundle, Voucher, Pet`;
 
-    // Try each model until one works
     let aiData: any = null;
     let lastError = '';
-    
+
     for (const model of MODELS) {
       console.log(`Trying model: ${model}`);
       try {
@@ -76,23 +110,22 @@ Categories allowed: Diamond, Skin, Bundle, Voucher, Pet`;
               tools: [{ google_search: {} }],
               generationConfig: {
                 temperature: 0.5,
-                maxOutputTokens: 2048,
+                maxOutputTokens: 4096,
               },
             }),
           }
         );
 
         if (aiResponse.status === 429 || aiResponse.status === 404) {
-          const errBody = await aiResponse.text();
           lastError = `${model}: ${aiResponse.status}`;
+          await aiResponse.text(); // consume body
           console.log(`${model} returned ${aiResponse.status}, trying next...`);
           continue;
         }
 
         if (!aiResponse.ok) {
-          const errBody = await aiResponse.text();
-          lastError = `${model}: ${aiResponse.status} ${errBody.substring(0, 200)}`;
-          console.error(`${model} error:`, aiResponse.status);
+          lastError = `${model}: ${aiResponse.status}`;
+          await aiResponse.text();
           continue;
         }
 
@@ -101,7 +134,6 @@ Categories allowed: Diamond, Skin, Bundle, Voucher, Pet`;
         break;
       } catch (fetchErr) {
         lastError = `${model}: ${fetchErr}`;
-        console.error(`${model} fetch error:`, fetchErr);
         continue;
       }
     }
@@ -112,50 +144,35 @@ Categories allowed: Diamond, Skin, Bundle, Voucher, Pet`;
       });
     }
 
-    // Extract and parse JSON from response
-    let discovered: any[] = [];
-    try {
-      const parts = aiData.candidates?.[0]?.content?.parts || [];
-      // Filter out thinking parts (gemini-2.5-flash has thought:true parts)
-      const textParts = parts.filter((p: any) => !p.thought && p.text);
-      const allText = textParts.map((p: any) => p.text || '').join('');
-      
-      console.log('Raw response text length:', allText.length, 'First 300 chars:', allText.substring(0, 300));
+    // Extract text — handle each part separately to avoid fragment concatenation issues
+    const parts = aiData.candidates?.[0]?.content?.parts || [];
+    const textParts = parts.filter((p: any) => !p.thought && p.text);
+    
+    let discovered: any[] | null = null;
 
-      if (allText) {
-        // Try direct parse first
-        try {
-          const parsed = JSON.parse(allText.trim());
-          discovered = Array.isArray(parsed) ? parsed : [];
-        } catch {
-          // Extract JSON array from mixed text — greedy match
-          const jsonMatch = allText.match(/\[[\s\S]*\]/);
-          if (jsonMatch) {
-            try {
-              discovered = JSON.parse(jsonMatch[0]);
-            } catch {
-              // Try cleaning control characters
-              const cleaned = jsonMatch[0].replace(/[\x00-\x1F\x7F]/g, ' ');
-              discovered = JSON.parse(cleaned);
-            }
-          } else {
-            const cleanText = allText.replace(/```json\s*/g, '').replace(/```\s*/g, '').trim();
-            discovered = JSON.parse(cleanText);
-          }
-        }
+    // Try each text part individually first (find the one with the best JSON)
+    for (const part of textParts) {
+      const result = extractJsonArray(part.text);
+      if (result && (!discovered || result.length > discovered.length)) {
+        discovered = result;
       }
-    } catch (parseErr) {
-      console.error('Parse error:', parseErr);
+    }
+
+    // If no single part worked, try concatenated text
+    if (!discovered) {
+      const allText = textParts.map((p: any) => p.text).join('');
+      console.log('Concatenated text length:', allText.length, 'Preview:', allText.substring(0, 300));
+      discovered = extractJsonArray(allText);
+    }
+
+    if (!discovered || discovered.length === 0) {
+      console.error('Could not parse codes from response');
       return new Response(JSON.stringify({ error: 'parse_failed' }), {
         status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
-    if (!Array.isArray(discovered) || discovered.length === 0) {
-      return new Response(JSON.stringify({ error: 'no_codes_found' }), {
-        status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
-    }
+    console.log(`Parsed ${discovered.length} codes`);
 
     const citations = aiData.candidates?.[0]?.groundingMetadata?.groundingChunks?.map((chunk: any) => ({
       uri: chunk.web?.uri || '',
