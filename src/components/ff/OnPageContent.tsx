@@ -9,11 +9,9 @@ const FAQ: React.FC<{ q: string; a: string }> = ({ q, a }) => {
         <span className="font-tech text-sm font-bold text-foreground pr-4" itemProp="name">{q}</span>
         {open ? <ChevronUp size={16} className="text-success shrink-0" /> : <ChevronDown size={16} className="text-t-muted shrink-0" />}
       </button>
-      {open && (
-        <div className="px-5 py-3.5 bg-muted/30 border-t border-border" itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
-          <p className="text-sm text-t-body leading-relaxed" itemProp="text">{a}</p>
-        </div>
-      )}
+      <div className={`${open ? '' : 'hidden'} px-5 py-3.5 bg-muted/30 border-t border-border`} itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
+        <p className="text-sm text-t-body leading-relaxed" itemProp="text">{a}</p>
+      </div>
     </div>
   );
 };
