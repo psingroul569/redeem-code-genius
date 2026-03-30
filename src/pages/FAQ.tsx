@@ -487,18 +487,16 @@ const FAQ = () => {
                     <ChevronDown className="text-muted-foreground flex-shrink-0" size={20} />
                   )}
                 </button>
-                {openItems.includes(item.id) && (
-                  <div
-                    className="px-6 pb-4"
-                    itemScope
-                    itemProp="acceptedAnswer"
-                    itemType="https://schema.org/Answer"
-                  >
-                    <div className="border-t border-border pt-4">
-                      <p className="text-muted-foreground leading-relaxed" itemProp="text">{item.answer}</p>
-                    </div>
+                <div
+                  className={`${openItems.includes(item.id) ? '' : 'hidden'} px-6 pb-4`}
+                  itemScope
+                  itemProp="acceptedAnswer"
+                  itemType="https://schema.org/Answer"
+                >
+                  <div className="border-t border-border pt-4">
+                    <p className="text-muted-foreground leading-relaxed" itemProp="text">{item.answer}</p>
                   </div>
-                )}
+                </div>
               </div>
             ))
           )}

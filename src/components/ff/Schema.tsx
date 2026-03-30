@@ -61,7 +61,17 @@ export const Schema: React.FC<SchemaProps> = ({ currentView, selectedCode }) => 
     "name": SITE_NAME,
     "url": DEFAULT_URL,
     "logo": `${DEFAULT_URL}/logo.png`,
-    "sameAs": [],
+    "sameAs": [
+      "https://x.com/FalconFF_Real"
+    ],
+    "founder": {
+      "@type": "Person",
+      "name": LEAD_AUTHOR.name,
+      "jobTitle": LEAD_AUTHOR.role,
+      "description": LEAD_AUTHOR.bio,
+      "image": LEAD_AUTHOR.image,
+      "sameAs": ["https://x.com/FalconFF_Real"]
+    },
     "contactPoint": {
       "@type": "ContactPoint",
       "contactType": "customer support",

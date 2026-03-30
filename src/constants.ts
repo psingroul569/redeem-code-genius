@@ -19,7 +19,7 @@ export const LEAD_AUTHOR: AuthorProfile = {
   name: "Jaxon Lee",
   role: "Lead Rewards Analyst",
   experience: "7 Years (Since Beta 2017)",
-  bio: "Jaxon is a Free Fire analyst and specialist with deep knowledge of Garena in-game event and update system. He specializes in analyzing event and new updates with patterns and predicting reward code drops 24 hours in advance. His Free Fire Redeem Code verification Process help gaming communities track accurate Free Fire redeem codes.",
+  bio: "Jaxon is a Free Fire analyst with deep knowledge of Garena's in-game event and update systems. He specializes in analyzing event patterns and predicting reward code drops up to 24 hours in advance. His verification process helps gaming communities track accurate, working Free Fire redeem codes across all server regions.",
   badges: ["Ex-Garena Moderator", "Verified Wiki Contributor", "Esports Analyst"],
   image: "https://i.ibb.co/Kxc3C8Ts/Jaxon-Free-Fire-1.jpg?auto=format&fit=crop&q=80&w=96",
   socialHandle: "@FalconFF_Real",
