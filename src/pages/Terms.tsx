@@ -22,7 +22,7 @@ const sections = [
     body: "Welcome to 'Free Fire Redeem Code Today'.By visiting or using this website, you agree to the terms and conditions set forth on this page. These Terms & Conditions apply to everyone who accesses the site whether you are here to obtain codes, browse content, or are simply passing through.",
     note: {
       label: "Please note",
-      text: "If you do not agree with any part of these terms, please do not use this website. Continued use means you accept everything outlined here.",
+      text: "If you do not agree with any part of these terms, please do not use this website. Continued use signifies your acceptance of everything stated herein.",
     },
   },
   {
@@ -161,7 +161,7 @@ const sections = [
     ],
     note: {
       label: "Limitation of Liability",
-      text: "We are not liable for any damages — direct, indirect, incidental, or consequential — that arise from your use of this website. You use the site entirely at your own risk.",
+      text: "We are not liable for any damages direct, indirect, incidental, or consequential that arise from your use of this website. You use the site entirely at your own risk.",
     },
   },
   {
