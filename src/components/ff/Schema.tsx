@@ -1,5 +1,5 @@
 import React from 'react';
-import { SEO_FAQS, DEFAULT_URL, SITE_NAME, LEAD_AUTHOR } from '@/constants';
+import { DEFAULT_URL, SITE_NAME, LEAD_AUTHOR } from '@/constants';
 import { AppView, RedeemCode } from '@/types';
 
 interface SchemaProps {
