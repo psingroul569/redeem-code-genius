@@ -27,11 +27,6 @@ export const Schema: React.FC<SchemaProps> = ({ currentView, selectedCode }) => 
     "liveBlogUpdate": selectedCode ? [{ "@type": "BlogPosting", "headline": `New Code Verified: ${selectedCode.code}`, "articleBody": `A new ${selectedCode.reward} code has been verified for the ${selectedCode.server} region.`, "datePublished": currentDate }] : []
   };
 
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": SEO_FAQS.map(item => ({ "@type": "Question", "name": item.question, "acceptedAnswer": { "@type": "Answer", "text": item.answer } }))
-  };
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -85,7 +80,7 @@ export const Schema: React.FC<SchemaProps> = ({ currentView, selectedCode }) => 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(liveBlogSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      
     </>
   );
 };
