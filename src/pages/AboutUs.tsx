@@ -17,8 +17,17 @@ const AboutUs = () => {
       "foundingDate": "2023",
       "description": "Independent Free Fire redeem code verification platform serving millions of Garena Free Fire players worldwide.",
       "sameAs": [
-        "https://freefireredeemcodetoday.com"
-      ]
+        "https://freefireredeemcodetoday.com",
+        "https://x.com/FalconFF_Real"
+      ],
+      "founder": {
+        "@type": "Person",
+        "name": "Jaxon Lee",
+        "jobTitle": "Lead Rewards Analyst",
+        "description": "Free Fire analyst since 2017 with 7+ years of experience tracking Garena's event patterns and reward cycles.",
+        "image": "https://i.ibb.co/Kxc3C8Ts/Jaxon-Free-Fire-1.jpg",
+        "sameAs": ["https://x.com/FalconFF_Real"]
+      }
     }
   };
 

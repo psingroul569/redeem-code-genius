@@ -61,7 +61,7 @@ export const AuthorityHub: React.FC = () => {
                   <span className="text-[10px] text-t-muted font-tech uppercase tracking-widest">
                     Experience: {LEAD_AUTHOR.experience}
                   </span>
-                  <a href="#" className="text-t-muted hover:text-foreground transition-colors">
+                  <a href={`https://x.com/${LEAD_AUTHOR.socialHandle?.replace('@', '')}`} target="_blank" rel="noopener noreferrer" className="text-t-muted hover:text-foreground transition-colors" aria-label={`Follow ${LEAD_AUTHOR.name} on X`}>
                     <Twitter size={18} />
                   </a>
                 </div>
