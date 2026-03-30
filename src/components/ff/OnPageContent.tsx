@@ -135,7 +135,7 @@ export const OnPageContent: React.FC = () => (
       <h2 className="text-2xl md:text-3xl font-display text-foreground uppercase italic tracking-tight mb-4">
         Frequently Asked <span className="text-success">Questions</span>
       </h2>
-      <div className="space-y-2" itemScope itemType="https://schema.org/FAQPage">
+      <div className="space-y-2">
         {FAQS.map(f => <FAQ key={f.q} q={f.q} a={f.a} />)}
       </div>
       <p className="text-[11px] text-t-muted mt-4 text-center font-tech">
