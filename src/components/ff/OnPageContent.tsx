@@ -143,18 +143,7 @@ export const OnPageContent: React.FC = () => (
       </p>
     </div>
 
-    {/* JSON-LD Schemas */}
-    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-      "@context": "https://schema.org", "@type": "FAQPage",
-      "mainEntity": FAQS.map(f => ({ "@type": "Question", "name": f.q, "acceptedAnswer": { "@type": "Answer", "text": f.a } }))
-    }) }} />
-    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-      "@context": "https://schema.org", "@type": "HowTo",
-      "name": "How to Redeem Free Fire Codes",
-      "description": "Step-by-step guide to redeem Free Fire reward codes on the official Garena site.",
-      "totalTime": "PT1M",
-      "step": STEPS.map((s, i) => ({ "@type": "HowToStep", "position": i + 1, "name": s.title, "text": s.text }))
-    }) }} />
+    {/* JSON-LD schemas moved to static index.html for crawler visibility */}
   </section>
 );
 

@@ -74,13 +74,11 @@ export const Schema: React.FC<SchemaProps> = ({ currentView, selectedCode }) => 
     }
   };
 
+  // WebSite, Organization, FAQPage, HowTo, BreadcrumbList schemas are now static in index.html
+  // Only LiveBlogPosting remains dynamic (it references real-time code data)
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(liveBlogSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      
     </>
   );
 };
