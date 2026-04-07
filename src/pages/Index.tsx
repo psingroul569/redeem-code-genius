@@ -166,18 +166,24 @@ const Index = () => {
     return () => clearInterval(retry);
   }, [activeRegion, isPlaceholder, loadRegionData]);
 
+  // Defer realtime subscription to reduce main-thread work at load
+  const realtimeSetup = useRef(false);
   useEffect(() => {
-    const channel = supabase.
-    channel('synced-codes-realtime').
-    on(
-      'postgres_changes',
-      { event: 'INSERT', schema: 'public', table: 'synced_codes', filter: `region=eq.${activeRegion}` },
-      () => {
-        loadRegionData(activeRegion, true);
-      }
-    ).
-    subscribe();
-    return () => {supabase.removeChannel(channel);};
+    if (realtimeSetup.current) return;
+    const timer = setTimeout(async () => {
+      realtimeSetup.current = true;
+      const { supabase } = await import('@/integrations/supabase/client');
+      const channel = supabase
+        .channel('synced-codes-realtime')
+        .on(
+          'postgres_changes',
+          { event: 'INSERT', schema: 'public', table: 'synced_codes', filter: `region=eq.${activeRegion}` },
+          () => { loadRegionData(activeRegion, true); }
+        )
+        .subscribe();
+      return () => { supabase.removeChannel(channel); };
+    }, 3000); // delay 3s after mount
+    return () => clearTimeout(timer);
   }, [activeRegion, loadRegionData]);
 
   useEffect(() => {
