@@ -95,28 +95,30 @@ export const CodeCard: React.FC<Props> = ({ data, onSelect }) => {
            <span className="text-[9px] text-t-muted font-tech uppercase font-bold tracking-widest">Verification Proof</span>
            <span className="text-[8px] text-success/50 font-mono">HASH: 0x{Math.random().toString(16).slice(2,8)}</span>
         </div>
-        <div className="flex flex-wrap gap-1.5">
-           {data.citations && data.citations.length > 0 ? (
-             data.citations.slice(0, 2).map((cite, i) => (
-                <div key={i} className="flex items-center gap-1.5 px-2 py-1 bg-surface border border-border rounded text-[8px] text-t-muted max-w-[120px]">
-                   <Link size={8} /> <span className="truncate">{cite.title}</span>
+         <div className="flex items-center justify-between gap-2">
+           <div className="flex flex-wrap gap-1.5">
+              {data.citations && data.citations.length > 0 ? (
+                data.citations.slice(0, 2).map((cite, i) => (
+                   <div key={i} className="flex items-center gap-1.5 px-2 py-1 bg-surface border border-border rounded text-[8px] text-t-muted max-w-[120px]">
+                      <Link size={8} /> <span className="truncate">{cite.title}</span>
+                   </div>
+                ))
+              ) : (
+                <div className="flex items-center gap-1.5 px-2 py-1 bg-success-bg border border-success-border rounded text-[8px] text-success/60">
+                   <ShieldCheck size={8} /> Garena Official News
                 </div>
-             ))
-           ) : (
-             <div className="flex items-center gap-1.5 px-2 py-1 bg-success-bg border border-success-border rounded text-[8px] text-success/60">
-                <ShieldCheck size={8} /> Garena Official News
-             </div>
-            )}
+              )}
+           </div>
+           <a
+             href="https://reward.ff.garena.com/"
+             target="_blank"
+             rel="noopener noreferrer"
+             onClick={(e) => e.stopPropagation()}
+             className="flex-shrink-0 px-3 py-1.5 rounded-lg bg-success text-success-bg font-tech text-[8px] font-bold uppercase tracking-widest hover:brightness-110 transition-all"
+           >
+             Redeem
+           </a>
          </div>
-         <a
-           href="https://reward.ff.garena.com/"
-           target="_blank"
-           rel="noopener noreferrer"
-           onClick={(e) => e.stopPropagation()}
-           className="mt-3 w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-success text-success-bg font-tech text-[11px] font-bold uppercase tracking-widest hover:brightness-110 transition-all"
-         >
-           Redeem Now
-         </a>
        </div>
       <div className="pt-4 border-t border-border flex items-center justify-between mt-auto relative z-10">
          <div className="flex flex-col">
