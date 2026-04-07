@@ -494,7 +494,7 @@ const FAQ = () => {
                   itemType="https://schema.org/Answer"
                 >
                   <div className="border-t border-border pt-4">
-                    <p className="text-muted-foreground leading-relaxed" itemProp="text">{item.answer}</p>
+                    <p className="text-muted-foreground leading-relaxed" itemProp="text" dangerouslySetInnerHTML={{ __html: item.answer.replace(/reward\.ff\.garena\.com/g, '<a href="https://reward.ff.garena.com" target="_blank" rel="noopener noreferrer" class="text-accent font-semibold underline hover:no-underline">reward.ff.garena.com</a>') }} />
                   </div>
                 </div>
               </div>

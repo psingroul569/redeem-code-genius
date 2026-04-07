@@ -11,7 +11,7 @@ const FAQ: React.FC<{ q: string; a: string }> = ({ q, a }) => {
         {open ? <ChevronUp size={16} className="text-success shrink-0" /> : <ChevronDown size={16} className="text-t-muted shrink-0" />}
       </button>
       <div className={`${open ? '' : 'hidden'} px-5 py-3.5 bg-muted/30 border-t border-border`} itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
-        <p className="text-sm text-t-body leading-relaxed" itemProp="text">{a}</p>
+        <p className="text-sm text-t-body leading-relaxed" itemProp="text" dangerouslySetInnerHTML={{ __html: a.replace(/reward\.ff\.garena\.com/g, '<a href="https://reward.ff.garena.com" target="_blank" rel="noopener noreferrer" class="text-success font-bold underline hover:no-underline">reward.ff.garena.com</a>') }} />
       </div>
     </div>
   );
@@ -35,7 +35,7 @@ export const OnPageContent: React.FC = () => (
           Free Fire redeem codes are <strong>12-character alphanumeric strings</strong> (like <code className="bg-muted px-1.5 py-0.5 rounded text-foreground text-xs">FF11-NJN5-YS3E</code>) that Garena distributes through official social media accounts, in-game event banners, partner livestreams, and esports tournament broadcasts.
         </p>
         <p>
-          When you enter a valid code on the official rewards site (<strong>reward.ff.garena.com</strong>), the corresponding item — diamonds, weapon skins, character bundles, emotes, or consumables — gets deposited directly into your in-game mailbox. You don't need to download anything or provide your password anywhere.
+          When you enter a valid code on the official rewards site (<a href="https://reward.ff.garena.com" target="_blank" rel="noopener noreferrer" className="text-success font-bold underline hover:no-underline">reward.ff.garena.com</a>), the corresponding item — diamonds, weapon skins, character bundles, emotes, or consumables — gets deposited directly into your in-game mailbox. You don't need to download anything or provide your password anywhere.
         </p>
 
         <h3 className="text-base font-display text-foreground uppercase tracking-tight pt-2">How Codes Work Technically</h3>
@@ -121,7 +121,7 @@ export const OnPageContent: React.FC = () => (
         </div>
         <div className="mt-6 bg-success/5 border border-success/20 rounded-xl p-4">
           <p className="text-sm text-t-body leading-relaxed">
-            <strong className="text-foreground">Security Reminder:</strong> The only official redemption URL is <strong>reward.ff.garena.com</strong>. Garena will never ask for your password through a redeem code site. If a website asks for your password, player ID, or phone number to "verify" a code — close it immediately. It's a phishing attempt.
+            <strong className="text-foreground">Security Reminder:</strong> The only official redemption URL is <a href="https://reward.ff.garena.com" target="_blank" rel="noopener noreferrer" className="text-success font-bold underline hover:no-underline">reward.ff.garena.com</a>. Garena will never ask for your password through a redeem code site. If a website asks for your password, player ID, or phone number to "verify" a code — close it immediately. It's a phishing attempt.
           </p>
         </div>
         <p className="text-sm text-t-body mt-4">

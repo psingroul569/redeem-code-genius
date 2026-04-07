@@ -106,10 +106,10 @@ const HowToGuide = () => {
                 title: 'Open the Official Garena Rewards Site',
                 content: (
                   <>
-                    <p>Go to <strong className="text-foreground">reward.ff.garena.com</strong> in your browser.</p>
+                    <p>Go to <a href="https://reward.ff.garena.com" target="_blank" rel="noopener noreferrer" className="text-success font-bold underline hover:no-underline">reward.ff.garena.com</a> in your browser.</p>
                     <p className="mt-2">This is the only official page where codes can be redeemed. Bookmark it for quick access. If you see any other URL claiming to redeem Free Fire codes, it's fake — close it immediately.</p>
                     <div className="mt-3 bg-destructive/5 border border-destructive/20 rounded-lg p-3">
-                      <p className="text-sm"><strong className="text-destructive">Warning:</strong> Fake sites often look almost identical to the real one. Always check the URL bar. The legitimate page is <code className="bg-muted px-1 rounded text-xs">reward.ff.garena.com</code> — nothing else.</p>
+                      <p className="text-sm"><strong className="text-destructive">Warning:</strong> Fake sites often look almost identical to the real one. Always check the URL bar. The legitimate page is <a href="https://reward.ff.garena.com" target="_blank" rel="noopener noreferrer" className="text-success font-bold underline hover:no-underline">reward.ff.garena.com</a> — nothing else.</p>
                     </div>
                   </>
                 )
