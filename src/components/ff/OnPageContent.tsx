@@ -35,7 +35,7 @@ export const OnPageContent: React.FC = () => (
           Free Fire redeem codes are <strong>12-character alphanumeric strings</strong> (like <code className="bg-muted px-1.5 py-0.5 rounded text-foreground text-xs">FF11-NJN5-YS3E</code>) that Garena distributes through official social media accounts, in-game event banners, partner livestreams, and esports tournament broadcasts.
         </p>
         <p>
-          When you enter a valid code on the official rewards site (<strong>reward.ff.garena.com</strong>), the corresponding item — diamonds, weapon skins, character bundles, emotes, or consumables — gets deposited directly into your in-game mailbox. You don't need to download anything or provide your password anywhere.
+          When you enter a valid code on the official rewards site (<a href="https://reward.ff.garena.com" target="_blank" rel="noopener noreferrer" className="text-success font-bold underline hover:no-underline">reward.ff.garena.com</a>), the corresponding item — diamonds, weapon skins, character bundles, emotes, or consumables — gets deposited directly into your in-game mailbox. You don't need to download anything or provide your password anywhere.
         </p>
 
         <h3 className="text-base font-display text-foreground uppercase tracking-tight pt-2">How Codes Work Technically</h3>
