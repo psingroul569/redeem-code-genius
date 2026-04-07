@@ -157,27 +157,24 @@ const AboutUs = () => {
           </div>
         </section>
 
-        {/* Our Numbers */}
+        {/* Our Approach */}
         <section className="mb-12">
           <div className="flex items-center gap-3 mb-6">
             <Shield className="w-5 h-5 text-primary" />
             <h2 className="text-xl md:text-2xl font-display uppercase tracking-tight text-foreground">
-              Our Track Record
+              How We Verify Codes
             </h2>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[
-              { value: "42,800+", label: "Codes Verified", sub: "Since 2023" },
-              { value: "98.5%", label: "Accuracy Rate", sub: "Community-verified" },
-              { value: "99.9%", label: "Platform Uptime", sub: "Always available" },
-              { value: "5+", label: "Server Regions", sub: "Global coverage" }
-            ].map((stat, i) => (
-              <div key={i} className="bg-card border border-border rounded-xl p-5 text-center">
-                <div className="text-2xl md:text-3xl font-display text-foreground mb-1">{stat.value}</div>
-                <div className="text-foreground text-xs font-bold uppercase tracking-wider mb-1">{stat.label}</div>
-                <div className="text-t-muted text-[11px]">{stat.sub}</div>
-              </div>
-            ))}
+          <div className="bg-card border border-border rounded-xl p-6 space-y-4 text-t-muted leading-relaxed">
+            <p>
+              We don't just copy codes from other sites. Our process works like this: we monitor official Garena social accounts, in-game event banners, esports stream chats, and community forums across all five server regions. When a new code surfaces, we test it on a live Free Fire account before publishing it here.
+            </p>
+            <p>
+              Every code on our site includes a server region label, the specific reward it gives, and a real-time status indicator (Working, Limited, or Expired). We remove or flag codes as soon as they stop working.
+            </p>
+            <p>
+              The site runs hourly checks. When Garena pushes a new batch — usually during server resets around midnight local time — we pick it up within minutes and publish it.
+            </p>
           </div>
         </section>
 
