@@ -186,20 +186,28 @@ const Index = () => {
     return () => clearTimeout(timer);
   }, [activeRegion, loadRegionData]);
 
+  // Compute date string once on mount, then start ticker after 2s delay
   useEffect(() => {
-    const ticker = setInterval(() => {
-      const now = new Date();
-      setDateStr(now.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }).toUpperCase());
-      const offset = REGION_OFFSETS[activeRegion] || 3;
-      let next = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), offset, 0);
-      const isPast = now.getTime() >= next.getTime();
-      setIsOverdue(isPast && (lastSyncTime === '--:--' || lastSyncTime === 'WAITING'));
-      if (isPast) next.setHours(next.getHours() + 1);
-      const diffMs = next.getTime() - now.getTime();
-      const totalSecs = Math.max(0, Math.floor(diffMs / 1000));
-      setNextUpdateText(`${Math.floor(totalSecs / 60).toString().padStart(2, '0')}M ${(totalSecs % 60).toString().padStart(2, '0')}S`);
-    }, 1000);
-    return () => clearInterval(ticker);
+    const now = new Date();
+    setDateStr(now.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }).toUpperCase());
+  }, []);
+
+  useEffect(() => {
+    const startTimer = setTimeout(() => {
+      const ticker = setInterval(() => {
+        const now = new Date();
+        const offset = REGION_OFFSETS[activeRegion] || 3;
+        let next = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), offset, 0);
+        const isPast = now.getTime() >= next.getTime();
+        setIsOverdue(isPast && (lastSyncTime === '--:--' || lastSyncTime === 'WAITING'));
+        if (isPast) next.setHours(next.getHours() + 1);
+        const diffMs = next.getTime() - now.getTime();
+        const totalSecs = Math.max(0, Math.floor(diffMs / 1000));
+        setNextUpdateText(`${Math.floor(totalSecs / 60).toString().padStart(2, '0')}M ${(totalSecs % 60).toString().padStart(2, '0')}S`);
+      }, 1000);
+      return () => clearInterval(ticker);
+    }, 2000);
+    return () => clearTimeout(startTimer);
   }, [activeRegion, lastSyncTime]);
 
   const handleSetView = (view: AppView) => {setCurrentView(view);window.scrollTo(0, 0);};
