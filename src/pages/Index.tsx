@@ -214,7 +214,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background text-foreground font-sans selection:bg-success selection:text-primary-foreground">
-      <Schema currentView={currentView} selectedCode={selectedCode} />
+      <Suspense fallback={null}><Schema currentView={currentView} selectedCode={selectedCode} /></Suspense>
       <Header currentView={currentView} setView={handleSetView} isSyncing={false} syncingRegion={null} theme={theme} onToggleTheme={toggleTheme} />
 
       <main className="w-full">
