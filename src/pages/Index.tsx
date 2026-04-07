@@ -1,8 +1,9 @@
-import { useEffect, useState, useCallback, Suspense, lazy } from 'react';
+import { useEffect, useState, useCallback, Suspense, lazy, useRef } from 'react';
 import React from 'react';
 import { Header } from '@/components/ff/Header';
 import { CodeCard } from '@/components/ff/CodeCard';
 import { AppView, RedeemCode } from '@/types';
+import { Clock, Timer, RefreshCcw, MapPin, AlertCircle, Loader2 } from 'lucide-react';
 import { codesSyncService } from '@/services/codesSyncService';
 import { useTheme } from '@/hooks/useTheme';
 
