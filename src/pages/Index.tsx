@@ -1,20 +1,20 @@
-import { useEffect, useState, useCallback, Suspense } from 'react';
+import { useEffect, useState, useCallback, Suspense, lazy, useRef } from 'react';
 import React from 'react';
 import { Header } from '@/components/ff/Header';
-const Footer = React.lazy(() => import('@/components/ff/Footer').then((m) => ({ default: m.Footer })));
 import { CodeCard } from '@/components/ff/CodeCard';
-import { Schema } from '@/components/ff/Schema';
-const AuthorityHub = React.lazy(() => import('@/components/ff/AuthorityHub').then((m) => ({ default: m.AuthorityHub })));
 import { AppView, RedeemCode } from '@/types';
-import { Clock, Loader2, Timer, RefreshCcw, MapPin, AlertCircle } from 'lucide-react';
+import { Clock, Timer, RefreshCcw, MapPin, AlertCircle, Loader2 } from 'lucide-react';
 import { codesSyncService } from '@/services/codesSyncService';
-import { supabase } from '@/integrations/supabase/client';
 import { useTheme } from '@/hooks/useTheme';
 
+const Schema = lazy(() => import('@/components/ff/Schema').then((m) => ({ default: m.Schema })));
+const Footer = lazy(() => import('@/components/ff/Footer').then((m) => ({ default: m.Footer })));
+const AuthorityHub = lazy(() => import('@/components/ff/AuthorityHub').then((m) => ({ default: m.AuthorityHub })));
+const OnPageContent = lazy(() => import('@/components/ff/OnPageContent'));
+const ContentView = lazy(() => import('@/components/ff/ContentView').then((m) => ({ default: m.ContentView })));
+const CodeDetailView = lazy(() => import('@/components/ff/CodeDetailView').then((m) => ({ default: m.CodeDetailView })));
 
-const ContentView = React.lazy(() => import('@/components/ff/ContentView').then((m) => ({ default: m.ContentView })));
-const CodeDetailView = React.lazy(() => import('@/components/ff/CodeDetailView').then((m) => ({ default: m.CodeDetailView })));
-const OnPageContent = React.lazy(() => import('@/components/ff/OnPageContent'));
+
 
 const REGIONS = ['GLOBAL', 'INDIA', 'BRAZIL', 'INDONESIA', 'EUROPE'];
 const REGION_OFFSETS: Record<string, number> = {
@@ -166,41 +166,55 @@ const Index = () => {
     return () => clearInterval(retry);
   }, [activeRegion, isPlaceholder, loadRegionData]);
 
+  // Defer realtime subscription to reduce main-thread work at load
+  const realtimeSetup = useRef(false);
   useEffect(() => {
-    const channel = supabase.
-    channel('synced-codes-realtime').
-    on(
-      'postgres_changes',
-      { event: 'INSERT', schema: 'public', table: 'synced_codes', filter: `region=eq.${activeRegion}` },
-      () => {
-        loadRegionData(activeRegion, true);
-      }
-    ).
-    subscribe();
-    return () => {supabase.removeChannel(channel);};
+    if (realtimeSetup.current) return;
+    const timer = setTimeout(async () => {
+      realtimeSetup.current = true;
+      const { supabase } = await import('@/integrations/supabase/client');
+      const channel = supabase
+        .channel('synced-codes-realtime')
+        .on(
+          'postgres_changes',
+          { event: 'INSERT', schema: 'public', table: 'synced_codes', filter: `region=eq.${activeRegion}` },
+          () => { loadRegionData(activeRegion, true); }
+        )
+        .subscribe();
+      return () => { supabase.removeChannel(channel); };
+    }, 3000); // delay 3s after mount
+    return () => clearTimeout(timer);
   }, [activeRegion, loadRegionData]);
 
+  // Compute date string once on mount, then start ticker after 2s delay
   useEffect(() => {
-    const ticker = setInterval(() => {
-      const now = new Date();
-      setDateStr(now.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }).toUpperCase());
-      const offset = REGION_OFFSETS[activeRegion] || 3;
-      let next = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), offset, 0);
-      const isPast = now.getTime() >= next.getTime();
-      setIsOverdue(isPast && (lastSyncTime === '--:--' || lastSyncTime === 'WAITING'));
-      if (isPast) next.setHours(next.getHours() + 1);
-      const diffMs = next.getTime() - now.getTime();
-      const totalSecs = Math.max(0, Math.floor(diffMs / 1000));
-      setNextUpdateText(`${Math.floor(totalSecs / 60).toString().padStart(2, '0')}M ${(totalSecs % 60).toString().padStart(2, '0')}S`);
-    }, 1000);
-    return () => clearInterval(ticker);
+    const now = new Date();
+    setDateStr(now.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }).toUpperCase());
+  }, []);
+
+  useEffect(() => {
+    const startTimer = setTimeout(() => {
+      const ticker = setInterval(() => {
+        const now = new Date();
+        const offset = REGION_OFFSETS[activeRegion] || 3;
+        let next = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), offset, 0);
+        const isPast = now.getTime() >= next.getTime();
+        setIsOverdue(isPast && (lastSyncTime === '--:--' || lastSyncTime === 'WAITING'));
+        if (isPast) next.setHours(next.getHours() + 1);
+        const diffMs = next.getTime() - now.getTime();
+        const totalSecs = Math.max(0, Math.floor(diffMs / 1000));
+        setNextUpdateText(`${Math.floor(totalSecs / 60).toString().padStart(2, '0')}M ${(totalSecs % 60).toString().padStart(2, '0')}S`);
+      }, 1000);
+      return () => clearInterval(ticker);
+    }, 2000);
+    return () => clearTimeout(startTimer);
   }, [activeRegion, lastSyncTime]);
 
   const handleSetView = (view: AppView) => {setCurrentView(view);window.scrollTo(0, 0);};
 
   return (
     <div className="min-h-screen bg-background text-foreground font-sans selection:bg-success selection:text-primary-foreground">
-      <Schema currentView={currentView} selectedCode={selectedCode} />
+      <Suspense fallback={null}><Schema currentView={currentView} selectedCode={selectedCode} /></Suspense>
       <Header currentView={currentView} setView={handleSetView} isSyncing={false} syncingRegion={null} theme={theme} onToggleTheme={toggleTheme} />
 
       <main className="w-full">
