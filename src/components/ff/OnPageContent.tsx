@@ -11,7 +11,7 @@ const FAQ: React.FC<{ q: string; a: string }> = ({ q, a }) => {
         {open ? <ChevronUp size={16} className="text-success shrink-0" /> : <ChevronDown size={16} className="text-t-muted shrink-0" />}
       </button>
       <div className={`${open ? '' : 'hidden'} px-5 py-3.5 bg-muted/30 border-t border-border`} itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
-        <p className="text-sm text-t-body leading-relaxed" itemProp="text">{a}</p>
+        <p className="text-sm text-t-body leading-relaxed" itemProp="text" dangerouslySetInnerHTML={{ __html: a.replace(/reward\.ff\.garena\.com/g, '<a href="https://reward.ff.garena.com" target="_blank" rel="noopener noreferrer" class="text-success font-bold underline hover:no-underline">reward.ff.garena.com</a>') }} />
       </div>
     </div>
   );
