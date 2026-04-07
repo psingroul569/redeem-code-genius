@@ -121,7 +121,7 @@ export const OnPageContent: React.FC = () => (
         </div>
         <div className="mt-6 bg-success/5 border border-success/20 rounded-xl p-4">
           <p className="text-sm text-t-body leading-relaxed">
-            <strong className="text-foreground">Security Reminder:</strong> The only official redemption URL is <strong>reward.ff.garena.com</strong>. Garena will never ask for your password through a redeem code site. If a website asks for your password, player ID, or phone number to "verify" a code — close it immediately. It's a phishing attempt.
+            <strong className="text-foreground">Security Reminder:</strong> The only official redemption URL is <a href="https://reward.ff.garena.com" target="_blank" rel="noopener noreferrer" className="text-success font-bold underline hover:no-underline">reward.ff.garena.com</a>. Garena will never ask for your password through a redeem code site. If a website asks for your password, player ID, or phone number to "verify" a code — close it immediately. It's a phishing attempt.
           </p>
         </div>
         <p className="text-sm text-t-body mt-4">
