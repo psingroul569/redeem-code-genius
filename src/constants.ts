@@ -26,9 +26,8 @@ export const LEAD_AUTHOR: AuthorProfile = {
 };
 
 export const TRUST_METRICS: TrustMetric[] = [
-  { label: "Codes Verified", value: "42,800+", icon: "CheckCircle", description: "Since platform launch in 2023" },
-  { label: "Community Trust", value: "98.5%", icon: "Shield", description: "Positive feedback on active codes" },
-  { label: "Uptime", value: "99.9%", icon: "Zap", description: "Always ready for server resets" },
+  { label: "Server Regions Tracked", value: "5", icon: "CheckCircle", description: "India, Brazil, Indonesia, Europe, Global" },
+  { label: "Update Frequency", value: "Hourly", icon: "Zap", description: "Codes checked every 60 minutes" },
 ];
 
 export const COMMUNITY_TESTIMONIALS: Testimonial[] = [
