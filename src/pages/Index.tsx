@@ -1,15 +1,17 @@
-import { useEffect, useState, useCallback, Suspense } from 'react';
+import { useEffect, useState, useCallback, Suspense, lazy } from 'react';
 import React from 'react';
 import { Header } from '@/components/ff/Header';
-const Footer = React.lazy(() => import('@/components/ff/Footer').then((m) => ({ default: m.Footer })));
 import { CodeCard } from '@/components/ff/CodeCard';
-import { Schema } from '@/components/ff/Schema';
-const AuthorityHub = React.lazy(() => import('@/components/ff/AuthorityHub').then((m) => ({ default: m.AuthorityHub })));
 import { AppView, RedeemCode } from '@/types';
-import { Clock, Loader2, Timer, RefreshCcw, MapPin, AlertCircle } from 'lucide-react';
 import { codesSyncService } from '@/services/codesSyncService';
-import { supabase } from '@/integrations/supabase/client';
 import { useTheme } from '@/hooks/useTheme';
+
+const Schema = lazy(() => import('@/components/ff/Schema').then((m) => ({ default: m.Schema })));
+const Footer = lazy(() => import('@/components/ff/Footer').then((m) => ({ default: m.Footer })));
+const AuthorityHub = lazy(() => import('@/components/ff/AuthorityHub').then((m) => ({ default: m.AuthorityHub })));
+const OnPageContent = lazy(() => import('@/components/ff/OnPageContent'));
+const ContentView = lazy(() => import('@/components/ff/ContentView').then((m) => ({ default: m.ContentView })));
+const CodeDetailView = lazy(() => import('@/components/ff/CodeDetailView').then((m) => ({ default: m.CodeDetailView })));
 
 
 const ContentView = React.lazy(() => import('@/components/ff/ContentView').then((m) => ({ default: m.ContentView })));
