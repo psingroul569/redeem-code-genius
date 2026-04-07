@@ -106,9 +106,18 @@ export const CodeCard: React.FC<Props> = ({ data, onSelect }) => {
              <div className="flex items-center gap-1.5 px-2 py-1 bg-success-bg border border-success-border rounded text-[8px] text-success/60">
                 <ShieldCheck size={8} /> Garena Official News
              </div>
-           )}
-        </div>
-      </div>
+            )}
+         </div>
+         <a
+           href="https://reward.ff.garena.com/"
+           target="_blank"
+           rel="noopener noreferrer"
+           onClick={(e) => e.stopPropagation()}
+           className="mt-3 w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-success text-success-bg font-tech text-[11px] font-bold uppercase tracking-widest hover:brightness-110 transition-all"
+         >
+           Redeem Now
+         </a>
+       </div>
       <div className="pt-4 border-t border-border flex items-center justify-between mt-auto relative z-10">
          <div className="flex flex-col">
              <span className="text-[8px] text-t-muted font-tech font-bold uppercase tracking-widest">Success Rate</span>
