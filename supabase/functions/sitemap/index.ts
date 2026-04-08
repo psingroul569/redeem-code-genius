@@ -30,8 +30,8 @@ Deno.serve(async () => {
     Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
   );
 
-  // Fetch published posts and pages in parallel
-  const [postsRes, pagesRes] = await Promise.all([
+  // Fetch published posts, pages, and latest synced codes in parallel
+  const [postsRes, pagesRes, codesRes] = await Promise.all([
     supabase
       .from("posts")
       .select("slug, updated_at, published_at")
@@ -42,10 +42,17 @@ Deno.serve(async () => {
       .from("pages")
       .select("slug, updated_at, published_at")
       .eq("status", "published"),
+    supabase
+      .from("synced_codes")
+      .select("slug, synced_at, region")
+      .eq("status", "Working")
+      .order("synced_at", { ascending: false })
+      .limit(100),
   ]);
 
   const posts = postsRes.data || [];
   const pages = pagesRes.data || [];
+  const codes = codesRes.data || [];
 
   let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
   xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
@@ -61,7 +68,7 @@ Deno.serve(async () => {
     xml += `  <url>\n    <loc>${escapeXml(DOMAIN + "/blogs/" + post.slug)}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.7</priority>\n  </url>\n`;
   }
 
-  // Dynamic CMS pages (skip slugs already in static list)
+  // Dynamic CMS pages
   const staticSlugs = new Set(staticPages.map((p) => p.loc.replace("/", "")));
   for (const page of pages) {
     if (staticSlugs.has(page.slug)) continue;
@@ -69,12 +76,21 @@ Deno.serve(async () => {
     xml += `  <url>\n    <loc>${escapeXml(DOMAIN + "/" + page.slug)}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.5</priority>\n  </url>\n`;
   }
 
+  // Individual redeem code pages
+  const seenSlugs = new Set<string>();
+  for (const code of codes) {
+    if (seenSlugs.has(code.slug)) continue;
+    seenSlugs.add(code.slug);
+    const lastmod = toW3CDate(code.synced_at);
+    xml += `  <url>\n    <loc>${escapeXml(DOMAIN + "/code/" + code.slug)}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>hourly</changefreq>\n    <priority>0.8</priority>\n  </url>\n`;
+  }
+
   xml += `</urlset>`;
 
   return new Response(xml, {
     headers: {
       "Content-Type": "application/xml",
-      "Cache-Control": "public, max-age=3600",
+      "Cache-Control": "public, max-age=1800",
     },
   });
 });
