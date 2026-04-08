@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { RedeemCode } from '@/types';
-import { ThumbsUp, ThumbsDown, ShieldCheck, Link } from 'lucide-react';
+import { ThumbsUp, ThumbsDown, ShieldCheck, Link as LinkIcon } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface Props {
   data: RedeemCode & { lastTested?: string };
