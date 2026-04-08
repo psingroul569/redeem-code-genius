@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Index from "./pages/Index";
 
+const CodePage = lazy(() => import("./pages/CodePage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const Blogs = lazy(() => import("./pages/Blogs"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
@@ -51,6 +52,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/code/:slug" element={<Wrap><CodePage /></Wrap>} />
           <Route path="/blogs" element={<Wrap><Blogs /></Wrap>} />
           <Route path="/blogs/:slug" element={<Wrap><BlogPost /></Wrap>} />
           <Route path="/how-to-guide" element={<Wrap><HowToGuide /></Wrap>} />

@@ -208,6 +208,26 @@ Categories allowed: Diamond, Skin, Bundle, Voucher, Pet`;
       code_count: rows.length,
     }, { onConflict: 'region,hour_key' });
 
+    // Ping IndexNow to notify search engines of new code pages
+    try {
+      const codeUrls = rows.map((r: any) => `https://freefireredeemcodetoday.com/code/${r.slug}`);
+      // Also include homepage since codes updated
+      const allUrls = ['https://freefireredeemcodetoday.com/', ...codeUrls];
+      await fetch('https://api.indexnow.org/indexnow', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          host: 'freefireredeemcodetoday.com',
+          key: 'ff-indexnow-key-2025',
+          keyLocation: 'https://freefireredeemcodetoday.com/ff-indexnow-key-2025.txt',
+          urlList: allUrls,
+        }),
+      });
+      console.log(`IndexNow pinged with ${allUrls.length} URLs`);
+    } catch (indexErr) {
+      console.log('IndexNow ping failed (non-critical):', indexErr);
+    }
+
     return new Response(JSON.stringify({
       status: 'synced',
       region,

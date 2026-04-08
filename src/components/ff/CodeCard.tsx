@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { RedeemCode } from '@/types';
-import { ThumbsUp, ThumbsDown, ShieldCheck, Link } from 'lucide-react';
+import { ThumbsUp, ThumbsDown, ShieldCheck, Link as LinkIcon } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface Props {
   data: RedeemCode & { lastTested?: string };
@@ -43,10 +44,13 @@ export const CodeCard: React.FC<Props> = ({ data, onSelect }) => {
   const isExpired = data.status === 'Expired';
   const isLimited = data.status === 'Limited';
 
+  const codeUrl = `/code/${data.slug}`;
+
   return (
-    <div 
-      onClick={onSelect}
-      className={`group relative bg-card border border-border hover:border-success/20 transition-all duration-300 rounded-2xl p-5 cursor-pointer overflow-hidden flex flex-col h-full shadow-lg hover:shadow-success/5 ${isExpired ? 'opacity-40 grayscale pointer-events-none' : ''}`}
+    <Link
+      to={isExpired ? '#' : codeUrl}
+      onClick={(e) => { if (!isExpired) onSelect(); else e.preventDefault(); }}
+      className={`group relative bg-card border border-border hover:border-success/20 transition-all duration-300 rounded-2xl p-5 cursor-pointer overflow-hidden flex flex-col h-full shadow-lg hover:shadow-success/5 block no-underline ${isExpired ? 'opacity-40 grayscale pointer-events-none' : ''}`}
     >
       <div className="absolute top-0 right-0 w-32 h-32 bg-success/5 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-success/10 transition-all"></div>
       {(data.recentClaims || 0) > 0 && (
@@ -100,7 +104,7 @@ export const CodeCard: React.FC<Props> = ({ data, onSelect }) => {
               {data.citations && data.citations.length > 0 ? (
                 data.citations.slice(0, 2).map((cite, i) => (
                    <div key={i} className="flex items-center gap-1.5 px-2 py-1 bg-surface border border-border rounded text-[8px] text-t-muted max-w-[120px]">
-                      <Link size={8} /> <span className="truncate">{cite.title}</span>
+                      <LinkIcon size={8} /> <span className="truncate">{cite.title}</span>
                    </div>
                 ))
               ) : (
@@ -139,6 +143,6 @@ export const CodeCard: React.FC<Props> = ({ data, onSelect }) => {
             </button>
          </div>
       </div>
-    </div>
+    </Link>
   );
 };
