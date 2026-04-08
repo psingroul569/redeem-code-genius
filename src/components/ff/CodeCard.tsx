@@ -143,6 +143,6 @@ export const CodeCard: React.FC<Props> = ({ data, onSelect }) => {
             </button>
          </div>
       </div>
-    </div>
+    </Link>
   );
 };
