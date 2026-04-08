@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Index from "./pages/Index";
 
+const CodePage = lazy(() => import("./pages/CodePage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const Blogs = lazy(() => import("./pages/Blogs"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
