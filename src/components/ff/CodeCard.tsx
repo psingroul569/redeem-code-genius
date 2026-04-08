@@ -104,7 +104,7 @@ export const CodeCard: React.FC<Props> = ({ data, onSelect }) => {
               {data.citations && data.citations.length > 0 ? (
                 data.citations.slice(0, 2).map((cite, i) => (
                    <div key={i} className="flex items-center gap-1.5 px-2 py-1 bg-surface border border-border rounded text-[8px] text-t-muted max-w-[120px]">
-                      <Link size={8} /> <span className="truncate">{cite.title}</span>
+                      <LinkIcon size={8} /> <span className="truncate">{cite.title}</span>
                    </div>
                 ))
               ) : (
