@@ -257,21 +257,7 @@ export const OnPageContent: React.FC = () => (
       </p>
     </div>
 
-    {/* JSON-LD FAQPage schema */}
-    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
-        { "@type": "Question", "name": "Are Free Fire redeem codes completely free?", "acceptedAnswer": { "@type": "Answer", "text": "Yes — 100% free. Garena releases them as part of promotions, events, and community rewards. You never need to pay, fill surveys, or download apps." } },
-        { "@type": "Question", "name": "How many codes can I redeem per day?", "acceptedAnswer": { "@type": "Answer", "text": "There is no daily limit. Each specific code works once per account, but you can redeem as many different codes as are available." } },
-        { "@type": "Question", "name": "Why does a code work for my friend but not for me?", "acceptedAnswer": { "@type": "Answer", "text": "You may be on different servers, the code may have hit its global cap, or you may have already used it before." } },
-        { "@type": "Question", "name": "Do codes work on guest accounts?", "acceptedAnswer": { "@type": "Answer", "text": "No. You must link your account to Facebook, Google, Apple ID, VK, or Huawei ID before redeeming." } },
-        { "@type": "Question", "name": "How long do codes stay active?", "acceptedAnswer": { "@type": "Answer", "text": "Most expire within 12–18 hours. Popular codes can be fully claimed within 2–4 hours due to redemption caps." } },
-        { "@type": "Question", "name": "When does Garena release new codes?", "acceptedAnswer": { "@type": "Answer", "text": "New batches typically drop around server reset times. Additional codes appear during live events and social media campaigns." } },
-        { "@type": "Question", "name": "Do Free Fire and Free Fire MAX use the same codes?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, both games share the same account system so most codes work for both versions." } },
-        { "@type": "Question", "name": "Can I use a VPN to redeem region-locked codes?", "acceptedAnswer": { "@type": "Answer", "text": "No. Garena checks your account's registered server region, not your IP. VPNs can cause login issues on the rewards site." } },
-      ]
-    }) }} />
+    {/* FAQPage schema is in index.html static block — no duplicate here */}
   </section>
 );
 
