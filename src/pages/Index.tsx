@@ -307,7 +307,7 @@ const Index = () => {
                       <div className="flex flex-col justify-center">
                         <span className="text-[10px] text-t-muted font-tech uppercase tracking-widest flex items-center gap-2">
                           <RefreshCcw size={10} className="text-success" />
-                          LAST SYNC: <span className="text-foreground font-mono font-bold">{lastSyncTime}</span>
+                          LAST UPDATE: <span className="text-foreground font-mono font-bold">{lastSyncTime}</span>
                         </span>
                       </div>
                     </div>
