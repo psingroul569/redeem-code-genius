@@ -32,7 +32,7 @@ const COMMENT_TEMPLATES = [
   (reward: string) => `${reward} verified. Worked on my alt account too.`,
   (reward: string) => `Late to the party but ${reward} still working for me!`,
   (reward: string) => `Nice! ${reward} claimed. Keep these codes coming!`,
-  (reward: string) => `${reward} — redeemed without any problem. Solid code.`,
+  (reward: string) => `${reward} - redeemed without any problem. Solid code.`,
   (reward: string) => `Got ${reward}!! My first time getting diamonds from a code site.`,
 ];
 

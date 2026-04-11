@@ -184,7 +184,7 @@ Your answer here.
   { id: "navigation", label: "Navigation Links", icon: Navigation, category: "Widgets", description: "Internal nav links",
     snippet: '\n<nav style="display:flex;gap:12px;flex-wrap:wrap;padding:16px;background:#f1f5f9;border-radius:12px;margin:24px 0;">\n  <a href="/" style="padding:8px 16px;background:#1e293b;color:#fff;border-radius:6px;text-decoration:none;font-size:0.875rem;">🏠 Home</a>\n  <a href="/blogs" style="padding:8px 16px;background:#1e293b;color:#fff;border-radius:6px;text-decoration:none;font-size:0.875rem;">📝 Blogs</a>\n  <a href="/guides" style="padding:8px 16px;background:#1e293b;color:#fff;border-radius:6px;text-decoration:none;font-size:0.875rem;">📖 Guides</a>\n  <a href="/faq" style="padding:8px 16px;background:#1e293b;color:#fff;border-radius:6px;text-decoration:none;font-size:0.875rem;">❓ FAQ</a>\n</nav>\n' },
   { id: "site-info", label: "Site Title & Tagline", icon: LayoutTemplate, category: "Widgets", description: "Branded header block",
-    snippet: '\n<div style="text-align:center;padding:32px 20px;margin:24px 0;">\n  <h1 style="font-size:2rem;font-weight:800;margin:0 0 8px;">Free Fire Redeem Code Today</h1>\n  <p style="color:#64748b;font-size:1.125rem;margin:0;">Get the latest working codes — updated hourly</p>\n</div>\n' },
+    snippet: '\n<div style="text-align:center;padding:32px 20px;margin:24px 0;">\n  <h1 style="font-size:2rem;font-weight:800;margin:0 0 8px;">Free Fire Redeem Code Today</h1>\n  <p style="color:#64748b;font-size:1.125rem;margin:0;">Get the latest working codes - updated hourly</p>\n</div>\n' },
 ];
 
 const CATEGORIES = ["Text", "Media", "Layout", "Table", "Embeds", "Templates", "Widgets"];

@@ -70,7 +70,7 @@ const sections = [
       {
         label: "Code Usage Rules",
         bullets: [
-          "Codes are for personal use only — not for commercial resale",
+          "Codes are for personal use only - not for commercial resale",
           "Do not try to exploit or manipulate the code system",
           "Respect redemption limits and fair usage policies",
           "Do not share codes in ways that break platform terms",
@@ -137,7 +137,7 @@ const sections = [
   {
     icon: BookOpen,
     title: "Intellectual Property",
-    body: "All original content on this website — including text, design, layout, and features — belongs to Free Fire Redeem Code Today and is protected under applicable copyright and intellectual property laws.",
+    body: "All original content on this website - including text, design, layout, and features - belongs to Free Fire Redeem Code Today and is protected under applicable copyright and intellectual property laws.",
     bullets: [
       "Free Fire™ is a trademark of Garena International",
       "Google Play™ is a trademark of Google LLC",

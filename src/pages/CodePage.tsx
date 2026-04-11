@@ -196,7 +196,7 @@ const CodePage = () => {
               {categoryEmoji} {code.reward}
             </h1>
             <p className="text-muted-foreground text-sm mb-6" itemProp="description">
-              Free Fire Redeem Code — Verified {dateStr}
+              Free Fire Redeem Code - Verified {dateStr}
             </p>
 
             {/* Code block */}

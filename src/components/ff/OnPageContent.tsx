@@ -25,7 +25,7 @@ export const OnPageContent: React.FC = () => (
     <meta itemProp="dateModified" content={new Date().toISOString().split('T')[0]} />
     <meta itemProp="datePublished" content="2024-01-15" />
 
-    {/* What Are Free Fire Redeem Codes — detailed, unique explanation */}
+    {/* What Are Free Fire Redeem Codes - detailed, unique explanation */}
     <div>
       <h2 className="text-2xl md:text-3xl font-display text-foreground uppercase italic tracking-tight mb-4">
         What Are Free Fire <span className="text-success">Redeem Codes</span>?
@@ -35,7 +35,7 @@ export const OnPageContent: React.FC = () => (
           Free Fire redeem codes are <strong>12-character alphanumeric strings</strong> (like <code className="bg-muted px-1.5 py-0.5 rounded text-foreground text-xs">FF11-NJN5-YS3E</code>) that Garena distributes through official social media accounts, in-game event banners, partner livestreams, and esports tournament broadcasts.
         </p>
         <p>
-          When you enter a valid code on the official rewards site (<a href="https://reward.ff.garena.com" target="_blank" rel="noopener noreferrer" className="text-success font-bold underline hover:no-underline">reward.ff.garena.com</a>), the corresponding item — diamonds, weapon skins, character bundles, emotes, or consumables — gets deposited directly into your in-game mailbox. You don't need to download anything or provide your password anywhere.
+          When you enter a valid code on the official rewards site (<a href="https://reward.ff.garena.com" target="_blank" rel="noopener noreferrer" className="text-success font-bold underline hover:no-underline">reward.ff.garena.com</a>), the corresponding item - diamonds, weapon skins, character bundles, emotes, or consumables - gets deposited directly into your in-game mailbox. You don't need to download anything or provide your password anywhere.
         </p>
 
         <h3 className="text-base font-display text-foreground uppercase tracking-tight pt-2">How Codes Work Technically</h3>
@@ -48,18 +48,18 @@ export const OnPageContent: React.FC = () => (
 
         <h3 className="text-base font-display text-foreground uppercase tracking-tight pt-2">Types of Rewards You Can Get</h3>
         <ul className="list-disc list-inside space-y-1.5 pl-1">
-          <li><strong>Diamonds</strong> — Premium currency. Codes typically give 100–1,000 diamonds. Use them for spins, skins, or elite passes.</li>
-          <li><strong>Weapon Skins</strong> — Cosmetics for guns like AK47, M1014, AWM. Some are legendary-tier and only available through codes.</li>
-          <li><strong>Character Bundles</strong> — Full outfit sets. Rare codes can unlock characters like Alok or Chrono.</li>
-          <li><strong>Royale Vouchers</strong> — Tickets for Gold Royale, Weapon Royale, or Diamond Royale spins.</li>
-          <li><strong>Emotes & Surfboards</strong> — Cosmetic animations and board skins for visual flair.</li>
-          <li><strong>Pet Food & Pet Skins</strong> — Resources to level up your pet companions.</li>
-          <li><strong>Utility Items</strong> — Custom Room Cards, Name Change Cards, and Bonfire tokens.</li>
+          <li><strong>Diamonds</strong> - Premium currency. Codes typically give 100–1,000 diamonds. Use them for spins, skins, or elite passes.</li>
+          <li><strong>Weapon Skins</strong> - Cosmetics for guns like AK47, M1014, AWM. Some are legendary-tier and only available through codes.</li>
+          <li><strong>Character Bundles</strong> - Full outfit sets. Rare codes can unlock characters like Alok or Chrono.</li>
+          <li><strong>Royale Vouchers</strong> - Tickets for Gold Royale, Weapon Royale, or Diamond Royale spins.</li>
+          <li><strong>Emotes & Surfboards</strong> - Cosmetic animations and board skins for visual flair.</li>
+          <li><strong>Pet Food & Pet Skins</strong> - Resources to level up your pet companions.</li>
+          <li><strong>Utility Items</strong> - Custom Room Cards, Name Change Cards, and Bonfire tokens.</li>
         </ul>
 
         <h3 className="text-base font-display text-foreground uppercase tracking-tight pt-2">Where Do Codes Come From?</h3>
         <p>
-          Garena releases codes through these channels — you don't need to follow all of them because we aggregate everything here:
+          Garena releases codes through these channels - you don't need to follow all of them because we aggregate everything here:
         </p>
         <ul className="list-disc list-inside space-y-1 pl-1">
           <li>Official Free Fire social media (Instagram, Facebook, X/Twitter) for each region</li>
@@ -71,31 +71,31 @@ export const OnPageContent: React.FC = () => (
       </div>
     </div>
 
-    {/* How to Redeem — detailed with context */}
+    {/* How to Redeem - detailed with context */}
     <div>
       <h2 className="text-2xl md:text-3xl font-display text-foreground uppercase italic tracking-tight mb-4">
         How to Redeem <span className="text-success">Free Fire Codes</span>
       </h2>
       <div className="bg-card border border-border rounded-2xl p-5 md:p-8">
         <p className="text-sm text-t-body leading-relaxed mb-5">
-          The entire process takes under 60 seconds. You don't need the game open — just a browser and your linked account credentials.
+          The entire process takes under 60 seconds. You don't need the game open - just a browser and your linked account credentials.
         </p>
         <div className="space-y-4">
           {[
             {
               n: '1',
               title: 'Copy a Code From This Page',
-              text: 'Pick any code marked "Working" from the list above. Tap the copy button — it copies the exact 12-character string to your clipboard. Don\'t type codes manually, as even one wrong character will cause an error.'
+              text: 'Pick any code marked "Working" from the list above. Tap the copy button - it copies the exact 12-character string to your clipboard. Don\'t type codes manually, as even one wrong character will cause an error.'
             },
             {
               n: '2',
               title: 'Go to reward.ff.garena.com',
-              text: 'This is the only legitimate redemption page. Bookmark it. Any other URL claiming to redeem codes is fake. The page works on both mobile browsers and desktop — Chrome, Safari, Firefox, anything.'
+              text: 'This is the only legitimate redemption page. Bookmark it. Any other URL claiming to redeem codes is fake. The page works on both mobile browsers and desktop - Chrome, Safari, Firefox, anything.'
             },
             {
               n: '3',
               title: 'Log In With Your Linked Account',
-              text: 'Sign in using the same method linked to your Free Fire account — Facebook, Google, Apple ID, VK, or Huawei. If you play as a guest, you must link your account first in Free Fire → Settings → Account → Link. Guest accounts cannot redeem codes.'
+              text: 'Sign in using the same method linked to your Free Fire account - Facebook, Google, Apple ID, VK, or Huawei. If you play as a guest, you must link your account first in Free Fire → Settings → Account → Link. Guest accounts cannot redeem codes.'
             },
             {
               n: '4',
@@ -121,7 +121,7 @@ export const OnPageContent: React.FC = () => (
         </div>
         <div className="mt-6 bg-success/5 border border-success/20 rounded-xl p-4">
           <p className="text-sm text-t-body leading-relaxed">
-            <strong className="text-foreground">Security Reminder:</strong> The only official redemption URL is <a href="https://reward.ff.garena.com" target="_blank" rel="noopener noreferrer" className="text-success font-bold underline hover:no-underline">reward.ff.garena.com</a>. Garena will never ask for your password through a redeem code site. If a website asks for your password, player ID, or phone number to "verify" a code — close it immediately. It's a phishing attempt.
+            <strong className="text-foreground">Security Reminder:</strong> The only official redemption URL is <a href="https://reward.ff.garena.com" target="_blank" rel="noopener noreferrer" className="text-success font-bold underline hover:no-underline">reward.ff.garena.com</a>. Garena will never ask for your password through a redeem code site. If a website asks for your password, player ID, or phone number to "verify" a code - close it immediately. It's a phishing attempt.
           </p>
         </div>
         <p className="text-sm text-t-body mt-4">
@@ -130,14 +130,14 @@ export const OnPageContent: React.FC = () => (
       </div>
     </div>
 
-    {/* Server Regions — new unique section */}
+    {/* Server Regions - new unique section */}
     <div>
       <h2 className="text-2xl md:text-3xl font-display text-foreground uppercase italic tracking-tight mb-4">
         Server Regions <span className="text-success">Explained</span>
       </h2>
       <div className="bg-card border border-border rounded-2xl p-5 md:p-8 space-y-4 text-sm text-t-body leading-relaxed">
         <p>
-          Free Fire operates on separate servers for different parts of the world. Each server has its own event schedule, code drops, and reward pools. A code released for the India server will <strong>not work</strong> on the Brazil or Europe server — and vice versa.
+          Free Fire operates on separate servers for different parts of the world. Each server has its own event schedule, code drops, and reward pools. A code released for the India server will <strong>not work</strong> on the Brazil or Europe server - and vice versa.
         </p>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
@@ -158,7 +158,7 @@ export const OnPageContent: React.FC = () => (
           </table>
         </div>
         <p>
-          <strong>How to check your server:</strong> Open Free Fire → tap your profile avatar → your server is shown below your player name (e.g., "IND" for India). You cannot change servers — it's assigned based on your location when you first created your account.
+          <strong>How to check your server:</strong> Open Free Fire → tap your profile avatar → your server is shown below your player name (e.g., "IND" for India). You cannot change servers - it's assigned based on your location when you first created your account.
         </p>
         <p>
           We label every code on this site with its server region. Use the region tabs at the top of the page to filter codes for your specific server.
@@ -166,14 +166,14 @@ export const OnPageContent: React.FC = () => (
       </div>
     </div>
 
-    {/* Error Troubleshooting — expanded */}
+    {/* Error Troubleshooting - expanded */}
     <div>
       <h2 className="text-2xl md:text-3xl font-display text-foreground uppercase italic tracking-tight mb-4">
         Redemption <span className="text-secondary">Error Fixes</span>
       </h2>
       <div className="bg-card border border-border rounded-2xl p-5 md:p-8">
         <p className="text-sm text-t-body leading-relaxed mb-4">
-          Errors during redemption are common — most have simple fixes. Here's every error message you might see on the Garena rewards page and exactly what to do:
+          Errors during redemption are common - most have simple fixes. Here's every error message you might see on the Garena rewards page and exactly what to do:
         </p>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
@@ -185,11 +185,11 @@ export const OnPageContent: React.FC = () => (
             </thead>
             <tbody>
               {[
-                { msg: 'This code is invalid or redeemed', fix: 'The code has either expired (past its 12–18 hour window) or hit its global claim cap. There\'s nothing you can do with this specific code — grab a fresh one from our updated list.' },
-                { msg: 'Redemption limit reached for this code', fix: 'Too many players claimed it before you. Popular codes (especially diamond codes) can exhaust their cap within 2–3 hours of release. Check back — we publish new codes throughout the day.' },
+                { msg: 'This code is invalid or redeemed', fix: 'The code has either expired (past its 12–18 hour window) or hit its global claim cap. There\'s nothing you can do with this specific code - grab a fresh one from our updated list.' },
+                { msg: 'Redemption limit reached for this code', fix: 'Too many players claimed it before you. Popular codes (especially diamond codes) can exhaust their cap within 2–3 hours of release. Check back - we publish new codes throughout the day.' },
                 { msg: 'This code cannot be used in your region', fix: 'The code was released for a different server. For example, an India-only code won\'t work if your account is registered on the Brazil server. Use our region filter to find codes for your server.' },
-                { msg: 'Failed to redeem. Please try again later', fix: 'Garena\'s servers are under heavy load — this happens a lot right after new codes drop. Wait 2–3 minutes and retry. Don\'t spam the button repeatedly, as this can trigger a temporary cooldown on your account.' },
-                { msg: 'You have already used this code', fix: 'Each code is one-time-use per account. Even if the code is still "Working" for others, you can\'t use it twice. Check back for new codes — we update throughout the day.' },
+                { msg: 'Failed to redeem. Please try again later', fix: 'Garena\'s servers are under heavy load - this happens a lot right after new codes drop. Wait 2–3 minutes and retry. Don\'t spam the button repeatedly, as this can trigger a temporary cooldown on your account.' },
+                { msg: 'You have already used this code', fix: 'Each code is one-time-use per account. Even if the code is still "Working" for others, you can\'t use it twice. Check back for new codes - we update throughout the day.' },
                 { msg: 'Please log in to continue', fix: 'You\'re not signed in on the rewards site, or your session expired. Log in again using the exact same method (Facebook, Google, etc.) linked to your Free Fire account. Try clearing cookies if it keeps failing.' },
               ].map(e => (
                 <tr key={e.msg} className="border-b border-border/50 last:border-0">
@@ -208,7 +208,7 @@ export const OnPageContent: React.FC = () => (
       </div>
     </div>
 
-    {/* FAQ — focused on unique, high-search-volume questions */}
+    {/* FAQ - focused on unique, high-search-volume questions */}
     <div>
       <h2 className="text-2xl md:text-3xl font-display text-foreground uppercase italic tracking-tight mb-4">
         Common <span className="text-success">Questions</span>
@@ -217,15 +217,15 @@ export const OnPageContent: React.FC = () => (
         {[
           {
             q: 'Are Free Fire redeem codes completely free?',
-            a: 'Yes — 100% free. Garena releases them as part of promotions, events, and community rewards. You never need to pay, fill surveys, or download apps. Any website or YouTube video asking you to "complete verification" or pay money for codes is a scam. The only thing you need is a linked Free Fire account and the official Garena rewards site.'
+            a: 'Yes - 100% free. Garena releases them as part of promotions, events, and community rewards. You never need to pay, fill surveys, or download apps. Any website or YouTube video asking you to "complete verification" or pay money for codes is a scam. The only thing you need is a linked Free Fire account and the official Garena rewards site.'
           },
           {
             q: 'How many codes can I redeem per day?',
-            a: 'There is no daily limit. If 15 working codes are available right now, you can redeem all 15 — as long as each individual code hasn\'t been used by your account before. The only restriction is that each specific code works once per account. New codes are released independently, so there\'s no cap on how many different codes you claim in a day.'
+            a: 'There is no daily limit. If 15 working codes are available right now, you can redeem all 15 - as long as each individual code hasn\'t been used by your account before. The only restriction is that each specific code works once per account. New codes are released independently, so there\'s no cap on how many different codes you claim in a day.'
           },
           {
             q: 'Why does a code work for my friend but not for me?',
-            a: 'Three possible reasons: (1) You\'re on different servers — a code for the India server won\'t work on Brazil. (2) The code reached its global redemption cap between when your friend used it and when you tried. (3) You\'ve already used this exact code before (you might have forgotten). Check the server label on the code and try another one from your region.'
+            a: 'Three possible reasons: (1) You\'re on different servers - a code for the India server won\'t work on Brazil. (2) The code reached its global redemption cap between when your friend used it and when you tried. (3) You\'ve already used this exact code before (you might have forgotten). Check the server label on the code and try another one from your region.'
           },
           {
             q: 'Do codes work on guest accounts?',
@@ -233,15 +233,15 @@ export const OnPageContent: React.FC = () => (
           },
           {
             q: 'How long do codes stay active after release?',
-            a: 'Most codes expire within 12–18 hours of release. Some special event codes (anniversaries, collaborations) can last up to 48 hours. But the bigger threat is the redemption cap — popular codes often get fully claimed within 2–4 hours even if their time limit hasn\'t expired. That\'s why we recommend redeeming as soon as you see a code.'
+            a: 'Most codes expire within 12–18 hours of release. Some special event codes (anniversaries, collaborations) can last up to 48 hours. But the bigger threat is the redemption cap - popular codes often get fully claimed within 2–4 hours even if their time limit hasn\'t expired. That\'s why we recommend redeeming as soon as you see a code.'
           },
           {
             q: 'When does Garena release new codes?',
-            a: 'New batches typically drop around server reset times — midnight IST for India, midnight WIB for Indonesia, midnight BRT for Brazil. Additional codes appear during live events, esports streams, and social media campaigns at unpredictable times. We check all sources every hour and publish new codes within minutes of detection.'
+            a: 'New batches typically drop around server reset times - midnight IST for India, midnight WIB for Indonesia, midnight BRT for Brazil. Additional codes appear during live events, esports streams, and social media campaigns at unpredictable times. We check all sources every hour and publish new codes within minutes of detection.'
           },
           {
             q: 'Do Free Fire and Free Fire MAX use the same codes?',
-            a: 'Yes, in most cases. Both games share the same account system, so a code that works for Free Fire also works for Free Fire MAX — and your rewards appear in both. Occasionally, Garena releases MAX-exclusive codes during special promotions, but these are rare and clearly labeled.'
+            a: 'Yes, in most cases. Both games share the same account system, so a code that works for Free Fire also works for Free Fire MAX - and your rewards appear in both. Occasionally, Garena releases MAX-exclusive codes during special promotions, but these are rare and clearly labeled.'
           },
           {
             q: 'Can I use a VPN to redeem region-locked codes?',
@@ -257,7 +257,7 @@ export const OnPageContent: React.FC = () => (
       </p>
     </div>
 
-    {/* FAQPage schema is in index.html static block — no duplicate here */}
+    {/* FAQPage schema is in index.html static block - no duplicate here */}
   </section>
 );
 

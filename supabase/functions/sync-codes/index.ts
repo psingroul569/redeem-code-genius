@@ -144,7 +144,7 @@ Categories allowed: Diamond, Skin, Bundle, Voucher, Pet`;
       });
     }
 
-    // Extract text — handle each part separately to avoid fragment concatenation issues
+    // Extract text - handle each part separately to avoid fragment concatenation issues
     const parts = aiData.candidates?.[0]?.content?.parts || [];
     const textParts = parts.filter((p: any) => !p.thought && p.text);
     
