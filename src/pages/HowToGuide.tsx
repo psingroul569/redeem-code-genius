@@ -27,7 +27,7 @@ const HowToGuide = () => {
     "step": [
       { "@type": "HowToStep", "position": 1, "name": "Copy a working code", "text": "Go to freefireredeemcodetoday.com and tap the copy button next to any code marked Working." },
       { "@type": "HowToStep", "position": 2, "name": "Open the official Garena rewards site", "text": "Navigate to reward.ff.garena.com in your browser. This is the only legitimate redemption page." },
-      { "@type": "HowToStep", "position": 3, "name": "Log in with your linked account", "text": "Sign in using Facebook, Google, Apple ID, VK, or Huawei — the same method linked to your Free Fire game account." },
+      { "@type": "HowToStep", "position": 3, "name": "Log in with your linked account", "text": "Sign in using Facebook, Google, Apple ID, VK, or Huawei - the same method linked to your Free Fire game account." },
       { "@type": "HowToStep", "position": 4, "name": "Paste the code and confirm", "text": "Paste the 12-character code into the text box and tap Confirm. A green success message confirms the redemption." },
       { "@type": "HowToStep", "position": 5, "name": "Collect rewards from in-game mail", "text": "Open Free Fire, tap the mail icon on the lobby screen, and claim your rewards. Items arrive within 5–30 minutes, up to 24 hours during peak traffic." }
     ]
@@ -69,10 +69,10 @@ const HowToGuide = () => {
             <p>You need two things to redeem Free Fire codes:</p>
             <ul className="list-disc list-inside space-y-2 pl-1">
               <li>
-                <strong className="text-foreground">A linked Free Fire account</strong> — Your game must be connected to Facebook, Google, Apple ID, VK, or Huawei ID. Guest accounts cannot redeem codes. To link your account: open Free Fire → Settings (gear icon) → Account → Link Account → choose a platform and follow the prompts. This is a one-time setup.
+                <strong className="text-foreground">A linked Free Fire account</strong> - Your game must be connected to Facebook, Google, Apple ID, VK, or Huawei ID. Guest accounts cannot redeem codes. To link your account: open Free Fire → Settings (gear icon) → Account → Link Account → choose a platform and follow the prompts. This is a one-time setup.
               </li>
               <li>
-                <strong className="text-foreground">A web browser</strong> — Chrome, Safari, Firefox, or any modern browser. The process is entirely browser-based. You do not need the Free Fire app open during redemption.
+                <strong className="text-foreground">A web browser</strong> - Chrome, Safari, Firefox, or any modern browser. The process is entirely browser-based. You do not need the Free Fire app open during redemption.
               </li>
             </ul>
           </div>
@@ -95,9 +95,9 @@ const HowToGuide = () => {
                       <li>The 12-character code</li>
                       <li>The reward it gives (diamonds, skins, bundles, etc.)</li>
                       <li>The server region it works on (India, Brazil, Indonesia, Europe, or Global)</li>
-                      <li>Its current status — <strong className="text-success">Working</strong>, <strong className="text-secondary">Limited</strong> (running out), or <strong className="text-destructive">Expired</strong></li>
+                      <li>Its current status - <strong className="text-success">Working</strong>, <strong className="text-secondary">Limited</strong> (running out), or <strong className="text-destructive">Expired</strong></li>
                     </ul>
-                    <p className="mt-2">Tap the <strong className="text-foreground">copy button</strong> on the card. The code is now in your clipboard — don't type it manually, as even one wrong character will cause an error.</p>
+                    <p className="mt-2">Tap the <strong className="text-foreground">copy button</strong> on the card. The code is now in your clipboard - don't type it manually, as even one wrong character will cause an error.</p>
                   </>
                 )
               },
@@ -107,9 +107,9 @@ const HowToGuide = () => {
                 content: (
                   <>
                     <p>Go to <a href="https://reward.ff.garena.com" target="_blank" rel="noopener noreferrer" className="text-success font-bold underline hover:no-underline">reward.ff.garena.com</a> in your browser.</p>
-                    <p className="mt-2">This is the only official page where codes can be redeemed. Bookmark it for quick access. If you see any other URL claiming to redeem Free Fire codes, it's fake — close it immediately.</p>
+                    <p className="mt-2">This is the only official page where codes can be redeemed. Bookmark it for quick access. If you see any other URL claiming to redeem Free Fire codes, it's fake - close it immediately.</p>
                     <div className="mt-3 bg-destructive/5 border border-destructive/20 rounded-lg p-3">
-                      <p className="text-sm"><strong className="text-destructive">Warning:</strong> Fake sites often look almost identical to the real one. Always check the URL bar. The legitimate page is <a href="https://reward.ff.garena.com" target="_blank" rel="noopener noreferrer" className="text-success font-bold underline hover:no-underline">reward.ff.garena.com</a> — nothing else.</p>
+                      <p className="text-sm"><strong className="text-destructive">Warning:</strong> Fake sites often look almost identical to the real one. Always check the URL bar. The legitimate page is <a href="https://reward.ff.garena.com" target="_blank" rel="noopener noreferrer" className="text-success font-bold underline hover:no-underline">reward.ff.garena.com</a> - nothing else.</p>
                     </div>
                   </>
                 )
@@ -123,7 +123,7 @@ const HowToGuide = () => {
                     <p className="mt-2">For example, if you log into Free Fire using your Google account, tap the Google button on the rewards site and sign in with the same Google account.</p>
                     <p className="mt-2">If you use the wrong login method, the code might redeem to a different (possibly empty) Free Fire account, and you won't see the rewards on your main account.</p>
                     <div className="mt-3 bg-muted/50 border border-border rounded-lg p-3">
-                      <p className="text-sm"><strong className="text-foreground">Tip:</strong> If you're having trouble logging in, try clearing your browser cache or using an incognito/private window. VPN connections can also cause login failures — disconnect your VPN first.</p>
+                      <p className="text-sm"><strong className="text-foreground">Tip:</strong> If you're having trouble logging in, try clearing your browser cache or using an incognito/private window. VPN connections can also cause login failures - disconnect your VPN first.</p>
                     </div>
                   </>
                 )
@@ -149,9 +149,9 @@ const HowToGuide = () => {
                   <>
                     <p>Open the Free Fire app. On the lobby screen, tap the <strong className="text-foreground">mail/envelope icon</strong> (top-right corner). Your rewards appear under the "Claim" tab.</p>
                     <ul className="list-disc list-inside space-y-1 pl-1 mt-2">
-                      <li><strong>Diamonds</strong> — Added to your balance automatically. Check the counter at the top of the screen.</li>
-                      <li><strong>Skins, bundles, emotes</strong> — Appear in your Vault/Collection. Go to your character loadout to equip them.</li>
-                      <li><strong>Vouchers</strong> — Found in your Luck Royale section. Use them for spins.</li>
+                      <li><strong>Diamonds</strong> - Added to your balance automatically. Check the counter at the top of the screen.</li>
+                      <li><strong>Skins, bundles, emotes</strong> - Appear in your Vault/Collection. Go to your character loadout to equip them.</li>
+                      <li><strong>Vouchers</strong> - Found in your Luck Royale section. Use them for spins.</li>
                     </ul>
                     <p className="mt-2"><strong className="text-foreground">Delivery time:</strong> Most rewards arrive within 5–30 minutes. During high-traffic periods (new events, server resets, major updates), it can take up to 24 hours. If you still don't see your reward after 24 hours, contact Garena support with your Player ID and a screenshot of the successful redemption.</p>
                   </>
@@ -181,9 +181,9 @@ const HowToGuide = () => {
           <div className="bg-card border border-border rounded-xl p-5 md:p-6">
             <div className="space-y-4 text-sm text-t-body leading-relaxed">
               {[
-                { error: '"This code is invalid or redeemed"', fix: 'The code has expired or reached its maximum number of claims. There\'s nothing you can do with it — head back to our homepage and grab a different code.' },
+                { error: '"This code is invalid or redeemed"', fix: 'The code has expired or reached its maximum number of claims. There\'s nothing you can do with it - head back to our homepage and grab a different code.' },
                 { error: '"This code cannot be used in your region"', fix: 'The code is locked to a different server. Use the region filter on our homepage to find codes for your server (India, Brazil, Indonesia, Europe, or Global).' },
-                { error: '"Failed to redeem. Please try again later"', fix: 'Garena\'s servers are overloaded. This usually happens right after new codes drop. Wait 2–3 minutes and try again. Avoid spamming the Confirm button — it can trigger a temporary cooldown.' },
+                { error: '"Failed to redeem. Please try again later"', fix: 'Garena\'s servers are overloaded. This usually happens right after new codes drop. Wait 2–3 minutes and try again. Avoid spamming the Confirm button - it can trigger a temporary cooldown.' },
                 { error: '"You have already used this code"', fix: 'You\'ve redeemed this exact code before. Each code is one-time per account. Go back to our homepage for fresh codes.' },
                 { error: 'Login keeps failing or redirecting', fix: 'Clear your browser cache, disable your VPN, and try in an incognito window. Make sure you\'re using the same login method linked to your Free Fire account.' },
               ].map(e => (
@@ -203,7 +203,7 @@ const HowToGuide = () => {
           </h2>
           <div className="bg-card border border-border rounded-xl p-5 md:p-6 space-y-3 text-sm text-t-body leading-relaxed">
             <ul className="list-disc list-inside space-y-2 pl-1">
-              <li><strong className="text-foreground">Redeem immediately.</strong> Codes can expire within hours. The moment you see a working code, redeem it — don't save it for later.</li>
+              <li><strong className="text-foreground">Redeem immediately.</strong> Codes can expire within hours. The moment you see a working code, redeem it - don't save it for later.</li>
               <li><strong className="text-foreground">Always copy, never type.</strong> Manually typing a 12-character code is error-prone. Use the copy button on our site to avoid mistakes.</li>
               <li><strong className="text-foreground">Check during server resets.</strong> The best time to find new codes is right after server reset (midnight local time for your region). That's when Garena typically pushes new drops.</li>
               <li><strong className="text-foreground">Try all available codes.</strong> There's no daily limit on how many different codes you can redeem. If 10 codes are listed as Working, try all 10.</li>
@@ -221,7 +221,7 @@ const HowToGuide = () => {
             {[
               {
                 device: 'Android',
-                notes: 'Works on any Android browser. Chrome is recommended. You can add our site to your home screen for quick access — it works like a lightweight app.'
+                notes: 'Works on any Android browser. Chrome is recommended. You can add our site to your home screen for quick access - it works like a lightweight app.'
               },
               {
                 device: 'iPhone / iPad',

@@ -12,16 +12,16 @@ const sections = [
       {
         label: "Automatically Collected",
         bullets: [
-          "Device info — browser type, operating system, screen resolution",
-          "Usage data — pages visited, time spent, click patterns",
+          "Device info - browser type, operating system, screen resolution",
+          "Usage data - pages visited, time spent, click patterns",
           "IP address and general location (country or region only)",
-          "Referral source — how you landed on our site",
+          "Referral source - how you landed on our site",
         ],
       },
       {
         label: "Information You Provide",
         bullets: [
-          "Contact form submissions — name, email address, message",
+          "Contact form submissions - name, email address, message",
           "Feedback and survey responses (if you choose to fill one)",
           "Comments or user-generated content where applicable",
         ],
@@ -38,7 +38,7 @@ const sections = [
         items: [
           {
             name: "Essential Cookies",
-            desc: "Required for basic website functionality — the site cannot work properly without these.",
+            desc: "Required for basic website functionality - the site cannot work properly without these.",
           },
           {
             name: "Analytics Cookies",
@@ -71,7 +71,7 @@ const sections = [
     items: [
       {
         name: "Google Analytics",
-        desc: "Helps us understand how traffic flows through the site — pages visited, session length, browser type. Google may process your IP address as part of this.",
+        desc: "Helps us understand how traffic flows through the site - pages visited, session length, browser type. Google may process your IP address as part of this.",
         link: { label: "View Google's Privacy Policy", url: "https://policies.google.com/privacy" },
       },
       {
@@ -100,11 +100,11 @@ const sections = [
     title: "Your Rights",
     body: "You have real control over your personal information. Here is what you can ask us to do at any time:",
     bullets: [
-      "Access — request a copy of any personal data we hold about you",
-      "Correction — ask us to fix anything that is inaccurate or incomplete",
-      "Deletion — request that we delete your personal information",
-      "Opt-out — unsubscribe from any marketing or update emails",
-      "Data Portability — ask us to transfer your data to another service",
+      "Access - request a copy of any personal data we hold about you",
+      "Correction - ask us to fix anything that is inaccurate or incomplete",
+      "Deletion - request that we delete your personal information",
+      "Opt-out - unsubscribe from any marketing or update emails",
+      "Data Portability - ask us to transfer your data to another service",
     ],
     footer:
       "To exercise any of these rights, reach out to us at contact@todayesports.com and we will respond promptly.",
@@ -117,7 +117,7 @@ const sections = [
   {
     icon: RefreshCw,
     title: "Changes to This Policy",
-    body: "We may update this Privacy Policy from time to time. When we do, the revised version will be posted on this page with an updated date at the top. We recommend checking back occasionally — especially if you use the site regularly. Continued use of the site after any changes means you are comfortable with the updated policy.",
+    body: "We may update this Privacy Policy from time to time. When we do, the revised version will be posted on this page with an updated date at the top. We recommend checking back occasionally - especially if you use the site regularly. Continued use of the site after any changes means you are comfortable with the updated policy.",
   },
 ];
 
@@ -143,7 +143,7 @@ const PrivacyPolicy = () => (
           Privacy Policy
         </h1>
         <p className="text-t-muted text-sm leading-relaxed max-w-2xl">
-          At Free Fire Redeem Code Today, we believe privacy should be simple to understand — not buried in legal
+          At Free Fire Redeem Code Today, we believe privacy should be simple to understand - not buried in legal
           jargon. This page explains exactly what data we collect, why we collect it, and how it is used.
         </p>
         <p className="text-t-muted/60 text-xs mt-3">Last Updated: January 2025</p>

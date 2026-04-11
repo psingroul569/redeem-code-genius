@@ -8,7 +8,7 @@ const AboutUs = () => {
     "@context": "https://schema.org",
     "@type": "AboutPage",
     "name": "About Us – FF Redeem Codes Today",
-    "description": "Learn about freefireredeemcodetoday.com — the most trusted Free Fire redeem code platform built by gamers, for gamers.",
+    "description": "Learn about freefireredeemcodetoday.com - the most trusted Free Fire redeem code platform built by gamers, for gamers.",
     "url": "https://freefireredeemcodetoday.com/about-us",
     "mainEntity": {
       "@type": "Organization",
@@ -74,10 +74,10 @@ const AboutUs = () => {
           </div>
           <div className="space-y-4 text-t-muted leading-relaxed">
             <p>
-              We're a small team of Free Fire players who got tired of the same problem every single day — hunting for working redeem codes across dozens of random websites, only to find out most of them were expired, fake, or copied from somewhere else.
+              We're a small team of Free Fire players who got tired of the same problem every single day - hunting for working redeem codes across dozens of random websites, only to find out most of them were expired, fake, or copied from somewhere else.
             </p>
             <p>
-              That frustration is exactly why <strong className="text-foreground">freefireredeemcodetoday.com</strong> exists. We built this platform in 2023 because we wanted one reliable place where players like us could find verified, working codes without wasting time. No clickbait, no fake promises — just codes that actually work.
+              That frustration is exactly why <strong className="text-foreground">freefireredeemcodetoday.com</strong> exists. We built this platform in 2023 because we wanted one reliable place where players like us could find verified, working codes without wasting time. No clickbait, no fake promises - just codes that actually work.
             </p>
             <p>
               Our team includes experienced Free Fire players, a content analyst who tracks Garena's official event patterns, and developers who keep the platform running smoothly. We play the game ourselves, so we understand what matters to you.
@@ -95,7 +95,7 @@ const AboutUs = () => {
           </div>
           <div className="space-y-4 text-t-muted leading-relaxed">
             <p>
-              Every day, Garena releases redeem codes for Free Fire and Free Fire MAX across different server regions — India, Indonesia, Brazil, Europe, and more. These codes give you free rewards like diamonds, weapon skins, character bundles, emotes, and pet food.
+              Every day, Garena releases redeem codes for Free Fire and Free Fire MAX across different server regions - India, Indonesia, Brazil, Europe, and more. These codes give you free rewards like diamonds, weapon skins, character bundles, emotes, and pet food.
             </p>
             <p>
               The catch? Most codes expire within hours, and they're often region-locked. That's where we come in.
@@ -117,7 +117,7 @@ const AboutUs = () => {
               {
                 icon: <Globe className="w-5 h-5 text-blue-500" />,
                 title: "Server-Specific Info",
-                desc: "Every code on our site has a clear server label — India, Brazil, Indonesia, Europe, or Global. No more guessing whether a code works in your region."
+                desc: "Every code on our site has a clear server label - India, Brazil, Indonesia, Europe, or Global. No more guessing whether a code works in your region."
               },
               {
                 icon: <Zap className="w-5 h-5 text-primary" />,
@@ -149,7 +149,7 @@ const AboutUs = () => {
               Honestly? Because we know how it feels. You see a YouTube thumbnail saying "GET 10,000 FREE DIAMONDS" and it turns out to be complete garbage. Or you find a code on some blog, try it, and it expired two days ago. It's annoying.
             </p>
             <p>
-              We wanted to build something different — a platform that respects your time. If a code is expired, we tell you. If it's region-locked, we label it clearly. If it's running out fast, we flag it. That's it. No tricks.
+              We wanted to build something different - a platform that respects your time. If a code is expired, we tell you. If it's region-locked, we label it clearly. If it's running out fast, we flag it. That's it. No tricks.
             </p>
             <p>
               Free Fire has over 100 million active players. A huge number of them are students and young gamers who can't spend money on in-game purchases. Redeem codes are one of the few ways to get premium items for free, and we think everyone deserves a fair shot at claiming them before they expire.
@@ -173,7 +173,7 @@ const AboutUs = () => {
               Every code on our site includes a server region label, the specific reward it gives, and a real-time status indicator (Working, Limited, or Expired). We remove or flag codes as soon as they stop working.
             </p>
             <p>
-              The site runs hourly checks. When Garena pushes a new batch — usually during server resets around midnight local time — we pick it up within minutes and publish it.
+              The site runs hourly checks. When Garena pushes a new batch - usually during server resets around midnight local time - we pick it up within minutes and publish it.
             </p>
           </div>
         </section>
@@ -192,7 +192,7 @@ const AboutUs = () => {
                 "We are NOT officially affiliated with Garena, Free Fire, or any game publisher. We're an independent community resource.",
                 "We will NEVER ask for your Free Fire password, login credentials, or any personal account information.",
                 "We don't generate or hack redeem codes. All codes on our site come from official Garena events, social media drops, and partner promotions.",
-                "We don't guarantee that every code will work for every player — some codes have limited redemptions, and once they're gone, they're gone."
+                "We don't guarantee that every code will work for every player - some codes have limited redemptions, and once they're gone, they're gone."
               ].map((item, i) => (
                 <li key={i} className="flex items-start gap-3">
                   <span className="text-red-500 mt-0.5 text-xs font-bold">✕</span>
@@ -244,7 +244,7 @@ const AboutUs = () => {
           </h2>
           <div className="space-y-4 text-t-muted leading-relaxed">
             <p>
-              If something's not working, if you found a code we missed, or if you just want to say hi — we'd love to hear from you.
+              If something's not working, if you found a code we missed, or if you just want to say hi - we'd love to hear from you.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
@@ -266,7 +266,7 @@ const AboutUs = () => {
         {/* Final Note */}
         <section className="border-t border-border pt-8">
           <p className="text-t-muted text-sm leading-relaxed italic">
-            Thanks for being part of this community. Whether you've been with us since day one or just found us today — we're glad you're here. Every code we verify, every update we push, it's all for players like you. Keep grinding, keep claiming those rewards, and stay safe out there. 🔥
+            Thanks for being part of this community. Whether you've been with us since day one or just found us today - we're glad you're here. Every code we verify, every update we push, it's all for players like you. Keep grinding, keep claiming those rewards, and stay safe out there. 🔥
           </p>
         </section>
       </main>

@@ -141,7 +141,7 @@ const Disclaimer = () => (
         <h1 className="text-3xl md:text-4xl font-display uppercase tracking-tight text-foreground mb-3">Disclaimer</h1>
         <p className="text-t-muted text-sm leading-relaxed max-w-2xl">
           Please read this carefully before using any codes or content from this site. freefireredeemcodetoday.com is an
-          independent fan platform — not affiliated with Garena or any official game developer.
+          independent fan platform - not affiliated with Garena or any official game developer.
         </p>
         <p className="text-t-muted/60 text-xs mt-3">Last Updated: January 2025</p>
       </div>
