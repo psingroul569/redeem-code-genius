@@ -1,11 +1,10 @@
 import { useEffect, useState, useCallback, Suspense, lazy, useRef } from "react";
 import React from "react";
-import { Header } from "@/components/ff/Header";
-import { CodeCard } from "@/components/ff/CodeCard";
 import { AppView, RedeemCode } from "@/types";
-import { Clock, Timer, RefreshCcw, MapPin, AlertCircle, Loader2 } from "lucide-react";
-import { codesSyncService } from "@/services/codesSyncService";
 import { useTheme } from "@/hooks/useTheme";
+
+const Header = lazy(() => import("@/components/ff/Header").then((m) => ({ default: m.Header })));
+const CodeCard = lazy(() => import("@/components/ff/CodeCard").then((m) => ({ default: m.CodeCard })));
 
 const Schema = lazy(() => import("@/components/ff/Schema").then((m) => ({ default: m.Schema })));
 const Footer = lazy(() => import("@/components/ff/Footer").then((m) => ({ default: m.Footer })));
@@ -124,6 +123,11 @@ const generatePlaceholderCodes = (region: string): RedeemCode[] => {
 const Index = () => {
   const { theme, toggleTheme } = useTheme();
   const initialRegion = detectRegionFromTimezone();
+  const initialCache = readCachedRegion(initialRegion);
+
+  // Lazy-load heavy dependencies after first paint
+  const syncServiceRef = useRef<typeof import("@/services/codesSyncService")["codesSyncService"] | null>(null);
+  const iconsRef = useRef<Record<string, React.ComponentType<any>>>({});
   const initialCache = readCachedRegion(initialRegion);
 
   const [currentView, setCurrentView] = useState<AppView>("home");
