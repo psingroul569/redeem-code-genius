@@ -65,12 +65,12 @@
     <link
       rel="preload"
       as="style"
-      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Russo+One&display=optional"
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Russo+One&display=swap"
       onload="this.onload=null;this.rel='stylesheet'"
     />
     <noscript><link
         rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Russo+One&display=optional"
+        href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Russo+One&display=swap"
     /></noscript>
 
     <!-- AdSense - deferred until after load, skipped on admin routes -->
@@ -228,8 +228,9 @@
       .dark{--background:0 0% 0%;--foreground:210 40% 98%;--success:153 100% 50%}
       body{margin:0;background:hsl(var(--background));color:hsl(var(--foreground));font-family:system-ui,-apple-system,sans-serif}
       #root-skeleton{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;contain:layout style paint}
-      #root-skeleton h1{font-family:'Russo One',sans-serif;font-size:clamp(2.5rem,10vw,6rem);text-transform:uppercase;letter-spacing:-0.05em;line-height:0.85;text-align:center;margin:0;color:hsl(var(--foreground))}
+      #root-skeleton h1{font-family:'Russo One',system-ui,sans-serif;font-size:clamp(2.5rem,10vw,6rem);text-transform:uppercase;letter-spacing:-0.05em;line-height:0.85;text-align:center;margin:0;color:hsl(var(--foreground))}
       #root-skeleton .accent{color:hsl(var(--success));font-style:italic}
+      #root-skeleton .date{font-family:'Russo One',system-ui,sans-serif;font-size:1.5rem;color:hsl(24 32% 53%);margin-top:1.5rem}
       .seo-prerender{position:absolute;left:-9999px;top:0;width:1px;height:1px;overflow:hidden}
     </style>
     <link rel="modulepreload" href="/src/main.tsx" />
@@ -239,6 +240,7 @@
     <div id="root">
       <div id="root-skeleton">
         <h1>FREE FIRE REDEEM<br /><span class="accent">CODE TODAY</span></h1>
+        <script>document.querySelector('#root-skeleton .date')||function(){var d=document.createElement('div');d.className='date';d.textContent=new Date().toLocaleDateString('en-US',{day:'numeric',month:'short',year:'numeric'}).toUpperCase();document.getElementById('root-skeleton').appendChild(d)}()</script>
       </div>
     </div>
 
