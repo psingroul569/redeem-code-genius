@@ -1,11 +1,10 @@
 import { useEffect, useState, useCallback, Suspense, lazy, useRef } from "react";
 import React from "react";
-import { Header } from "@/components/ff/Header";
-import { CodeCard } from "@/components/ff/CodeCard";
 import { AppView, RedeemCode } from "@/types";
-import { Clock, Timer, RefreshCcw, MapPin, AlertCircle, Loader2 } from "lucide-react";
-import { codesSyncService } from "@/services/codesSyncService";
 import { useTheme } from "@/hooks/useTheme";
+
+const Header = lazy(() => import("@/components/ff/Header").then((m) => ({ default: m.Header })));
+const CodeCard = lazy(() => import("@/components/ff/CodeCard").then((m) => ({ default: m.CodeCard })));
 
 const Schema = lazy(() => import("@/components/ff/Schema").then((m) => ({ default: m.Schema })));
 const Footer = lazy(() => import("@/components/ff/Footer").then((m) => ({ default: m.Footer })));
@@ -121,6 +120,17 @@ const generatePlaceholderCodes = (region: string): RedeemCode[] => {
   }));
 };
 
+// Lazy-load the sync service to reduce initial JS parse on mobile
+const getSyncService = (() => {
+  let cached: typeof import("@/services/codesSyncService")["codesSyncService"] | null = null;
+  return async () => {
+    if (cached) return cached;
+    const mod = await import("@/services/codesSyncService");
+    cached = mod.codesSyncService;
+    return cached;
+  };
+})();
+
 const Index = () => {
   const { theme, toggleTheme } = useTheme();
   const initialRegion = detectRegionFromTimezone();
@@ -137,6 +147,26 @@ const Index = () => {
   const [nextUpdateText, setNextUpdateText] = useState("--:--");
   const [isOverdue, setIsOverdue] = useState(false);
   const [dateStr, setDateStr] = useState("");
+  const [iconsLoaded, setIconsLoaded] = useState(false);
+  const iconsRef = useRef<Record<string, any>>({});
+
+  // Load icons after first paint
+  useEffect(() => {
+    const timer = requestAnimationFrame(() => {
+      import("lucide-react").then((mod) => {
+        iconsRef.current = {
+          Clock: mod.Clock,
+          Timer: mod.Timer,
+          RefreshCcw: mod.RefreshCcw,
+          MapPin: mod.MapPin,
+          AlertCircle: mod.AlertCircle,
+          Loader2: mod.Loader2,
+        };
+        setIconsLoaded(true);
+      });
+    });
+    return () => cancelAnimationFrame(timer);
+  }, []);
 
   useEffect(() => {
     const now = new Date();
@@ -151,9 +181,10 @@ const Index = () => {
   }, []);
 
   const loadRegionData = useCallback(async (region: string, updateUi = true) => {
+    const svc = await getSyncService();
     const tryLoadCodes = async (attempt = 1): Promise<{ codes: RedeemCode[]; syncedAt: string | null } | null> => {
       try {
-        const { codes, syncedAt } = await codesSyncService.getCodesByRegion(region);
+        const { codes, syncedAt } = await svc.getCodesByRegion(region);
         if (codes.length > 0) return { codes, syncedAt };
         return null;
       } catch {
@@ -167,7 +198,7 @@ const Index = () => {
 
     let timeLabel = formatSyncLabel(loaded.syncedAt);
     try {
-      timeLabel = await codesSyncService.getLastSyncTime(region);
+      timeLabel = await svc.getLastSyncTime(region);
     } catch {
       // Keep derived label
     }
@@ -258,19 +289,35 @@ const Index = () => {
     window.scrollTo(0, 0);
   };
 
+  const MapPin = iconsRef.current.MapPin;
+  const Clock = iconsRef.current.Clock;
+  const RefreshCcw = iconsRef.current.RefreshCcw;
+  const AlertCircle = iconsRef.current.AlertCircle;
+  const Timer = iconsRef.current.Timer;
+  const Loader2 = iconsRef.current.Loader2;
+
   return (
     <div className="min-h-screen bg-background text-foreground font-sans selection:bg-success selection:text-primary-foreground">
       <Suspense fallback={null}>
         <Schema currentView={currentView} selectedCode={selectedCode} />
       </Suspense>
-      <Header
-        currentView={currentView}
-        setView={handleSetView}
-        isSyncing={false}
-        syncingRegion={null}
-        theme={theme}
-        onToggleTheme={toggleTheme}
-      />
+      <Suspense fallback={
+        <header className="sticky top-0 bg-background/90 pt-4 pb-4 z-50 border-b border-border shadow-sm">
+          <div className="max-w-7xl mx-auto px-4 md:px-8 flex items-center gap-3">
+            <div className="w-10 h-10 md:w-12 md:h-12 bg-muted rounded-xl" />
+            <span className="font-display text-[15px] md:text-2xl text-foreground font-black italic uppercase">Free Fire REDEEM CODE TODAY</span>
+          </div>
+        </header>
+      }>
+        <Header
+          currentView={currentView}
+          setView={handleSetView}
+          isSyncing={false}
+          syncingRegion={null}
+          theme={theme}
+          onToggleTheme={toggleTheme}
+        />
+      </Suspense>
 
       <main className="w-full">
         {currentView === "home" ? (
@@ -283,7 +330,7 @@ const Index = () => {
                 <div className="flex flex-col items-center gap-2">
                   <span className="text-2xl font-display text-secondary date-glow">{dateStr}</span>
                   <div className="flex items-center gap-2 text-[10px] text-t-muted font-tech uppercase tracking-widest mt-2">
-                    <MapPin size={10} className="text-success" />
+                    {iconsLoaded && MapPin ? <MapPin size={10} className="text-success" /> : <span className="w-2.5 h-2.5 rounded-full bg-success inline-block" />}
                     Active Node: <span className="text-foreground font-bold">{activeRegion}</span>
                   </div>
                 </div>
@@ -303,10 +350,10 @@ const Index = () => {
                   </div>
                   <div className="flex flex-row items-center gap-3 w-full md:w-auto">
                     <div className="flex-1 md:flex-initial bg-surface px-5 py-3 rounded-2xl border border-border flex items-center justify-center gap-4">
-                      <Clock size={16} className="text-t-muted" />
+                      {iconsLoaded && Clock ? <Clock size={16} className="text-t-muted" /> : <span className="w-4 h-4 rounded bg-muted inline-block" />}
                       <div className="flex flex-col justify-center">
                         <span className="text-[10px] text-t-muted font-tech uppercase tracking-widest flex items-center gap-2">
-                          <RefreshCcw size={10} className="text-success" />
+                          {iconsLoaded && RefreshCcw ? <RefreshCcw size={10} className="text-success" /> : <span className="w-2.5 h-2.5 rounded-full bg-success inline-block" />}
                           LAST UPDATE: <span className="text-foreground font-mono font-bold">{lastSyncTime}</span>
                         </span>
                       </div>
@@ -315,9 +362,9 @@ const Index = () => {
                       className={`flex-1 md:flex-initial px-6 py-3 rounded-2xl border transition-all flex items-center justify-center gap-5 ${isOverdue ? "bg-destructive/10 border-destructive/20" : "bg-success-bg border-success-border"}`}
                     >
                       {isOverdue ? (
-                        <AlertCircle size={18} className="text-destructive animate-pulse" />
+                        iconsLoaded && AlertCircle ? <AlertCircle size={18} className="text-destructive animate-pulse" /> : <span className="w-4.5 h-4.5 rounded-full bg-destructive inline-block animate-pulse" />
                       ) : (
-                        <Timer size={18} className="text-success" />
+                        iconsLoaded && Timer ? <Timer size={18} className="text-success" /> : <span className="w-4.5 h-4.5 rounded-full bg-success inline-block" />
                       )}
                       <div className="flex flex-col">
                         <span className="text-[8px] text-t-muted font-tech uppercase tracking-widest">
@@ -335,22 +382,24 @@ const Index = () => {
               </div>
             </section>
             <section id="codes" className="max-w-7xl mx-auto px-4 md:px-8 py-12 min-h-[1200px] lg:min-h-[1600px]">
-              <div
-                className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 ${isPlaceholder ? "animate-pulse opacity-60" : ""}`}
-              >
-                {displayCodes.map((code, idx) => (
-                  <CodeCard
-                    key={`${activeRegion}-${idx}`}
-                    data={code}
-                    onSelect={() => {
-                      if (!isPlaceholder) {
-                        setSelectedCode(code);
-                        handleSetView("code-detail");
-                      }
-                    }}
-                  />
-                ))}
-              </div>
+              <Suspense fallback={<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 animate-pulse opacity-60">{Array.from({length:12}).map((_,i)=><div key={i} className="bg-card border border-border rounded-2xl h-64" />)}</div>}>
+                <div
+                  className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 ${isPlaceholder ? "animate-pulse opacity-60" : ""}`}
+                >
+                  {displayCodes.map((code, idx) => (
+                    <CodeCard
+                      key={`${activeRegion}-${idx}`}
+                      data={code}
+                      onSelect={() => {
+                        if (!isPlaceholder) {
+                          setSelectedCode(code);
+                          handleSetView("code-detail");
+                        }
+                      }}
+                    />
+                  ))}
+                </div>
+              </Suspense>
             </section>
             <Suspense fallback={<div className="min-h-[200px]" />}>
               <OnPageContent />
@@ -363,7 +412,7 @@ const Index = () => {
           <Suspense
             fallback={
               <div className="flex items-center justify-center min-h-[50vh]">
-                <Loader2 className="animate-spin text-foreground" />
+                {iconsLoaded && Loader2 ? <Loader2 className="animate-spin text-foreground" /> : <div className="w-6 h-6 border-2 border-foreground border-t-transparent rounded-full animate-spin" />}
               </div>
             }
           >
