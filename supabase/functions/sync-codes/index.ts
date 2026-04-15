@@ -14,7 +14,7 @@ const REGIONS: Record<string, { query: string; server: string }> = {
   'EUROPE': { query: 'Free Fire Europe (EU) server redeem codes. Exclude other regions.', server: 'EUROPE (EU)' },
 };
 
-const MODELS = ['gemini-2.5-flash', 'gemini-1.5-flash'];
+const MODELS = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-2.5-flash-lite'];
 
 function extractJsonArray(text: string): any[] | null {
   // Clean control characters
