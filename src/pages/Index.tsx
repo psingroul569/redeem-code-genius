@@ -301,7 +301,7 @@ const Index = () => {
                 <div className="flex flex-col items-center gap-2">
                   <span className="text-2xl font-display text-secondary date-glow">{dateStr}</span>
                   <div className="flex items-center gap-2 text-[10px] text-t-muted font-tech uppercase tracking-widest mt-2">
-                    {iconsLoaded && MapPin ? <MapPin size={10} className="text-success" /> : <span className="w-2.5 h-2.5 rounded-full bg-success inline-block" />}
+                    <span className="w-2.5 h-2.5 rounded-full bg-success inline-block" aria-hidden="true" />
                     Active Node: <span className="text-foreground font-bold">{activeRegion}</span>
                   </div>
                 </div>
@@ -321,10 +321,10 @@ const Index = () => {
                   </div>
                   <div className="flex flex-row items-center gap-3 w-full md:w-auto">
                     <div className="flex-1 md:flex-initial bg-surface px-5 py-3 rounded-2xl border border-border flex items-center justify-center gap-4">
-                      {iconsLoaded && Clock ? <Clock size={16} className="text-t-muted" /> : <span className="w-4 h-4 rounded bg-muted inline-block" />}
+                      <span className="w-4 h-4 rounded bg-muted inline-block" aria-hidden="true" />
                       <div className="flex flex-col justify-center">
                         <span className="text-[10px] text-t-muted font-tech uppercase tracking-widest flex items-center gap-2">
-                          {iconsLoaded && RefreshCcw ? <RefreshCcw size={10} className="text-success" /> : <span className="w-2.5 h-2.5 rounded-full bg-success inline-block" />}
+                          <span className="w-2.5 h-2.5 rounded-full bg-success inline-block" aria-hidden="true" />
                           LAST UPDATE: <span className="text-foreground font-mono font-bold">{lastSyncTime}</span>
                         </span>
                       </div>
@@ -333,9 +333,9 @@ const Index = () => {
                       className={`flex-1 md:flex-initial px-6 py-3 rounded-2xl border transition-all flex items-center justify-center gap-5 ${isOverdue ? "bg-destructive/10 border-destructive/20" : "bg-success-bg border-success-border"}`}
                     >
                       {isOverdue ? (
-                        iconsLoaded && AlertCircle ? <AlertCircle size={18} className="text-destructive animate-pulse" /> : <span className="w-4.5 h-4.5 rounded-full bg-destructive inline-block animate-pulse" />
+                        <span className="w-4.5 h-4.5 rounded-full bg-destructive inline-block animate-pulse" aria-hidden="true" />
                       ) : (
-                        iconsLoaded && Timer ? <Timer size={18} className="text-success" /> : <span className="w-4.5 h-4.5 rounded-full bg-success inline-block" />
+                        <span className="w-4.5 h-4.5 rounded-full bg-success inline-block" aria-hidden="true" />
                       )}
                       <div className="flex flex-col">
                         <span className="text-[8px] text-t-muted font-tech uppercase tracking-widest">
@@ -383,7 +383,7 @@ const Index = () => {
           <Suspense
             fallback={
               <div className="flex items-center justify-center min-h-[50vh]">
-                {iconsLoaded && Loader2 ? <Loader2 className="animate-spin text-foreground" /> : <div className="w-6 h-6 border-2 border-foreground border-t-transparent rounded-full animate-spin" />}
+                <div className="w-6 h-6 border-2 border-foreground border-t-transparent rounded-full animate-spin" />
               </div>
             }
           >
