@@ -30,8 +30,8 @@ Deno.serve(async () => {
     Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
   );
 
-  // Fetch published posts, pages, and latest synced codes in parallel
-  const [postsRes, pagesRes, codesRes] = await Promise.all([
+  // Fetch published posts, pages, latest synced codes, and the most recent sync timestamp in parallel
+  const [postsRes, pagesRes, codesRes, latestSyncRes] = await Promise.all([
     supabase
       .from("posts")
       .select("slug, updated_at, published_at")
@@ -48,18 +48,31 @@ Deno.serve(async () => {
       .eq("status", "Working")
       .order("synced_at", { ascending: false })
       .limit(100),
+    supabase
+      .from("sync_log")
+      .select("synced_at")
+      .order("synced_at", { ascending: false })
+      .limit(1)
+      .maybeSingle(),
   ]);
 
   const posts = postsRes.data || [];
   const pages = pagesRes.data || [];
   const codes = codesRes.data || [];
+  // Use the latest sync_log timestamp for the homepage lastmod, so Googlebot sees fresh content
+  const homepageLastmod = latestSyncRes.data?.synced_at
+    ? new Date(latestSyncRes.data.synced_at).toISOString()
+    : new Date().toISOString();
+  const todayDate = new Date().toISOString().split("T")[0];
 
   let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
   xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
 
-  // Static pages
+  // Static pages - homepage and code-related routes get the freshest lastmod
   for (const p of staticPages) {
-    xml += `  <url>\n    <loc>${escapeXml(DOMAIN + p.loc)}</loc>\n    <changefreq>${p.changefreq}</changefreq>\n    <priority>${p.priority}</priority>\n  </url>\n`;
+    const isFresh = p.loc === "/" || p.changefreq === "hourly" || p.changefreq === "daily";
+    const lastmod = isFresh ? homepageLastmod : todayDate;
+    xml += `  <url>\n    <loc>${escapeXml(DOMAIN + p.loc)}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>${p.changefreq}</changefreq>\n    <priority>${p.priority}</priority>\n  </url>\n`;
   }
 
   // Dynamic blog posts

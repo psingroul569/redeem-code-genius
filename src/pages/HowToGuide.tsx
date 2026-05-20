@@ -14,24 +14,7 @@ const HowToGuide = () => {
     }
   }, []);
 
-  const howToSchema = {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": "How to Redeem Free Fire Codes",
-    "description": "Step-by-step instructions to redeem Free Fire reward codes on the official Garena site. Works on mobile and desktop.",
-    "totalTime": "PT2M",
-    "tool": [
-      { "@type": "HowToTool", "name": "A web browser (Chrome, Safari, Firefox)" },
-      { "@type": "HowToTool", "name": "A linked Free Fire account (Facebook, Google, Apple ID, VK, or Huawei)" }
-    ],
-    "step": [
-      { "@type": "HowToStep", "position": 1, "name": "Copy a working code", "text": "Go to freefireredeemcodetoday.com and tap the copy button next to any code marked Working." },
-      { "@type": "HowToStep", "position": 2, "name": "Open the official Garena rewards site", "text": "Navigate to reward.ff.garena.com in your browser. This is the only legitimate redemption page." },
-      { "@type": "HowToStep", "position": 3, "name": "Log in with your linked account", "text": "Sign in using Facebook, Google, Apple ID, VK, or Huawei - the same method linked to your Free Fire game account." },
-      { "@type": "HowToStep", "position": 4, "name": "Paste the code and confirm", "text": "Paste the 12-character code into the text box and tap Confirm. A green success message confirms the redemption." },
-      { "@type": "HowToStep", "position": 5, "name": "Collect rewards from in-game mail", "text": "Open Free Fire, tap the mail icon on the lobby screen, and claim your rewards. Items arrive within 5–30 minutes, up to 24 hours during peak traffic." }
-    ]
-  };
+  // HowTo schema removed (Sept 2023): Google deprecated HowTo rich results.
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -44,7 +27,6 @@ const HowToGuide = () => {
 
   return (
     <div className="min-h-screen bg-background text-foreground font-tech">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
 
       <Header />

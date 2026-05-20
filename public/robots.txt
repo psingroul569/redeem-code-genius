@@ -10,7 +10,41 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
+# AI crawlers - explicitly allowed for citation visibility
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# Scrapers commonly blocked by content-protective sites
+User-agent: Bytespider
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /admin/
 
 Sitemap: https://freefireredeemcodetoday.com/sitemap.xml

@@ -147,6 +147,7 @@ const Index = () => {
   );
   const [isPlaceholder, setIsPlaceholder] = useState(!initialCache?.codes?.length);
   const [lastSyncTime, setLastSyncTime] = useState<string>(initialCache?.lastSyncTime || "WAITING");
+  const [lastSyncIso, setLastSyncIso] = useState<string | null>(null);
   const [nextUpdateText, setNextUpdateText] = useState("--:--");
   const [isOverdue, setIsOverdue] = useState(false);
   const [dateStr] = useState(formatDateLabel);
@@ -190,6 +191,7 @@ const Index = () => {
       setDisplayCodes(loaded.codes);
       setIsPlaceholder(false);
       setLastSyncTime(timeLabel);
+      if (loaded.syncedAt) setLastSyncIso(loaded.syncedAt);
     }
   }, []);
 
@@ -270,7 +272,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background text-foreground font-sans selection:bg-success selection:text-primary-foreground">
       <Suspense fallback={null}>
-        <Schema currentView={currentView} selectedCode={selectedCode} />
+        <Schema currentView={currentView} selectedCode={selectedCode} codes={displayCodes} lastSyncIso={lastSyncIso} />
       </Suspense>
       <Header
         currentView={currentView}
@@ -362,6 +364,60 @@ const Index = () => {
                   ))}
                 </div>
               </Suspense>
+            </section>
+            <section className="max-w-7xl mx-auto px-4 md:px-8 pb-8" aria-label="Freshness and sourcing">
+              <p className="text-center text-xs md:text-sm text-t-muted font-tech uppercase tracking-widest">
+                Codes last verified:{" "}
+                <time
+                  dateTime={lastSyncIso ?? new Date().toISOString()}
+                  className="text-foreground font-bold"
+                >
+                  {lastSyncIso
+                    ? new Date(lastSyncIso).toLocaleString("en-US", {
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        timeZoneName: "short",
+                      })
+                    : `${dateStr} - ${lastSyncTime}`}
+                </time>
+              </p>
+              <div className="mt-6 grid md:grid-cols-2 gap-4">
+                <div className="bg-card border border-border rounded-2xl p-5">
+                  <h2 className="font-display uppercase tracking-tight text-foreground text-base mb-2">
+                    About this site
+                  </h2>
+                  <p className="text-sm text-t-body leading-relaxed">
+                    FF Redeem Codes Today has monitored Garena's official Free Fire code releases since 2023.
+                    Our team tracks official social channels, in-game event banners, and partner streams across
+                    the India, Brazil, Indonesia, Europe, and Global server regions. Every code is verified
+                    before listing and removed within 60 minutes of expiration.
+                  </p>
+                </div>
+                <div className="bg-card border border-border rounded-2xl p-5">
+                  <h2 className="font-display uppercase tracking-tight text-foreground text-base mb-2">
+                    How we source codes
+                  </h2>
+                  <ul className="text-sm text-t-body leading-relaxed list-disc list-inside space-y-1">
+                    <li>Official Garena handles on X (Twitter), Instagram, Facebook, and YouTube.</li>
+                    <li>In-game event banners and partner livestream drops on Booyah and YouTube.</li>
+                    <li>Hourly automated checks against{" "}
+                      <a
+                        href="https://reward.ff.garena.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-success font-bold underline hover:no-underline"
+                      >
+                        reward.ff.garena.com
+                      </a>{" "}
+                      from each region.
+                    </li>
+                    <li>Expired or capped codes are pulled from the list automatically.</li>
+                  </ul>
+                </div>
+              </div>
             </section>
             <Suspense fallback={<div className="min-h-[200px]" />}>
               <OnPageContent />
