@@ -2,17 +2,16 @@ import { Header } from '@/components/ff/Header';
 import { Footer } from '@/components/ff/Footer';
 import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
-import { useEffect } from 'react';
 import { DEFAULT_URL, SITE_NAME } from '@/constants';
+import { useSEO } from '@/hooks/useSEO';
 
 const HowToGuide = () => {
-  useEffect(() => {
-    document.title = "How to Redeem Free Fire Codes – Step-by-Step Guide | " + SITE_NAME;
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) {
-      metaDesc.setAttribute('content', 'Complete guide to redeem Free Fire codes on reward.ff.garena.com. Works on Android, iPhone, and PC. Covers login, pasting codes, collecting rewards, and fixing common errors.');
-    }
-  }, []);
+  useSEO({
+    title: `How to Redeem Free Fire Codes - Step-by-Step Guide | ${SITE_NAME}`,
+    description: 'Step-by-step guide to redeem Free Fire codes on reward.ff.garena.com. Works on Android, iPhone, and PC. Login, paste codes, and collect rewards.',
+    path: '/how-to-guide',
+  });
+
 
   // HowTo schema removed (Sept 2023): Google deprecated HowTo rich results.
 
