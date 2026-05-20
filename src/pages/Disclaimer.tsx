@@ -251,6 +251,8 @@ const Disclaimer = () => {
 
     <Footer />
   </div>
-);
+  );
+};
 
 export default Disclaimer;
+

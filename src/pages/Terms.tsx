@@ -342,6 +342,8 @@ const Terms = () => {
     </main>
     <Footer />
   </div>
-);
+  );
+};
 
 export default Terms;
+
