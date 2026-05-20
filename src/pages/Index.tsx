@@ -147,6 +147,7 @@ const Index = () => {
   );
   const [isPlaceholder, setIsPlaceholder] = useState(!initialCache?.codes?.length);
   const [lastSyncTime, setLastSyncTime] = useState<string>(initialCache?.lastSyncTime || "WAITING");
+  const [lastSyncIso, setLastSyncIso] = useState<string | null>(null);
   const [nextUpdateText, setNextUpdateText] = useState("--:--");
   const [isOverdue, setIsOverdue] = useState(false);
   const [dateStr] = useState(formatDateLabel);
@@ -190,6 +191,7 @@ const Index = () => {
       setDisplayCodes(loaded.codes);
       setIsPlaceholder(false);
       setLastSyncTime(timeLabel);
+      if (loaded.syncedAt) setLastSyncIso(loaded.syncedAt);
     }
   }, []);
 
@@ -270,7 +272,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background text-foreground font-sans selection:bg-success selection:text-primary-foreground">
       <Suspense fallback={null}>
-        <Schema currentView={currentView} selectedCode={selectedCode} />
+        <Schema currentView={currentView} selectedCode={selectedCode} codes={displayCodes} lastSyncIso={lastSyncIso} />
       </Suspense>
       <Header
         currentView={currentView}
