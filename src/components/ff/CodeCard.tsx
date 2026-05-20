@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { RedeemCode } from '@/types';
-import { ThumbsUp, ThumbsDown, ShieldCheck, Link as LinkIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface Props {
@@ -16,6 +15,7 @@ export const CodeCard: React.FC<Props> = ({ data, onSelect }) => {
     likes: data.likes ?? Math.floor(Math.random() * 800) + 150,
     dislikes: data.dislikes ?? Math.floor(Math.random() * 40) + 5
   }));
+  const proofHash = useMemo(() => Math.random().toString(16).slice(2, 8), []);
 
   const handleCopy = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -66,7 +66,7 @@ export const CodeCard: React.FC<Props> = ({ data, onSelect }) => {
         <div className="flex flex-col">
            <span className="text-[10px] text-t-muted font-tech font-bold uppercase tracking-widest">{data.server || 'Global'}</span>
            <span className="text-[9px] text-success font-tech uppercase mt-0.5 flex items-center gap-1">
-             <ShieldCheck size={10} /> Verified {data.lastTested || 'Tested Now'}
+              <span aria-hidden="true">✓</span> Verified {data.lastTested || 'Tested Now'}
            </span>
         </div>
         <div className={`flex items-center gap-1.5 px-3 py-1 rounded-full border text-[9px] font-tech font-bold uppercase tracking-widest ${
@@ -97,19 +97,19 @@ export const CodeCard: React.FC<Props> = ({ data, onSelect }) => {
       <div className="mb-4 pt-4 border-t border-border">
         <div className="flex items-center justify-between mb-2">
            <span className="text-[9px] text-t-muted font-tech uppercase font-bold tracking-widest">Verification Proof</span>
-           <span className="text-[8px] text-success/50 font-mono">HASH: 0x{Math.random().toString(16).slice(2,8)}</span>
+           <span className="text-[8px] text-success/50 font-mono">HASH: 0x{proofHash}</span>
         </div>
          <div className="flex items-center justify-between gap-2">
            <div className="flex flex-wrap gap-1.5">
               {data.citations && data.citations.length > 0 ? (
                 data.citations.slice(0, 2).map((cite, i) => (
                    <div key={i} className="flex items-center gap-1.5 px-2 py-1 bg-surface border border-border rounded text-[8px] text-t-muted max-w-[120px]">
-                      <LinkIcon size={8} /> <span className="truncate">{cite.title}</span>
+                       <span aria-hidden="true">↗</span> <span className="truncate">{cite.title}</span>
                    </div>
                 ))
               ) : (
                 <div className="flex items-center gap-1.5 px-2 py-1 bg-success-bg border border-success-border rounded text-[8px] text-success/60">
-                   <ShieldCheck size={8} /> Garena Official News
+                    <span aria-hidden="true">✓</span> Garena Official News
                 </div>
               )}
            </div>
@@ -135,11 +135,11 @@ export const CodeCard: React.FC<Props> = ({ data, onSelect }) => {
          </div>
          <div className="flex items-center gap-2">
             <button onClick={(e) => handleVote(e, 'like')} className={`flex items-center gap-1.5 px-2 py-1.5 rounded-lg border transition-all ${voted === 'like' ? 'bg-green-500/20 border-green-500 text-green-500' : 'bg-surface border-border text-t-muted hover:text-green-400 hover:border-green-500/50'}`}>
-                <ThumbsUp size={12} />
+                 <span aria-hidden="true">👍</span>
                 <span className="text-[10px] font-mono font-bold">{metrics.likes}</span>
             </button>
             <button onClick={(e) => handleVote(e, 'dislike')} className={`flex items-center gap-1.5 px-2 py-1.5 rounded-lg border transition-all ${voted === 'dislike' ? 'bg-red-500/20 border-red-500 text-red-500' : 'bg-surface border-border text-t-muted hover:text-red-400 hover:border-red-500/50'}`}>
-                <ThumbsDown size={12} />
+                 <span aria-hidden="true">👎</span>
             </button>
          </div>
       </div>
