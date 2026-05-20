@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Header } from "@/components/ff/Header";
 import { Footer } from "@/components/ff/Footer";
 import { ArrowLeft, Clock, Calendar, Loader2 } from "lucide-react";
+import { useSEO } from "@/hooks/useSEO";
 
 interface PostSummary {
   id: string;
