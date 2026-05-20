@@ -2,8 +2,8 @@ import { useEffect, useState, useCallback, Suspense, lazy, useRef } from "react"
 import React from "react";
 import { AppView, RedeemCode } from "@/types";
 import { useTheme } from "@/hooks/useTheme";
+import { Header } from "@/components/ff/Header";
 
-const Header = lazy(() => import("@/components/ff/Header").then((m) => ({ default: m.Header })));
 const CodeCard = lazy(() => import("@/components/ff/CodeCard").then((m) => ({ default: m.CodeCard })));
 
 const Schema = lazy(() => import("@/components/ff/Schema").then((m) => ({ default: m.Schema })));
@@ -150,26 +150,6 @@ const Index = () => {
   const [nextUpdateText, setNextUpdateText] = useState("--:--");
   const [isOverdue, setIsOverdue] = useState(false);
   const [dateStr] = useState(formatDateLabel);
-  const [iconsLoaded, setIconsLoaded] = useState(false);
-  const iconsRef = useRef<Record<string, any>>({});
-
-  // Load icons after first paint
-  useEffect(() => {
-    const timer = requestAnimationFrame(() => {
-      import("lucide-react").then((mod) => {
-        iconsRef.current = {
-          Clock: mod.Clock,
-          Timer: mod.Timer,
-          RefreshCcw: mod.RefreshCcw,
-          MapPin: mod.MapPin,
-          AlertCircle: mod.AlertCircle,
-          Loader2: mod.Loader2,
-        };
-        setIconsLoaded(true);
-      });
-    });
-    return () => cancelAnimationFrame(timer);
-  }, []);
 
   useEffect(() => {
     const now = new Date();
@@ -286,13 +266,6 @@ const Index = () => {
     setCurrentView(view);
     window.scrollTo(0, 0);
   };
-
-  const MapPin = iconsRef.current.MapPin;
-  const Clock = iconsRef.current.Clock;
-  const RefreshCcw = iconsRef.current.RefreshCcw;
-  const AlertCircle = iconsRef.current.AlertCircle;
-  const Timer = iconsRef.current.Timer;
-  const Loader2 = iconsRef.current.Loader2;
 
   return (
     <div className="min-h-screen bg-background text-foreground font-sans selection:bg-success selection:text-primary-foreground">
