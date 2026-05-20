@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { RedeemCode } from '@/types';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
   data: RedeemCode & { lastTested?: string };
@@ -8,6 +8,7 @@ interface Props {
 }
 
 export const CodeCard: React.FC<Props> = ({ data, onSelect }) => {
+  const navigate = useNavigate();
   const [copied, setCopied] = useState(false);
   const [voted, setVoted] = useState<'like' | 'dislike' | null>(null);
 
@@ -46,11 +47,26 @@ export const CodeCard: React.FC<Props> = ({ data, onSelect }) => {
 
   const codeUrl = `/code/${data.slug}`;
 
+  const handleOpen = () => {
+    if (isExpired) return;
+    onSelect();
+    navigate(codeUrl);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleOpen();
+    }
+  };
+
   return (
-    <Link
-      to={isExpired ? '#' : codeUrl}
-      onClick={(e) => { if (!isExpired) onSelect(); else e.preventDefault(); }}
-      className={`group relative bg-card border border-border hover:border-success/20 transition-all duration-300 rounded-2xl p-5 cursor-pointer overflow-hidden flex flex-col h-full shadow-lg hover:shadow-success/5 block no-underline ${isExpired ? 'opacity-40 grayscale pointer-events-none' : ''}`}
+    <article
+      role="link"
+      tabIndex={isExpired ? -1 : 0}
+      onClick={handleOpen}
+      onKeyDown={handleKeyDown}
+      className={`group relative bg-card border border-border hover:border-success/20 transition-all duration-300 rounded-2xl p-5 cursor-pointer overflow-hidden flex flex-col h-full shadow-lg hover:shadow-success/5 ${isExpired ? 'opacity-40 grayscale pointer-events-none' : ''}`}
     >
       <div className="absolute top-0 right-0 w-32 h-32 bg-success/5 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-success/10 transition-all"></div>
       {(data.recentClaims || 0) > 0 && (
@@ -143,6 +159,6 @@ export const CodeCard: React.FC<Props> = ({ data, onSelect }) => {
             </button>
          </div>
       </div>
-    </Link>
+    </article>
   );
 };
