@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Header } from "@/components/ff/Header";
 import { Footer } from "@/components/ff/Footer";
 import { ArrowLeft, Clock, Calendar, Loader2 } from "lucide-react";
+import { useSEO } from "@/hooks/useSEO";
 
 interface PostSummary {
   id: string;
@@ -18,6 +19,14 @@ interface PostSummary {
 const Blogs = () => {
   const [posts, setPosts] = useState<PostSummary[]>([]);
   const [loading, setLoading] = useState(true);
+
+  useSEO({
+    title: "Free Fire Blog: Code Drops, Events & Tips",
+    description: "Free Fire news, redeem code drops, event coverage, and gameplay tips from the FF Redeem Codes Today editorial team.",
+    path: "/blogs",
+  });
+
+
 
   useEffect(() => {
     supabase

@@ -51,18 +51,26 @@ const CodePage = () => {
 
   useEffect(() => {
     if (!code) return;
-    const now = new Date();
-    const dateStr = now.toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric" });
-    document.title = `${code.code} - Free Fire Redeem Code ${dateStr} | ${code.reward}`;
+    const title = `${code.code} - Free Fire Code for ${code.reward}`.slice(0, 60);
+    document.title = title;
+    const desc = `Redeem Free Fire code ${code.code} for ${code.reward} on ${code.server}. Verified ${code.status}. Step-by-step guide for reward.ff.garena.com.`.slice(0, 160);
     const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) {
-      metaDesc.setAttribute("content", `Redeem Free Fire code ${code.code} for ${code.reward}. Verified ${code.status} for ${code.server} server. Step-by-step guide to claim your reward at reward.ff.garena.com.`);
-    }
-    const canonical = document.querySelector('link[rel="canonical"]') || document.createElement("link");
+    if (metaDesc) metaDesc.setAttribute("content", desc);
+
+    const setOg = (prop: string, value: string) => {
+      let el = document.head.querySelector<HTMLMetaElement>(`meta[property="${prop}"]`);
+      if (!el) { el = document.createElement("meta"); el.setAttribute("property", prop); document.head.appendChild(el); }
+      el.setAttribute("content", value);
+    };
+    setOg("og:title", title);
+    setOg("og:description", desc);
+    setOg("og:url", `${DEFAULT_URL}/code/${code.slug}/`);
+
+    const existing = document.querySelector('link[rel="canonical"]');
+    const canonical = existing || document.createElement("link");
     canonical.setAttribute("rel", "canonical");
     canonical.setAttribute("href", `${DEFAULT_URL}/code/${code.slug}/`);
-    if (!document.querySelector('link[rel="canonical"]')) document.head.appendChild(canonical);
-    return () => { canonical.remove(); };
+    if (!existing) document.head.appendChild(canonical);
   }, [code]);
 
   const handleCopy = () => {
@@ -101,6 +109,7 @@ const CodePage = () => {
     "@type": "Article",
     "headline": `${code.code} – Free Fire Redeem Code for ${code.reward}`,
     "description": `Verified Free Fire redeem code ${code.code} for ${code.reward}. Status: ${code.status}. Server: ${code.server}. Redeem at reward.ff.garena.com.`,
+    "image": [`${DEFAULT_URL}/logo.png`],
     "url": `${DEFAULT_URL}/code/${code.slug}/`,
     "datePublished": isoDate,
     "dateModified": isoDate,
