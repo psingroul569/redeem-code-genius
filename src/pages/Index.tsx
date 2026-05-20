@@ -170,13 +170,13 @@ const Index = () => {
 
   useEffect(() => {
     const now = new Date();
-    const dayMonthYear = now.toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric" });
-    document.title = `Free Fire Redeem Code Today ${dayMonthYear} - 12+ Active Working Codes`;
+    const dayMonth = now.toLocaleDateString("en-US", { day: "numeric", month: "short" });
+    document.title = `Free Fire Redeem Codes Today (${dayMonth}) - Working`;
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc)
       metaDesc.setAttribute(
         "content",
-        `Get 12+ working Free Fire redeem codes today ${dayMonthYear}. Instant free diamonds, legendary skins & bundles. Hourly verified from official Garena servers. 100% Working.`,
+        `Today's working Free Fire redeem codes (${dayMonth}). Verified hourly from official Garena servers. Free diamonds, skins, and bundles across all regions.`,
       );
   }, []);
 
