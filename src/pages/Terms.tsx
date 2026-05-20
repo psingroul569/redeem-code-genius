@@ -14,6 +14,9 @@ import {
   RefreshCw,
   Mail,
 } from "lucide-react";
+import { useSEO } from "@/hooks/useSEO";
+import { SITE_NAME } from "@/constants";
+
 
 const sections = [
   {
@@ -173,9 +176,16 @@ const sections = [
   },
 ];
 
-const Terms = () => (
+const Terms = () => {
+  useSEO({
+    title: `Terms & Conditions | ${SITE_NAME}`,
+    description: 'Terms and conditions for using freefireredeemcodetoday.com. User responsibilities, prohibited conduct, disclaimers, and liability.',
+    path: '/terms',
+  });
+  return (
   <div className="min-h-screen bg-background text-foreground font-tech">
     <Header />
+
     <main className="max-w-4xl mx-auto px-4 md:px-8 py-16">
       <Link
         to="/"

@@ -1,9 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Header } from '@/components/ff/Header';
 import { Footer } from '@/components/ff/Footer';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Search, ChevronUp, ChevronDown, HelpCircle } from 'lucide-react';
 import { DEFAULT_URL, SITE_NAME } from '@/constants';
+import { useSEO } from '@/hooks/useSEO';
+
+
 
 
 interface FAQItem {
@@ -349,13 +352,12 @@ const FAQ = () => {
   const [openItems, setOpenItems] = useState<number[]>([1]);
   const [selectedCategory, setSelectedCategory] = useState('all');
 
-  useEffect(() => {
-    document.title = "Free Fire Redeem Code FAQ - 50+ Answers | " + SITE_NAME;
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) {
-      metaDesc.setAttribute('content', 'Get answers to 50+ common questions about Free Fire redeem codes, how to redeem them, troubleshooting tips, and more. Updated daily.');
-    }
-  }, []);
+  useSEO({
+    title: `Free Fire Redeem Code FAQ - 50+ Answers | ${SITE_NAME}`,
+    description: 'Get answers to 50+ common questions about Free Fire redeem codes, how to redeem them, troubleshooting tips, and more. Updated daily.',
+    path: '/faq',
+  });
+
 
   const filteredFAQs = faqData.filter(item => {
     const matchesSearch = item.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
