@@ -20,6 +20,14 @@ const Blogs = () => {
   const [posts, setPosts] = useState<PostSummary[]>([]);
   const [loading, setLoading] = useState(true);
 
+  useSEO({
+    title: "Free Fire Blog: Code Drops, Events & Tips",
+    description: "Free Fire news, redeem code drops, event coverage, and gameplay tips from the FF Redeem Codes Today editorial team.",
+    path: "/blogs",
+  });
+
+
+
   useEffect(() => {
     supabase
       .from("posts")
