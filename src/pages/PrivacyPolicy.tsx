@@ -2,6 +2,9 @@ import { Header } from "@/components/ff/Header";
 import { Footer } from "@/components/ff/Footer";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Database, Cookie, Settings, Shield, Users, Baby, RefreshCw, Mail, Eye } from "lucide-react";
+import { useSEO } from "@/hooks/useSEO";
+import { SITE_NAME } from "@/constants";
+
 
 const sections = [
   {
@@ -121,8 +124,15 @@ const sections = [
   },
 ];
 
-const PrivacyPolicy = () => (
+const PrivacyPolicy = () => {
+  useSEO({
+    title: `Privacy Policy | ${SITE_NAME}`,
+    description: 'How freefireredeemcodetoday.com collects, uses, and protects your data. Cookies, analytics, your rights, and contact details.',
+    path: '/privacy-policy',
+  });
+  return (
   <div className="min-h-screen bg-background text-foreground font-tech">
+
     <Header />
 
     <main className="max-w-4xl mx-auto px-4 md:px-8 py-16">
@@ -283,6 +293,8 @@ const PrivacyPolicy = () => (
 
     <Footer />
   </div>
-);
+  );
+};
 
 export default PrivacyPolicy;
+

@@ -5,6 +5,8 @@ import { Header } from "@/components/ff/Header";
 import { Footer } from "@/components/ff/Footer";
 import MarkdownRenderer from "@/components/MarkdownRenderer";
 import { ArrowLeft, Clock, Calendar, Loader2 } from "lucide-react";
+import { useSEO } from "@/hooks/useSEO";
+import { DEFAULT_URL, SITE_NAME, LEAD_AUTHOR } from "@/constants";
 
 interface Post {
   id: string;
@@ -15,6 +17,7 @@ interface Post {
   featured_image: string | null;
   reading_time: number;
   published_at: string | null;
+  updated_at?: string | null;
   seo_title: string | null;
   seo_description: string | null;
   og_title: string | null;
@@ -39,13 +42,17 @@ const BlogPost = () => {
       .then(({ data }) => {
         setPost(data);
         setLoading(false);
-        if (data) {
-          document.title = data.seo_title || data.title;
-          const metaDesc = document.querySelector('meta[name="description"]');
-          if (metaDesc && data.seo_description) metaDesc.setAttribute("content", data.seo_description);
-        }
       });
   }, [slug]);
+
+  // Per-route SEO: title, description, canonical, OG (self-referencing)
+  useSEO({
+    title: post ? `${post.seo_title || post.title} | ${SITE_NAME}` : `Loading… | ${SITE_NAME}`,
+    description:
+      (post?.seo_description || post?.excerpt || "Free Fire guides, news, and redeem code tips.").slice(0, 160),
+    path: `/blogs/${slug || ""}`,
+    image: post?.og_image || post?.featured_image || undefined,
+  });
 
   if (loading) {
     return (
@@ -68,8 +75,30 @@ const BlogPost = () => {
     );
   }
 
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": post.title,
+    "description": post.seo_description || post.excerpt || undefined,
+    "image": post.og_image || post.featured_image || undefined,
+    "datePublished": post.published_at || undefined,
+    "dateModified": post.updated_at || post.published_at || undefined,
+    "author": {
+      "@type": "Person",
+      "name": LEAD_AUTHOR.name,
+      "url": `${DEFAULT_URL}/about-us`,
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": SITE_NAME,
+      "logo": { "@type": "ImageObject", "url": `${DEFAULT_URL}/logo.png`, "width": 512, "height": 512 },
+    },
+    "mainEntityOfPage": { "@type": "WebPage", "@id": `${DEFAULT_URL}/blogs/${post.slug}` },
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground font-tech">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
       <Header />
       <main className="max-w-4xl mx-auto px-4 md:px-8 py-12">
         <Link to="/blogs" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground mb-8 text-sm uppercase tracking-widest transition-colors">
@@ -108,3 +137,4 @@ const BlogPost = () => {
 };
 
 export default BlogPost;
+
