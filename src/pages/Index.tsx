@@ -65,6 +65,9 @@ const writeCachedRegion = (region: string, codes: RedeemCode[], lastSyncTime: st
   }
 };
 
+const formatDateLabel = () =>
+  new Date().toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" }).toUpperCase();
+
 const formatSyncLabel = (syncedAt: string | null): string => {
   if (!syncedAt) return "WAITING";
   try {
@@ -146,7 +149,7 @@ const Index = () => {
   const [lastSyncTime, setLastSyncTime] = useState<string>(initialCache?.lastSyncTime || "WAITING");
   const [nextUpdateText, setNextUpdateText] = useState("--:--");
   const [isOverdue, setIsOverdue] = useState(false);
-  const [dateStr, setDateStr] = useState("");
+  const [dateStr] = useState(formatDateLabel);
   const [iconsLoaded, setIconsLoaded] = useState(false);
   const iconsRef = useRef<Record<string, any>>({});
 
@@ -256,12 +259,7 @@ const Index = () => {
     return () => clearTimeout(timer);
   }, [activeRegion, loadRegionData]);
 
-  // Compute date string once on mount, then start ticker after 2s delay
-  useEffect(() => {
-    const now = new Date();
-    setDateStr(now.toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" }).toUpperCase());
-  }, []);
-
+  // Start ticker after 2s delay to keep first paint light.
   useEffect(() => {
     const startTimer = setTimeout(() => {
       const ticker = setInterval(() => {
