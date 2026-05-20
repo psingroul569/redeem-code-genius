@@ -1,6 +1,5 @@
 import React from "react";
 import { AppView } from "@/types";
-import { Zap } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 
 interface HeaderProps {
@@ -27,7 +26,7 @@ export const Header: React.FC<HeaderProps> = ({
           <div className="relative flex-shrink-0">
             <div className="absolute -inset-1 bg-success/20 blur-md rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
             <div className="relative w-10 h-10 md:w-12 md:h-12 bg-surface border border-border rounded-xl flex items-center justify-center group-hover:border-success/50 transition-all duration-300 shadow-inner">
-              <Zap size={22} className="text-success fill-success/10 md:w-6 md:h-6" />
+              <span className="text-success text-xl md:text-2xl leading-none" aria-hidden="true">⚡</span>
               <div className="absolute -top-1 -right-1 w-3 h-3 bg-success rounded-full border-2 border-background flex items-center justify-center">
                 <div className="w-1 h-1 bg-background rounded-full animate-ping"></div>
               </div>

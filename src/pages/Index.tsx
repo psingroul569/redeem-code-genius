@@ -2,8 +2,8 @@ import { useEffect, useState, useCallback, Suspense, lazy, useRef } from "react"
 import React from "react";
 import { AppView, RedeemCode } from "@/types";
 import { useTheme } from "@/hooks/useTheme";
+import { Header } from "@/components/ff/Header";
 
-const Header = lazy(() => import("@/components/ff/Header").then((m) => ({ default: m.Header })));
 const CodeCard = lazy(() => import("@/components/ff/CodeCard").then((m) => ({ default: m.CodeCard })));
 
 const Schema = lazy(() => import("@/components/ff/Schema").then((m) => ({ default: m.Schema })));
@@ -64,6 +64,9 @@ const writeCachedRegion = (region: string, codes: RedeemCode[], lastSyncTime: st
     // ignore cache errors
   }
 };
+
+const formatDateLabel = () =>
+  new Date().toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" }).toUpperCase();
 
 const formatSyncLabel = (syncedAt: string | null): string => {
   if (!syncedAt) return "WAITING";
@@ -146,27 +149,7 @@ const Index = () => {
   const [lastSyncTime, setLastSyncTime] = useState<string>(initialCache?.lastSyncTime || "WAITING");
   const [nextUpdateText, setNextUpdateText] = useState("--:--");
   const [isOverdue, setIsOverdue] = useState(false);
-  const [dateStr, setDateStr] = useState("");
-  const [iconsLoaded, setIconsLoaded] = useState(false);
-  const iconsRef = useRef<Record<string, any>>({});
-
-  // Load icons after first paint
-  useEffect(() => {
-    const timer = requestAnimationFrame(() => {
-      import("lucide-react").then((mod) => {
-        iconsRef.current = {
-          Clock: mod.Clock,
-          Timer: mod.Timer,
-          RefreshCcw: mod.RefreshCcw,
-          MapPin: mod.MapPin,
-          AlertCircle: mod.AlertCircle,
-          Loader2: mod.Loader2,
-        };
-        setIconsLoaded(true);
-      });
-    });
-    return () => cancelAnimationFrame(timer);
-  }, []);
+  const [dateStr] = useState(formatDateLabel);
 
   useEffect(() => {
     const now = new Date();
@@ -256,12 +239,7 @@ const Index = () => {
     return () => clearTimeout(timer);
   }, [activeRegion, loadRegionData]);
 
-  // Compute date string once on mount, then start ticker after 2s delay
-  useEffect(() => {
-    const now = new Date();
-    setDateStr(now.toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" }).toUpperCase());
-  }, []);
-
+  // Start ticker after 2s delay to keep first paint light.
   useEffect(() => {
     const startTimer = setTimeout(() => {
       const ticker = setInterval(() => {
@@ -289,35 +267,19 @@ const Index = () => {
     window.scrollTo(0, 0);
   };
 
-  const MapPin = iconsRef.current.MapPin;
-  const Clock = iconsRef.current.Clock;
-  const RefreshCcw = iconsRef.current.RefreshCcw;
-  const AlertCircle = iconsRef.current.AlertCircle;
-  const Timer = iconsRef.current.Timer;
-  const Loader2 = iconsRef.current.Loader2;
-
   return (
     <div className="min-h-screen bg-background text-foreground font-sans selection:bg-success selection:text-primary-foreground">
       <Suspense fallback={null}>
         <Schema currentView={currentView} selectedCode={selectedCode} />
       </Suspense>
-      <Suspense fallback={
-        <header className="sticky top-0 bg-background/90 pt-4 pb-4 z-50 border-b border-border shadow-sm">
-          <div className="max-w-7xl mx-auto px-4 md:px-8 flex items-center gap-3">
-            <div className="w-10 h-10 md:w-12 md:h-12 bg-muted rounded-xl" />
-            <span className="font-display text-[15px] md:text-2xl text-foreground font-black italic uppercase">Free Fire REDEEM CODE TODAY</span>
-          </div>
-        </header>
-      }>
-        <Header
-          currentView={currentView}
-          setView={handleSetView}
-          isSyncing={false}
-          syncingRegion={null}
-          theme={theme}
-          onToggleTheme={toggleTheme}
-        />
-      </Suspense>
+      <Header
+        currentView={currentView}
+        setView={handleSetView}
+        isSyncing={false}
+        syncingRegion={null}
+        theme={theme}
+        onToggleTheme={toggleTheme}
+      />
 
       <main className="w-full">
         {currentView === "home" ? (
@@ -330,7 +292,7 @@ const Index = () => {
                 <div className="flex flex-col items-center gap-2">
                   <span className="text-2xl font-display text-secondary date-glow">{dateStr}</span>
                   <div className="flex items-center gap-2 text-[10px] text-t-muted font-tech uppercase tracking-widest mt-2">
-                    {iconsLoaded && MapPin ? <MapPin size={10} className="text-success" /> : <span className="w-2.5 h-2.5 rounded-full bg-success inline-block" />}
+                    <span className="w-2.5 h-2.5 rounded-full bg-success inline-block" aria-hidden="true" />
                     Active Node: <span className="text-foreground font-bold">{activeRegion}</span>
                   </div>
                 </div>
@@ -350,10 +312,10 @@ const Index = () => {
                   </div>
                   <div className="flex flex-row items-center gap-3 w-full md:w-auto">
                     <div className="flex-1 md:flex-initial bg-surface px-5 py-3 rounded-2xl border border-border flex items-center justify-center gap-4">
-                      {iconsLoaded && Clock ? <Clock size={16} className="text-t-muted" /> : <span className="w-4 h-4 rounded bg-muted inline-block" />}
+                      <span className="w-4 h-4 rounded bg-muted inline-block" aria-hidden="true" />
                       <div className="flex flex-col justify-center">
                         <span className="text-[10px] text-t-muted font-tech uppercase tracking-widest flex items-center gap-2">
-                          {iconsLoaded && RefreshCcw ? <RefreshCcw size={10} className="text-success" /> : <span className="w-2.5 h-2.5 rounded-full bg-success inline-block" />}
+                          <span className="w-2.5 h-2.5 rounded-full bg-success inline-block" aria-hidden="true" />
                           LAST UPDATE: <span className="text-foreground font-mono font-bold">{lastSyncTime}</span>
                         </span>
                       </div>
@@ -362,9 +324,9 @@ const Index = () => {
                       className={`flex-1 md:flex-initial px-6 py-3 rounded-2xl border transition-all flex items-center justify-center gap-5 ${isOverdue ? "bg-destructive/10 border-destructive/20" : "bg-success-bg border-success-border"}`}
                     >
                       {isOverdue ? (
-                        iconsLoaded && AlertCircle ? <AlertCircle size={18} className="text-destructive animate-pulse" /> : <span className="w-4.5 h-4.5 rounded-full bg-destructive inline-block animate-pulse" />
+                        <span className="w-4.5 h-4.5 rounded-full bg-destructive inline-block animate-pulse" aria-hidden="true" />
                       ) : (
-                        iconsLoaded && Timer ? <Timer size={18} className="text-success" /> : <span className="w-4.5 h-4.5 rounded-full bg-success inline-block" />
+                        <span className="w-4.5 h-4.5 rounded-full bg-success inline-block" aria-hidden="true" />
                       )}
                       <div className="flex flex-col">
                         <span className="text-[8px] text-t-muted font-tech uppercase tracking-widest">
@@ -412,7 +374,7 @@ const Index = () => {
           <Suspense
             fallback={
               <div className="flex items-center justify-center min-h-[50vh]">
-                {iconsLoaded && Loader2 ? <Loader2 className="animate-spin text-foreground" /> : <div className="w-6 h-6 border-2 border-foreground border-t-transparent rounded-full animate-spin" />}
+                <div className="w-6 h-6 border-2 border-foreground border-t-transparent rounded-full animate-spin" />
               </div>
             }
           >
