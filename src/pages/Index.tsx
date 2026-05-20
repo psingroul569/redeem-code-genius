@@ -272,23 +272,14 @@ const Index = () => {
       <Suspense fallback={null}>
         <Schema currentView={currentView} selectedCode={selectedCode} />
       </Suspense>
-      <Suspense fallback={
-        <header className="sticky top-0 bg-background/90 pt-4 pb-4 z-50 border-b border-border shadow-sm">
-          <div className="max-w-7xl mx-auto px-4 md:px-8 flex items-center gap-3">
-            <div className="w-10 h-10 md:w-12 md:h-12 bg-muted rounded-xl" />
-            <span className="font-display text-[15px] md:text-2xl text-foreground font-black italic uppercase">Free Fire REDEEM CODE TODAY</span>
-          </div>
-        </header>
-      }>
-        <Header
-          currentView={currentView}
-          setView={handleSetView}
-          isSyncing={false}
-          syncingRegion={null}
-          theme={theme}
-          onToggleTheme={toggleTheme}
-        />
-      </Suspense>
+      <Header
+        currentView={currentView}
+        setView={handleSetView}
+        isSyncing={false}
+        syncingRegion={null}
+        theme={theme}
+        onToggleTheme={toggleTheme}
+      />
 
       <main className="w-full">
         {currentView === "home" ? (
