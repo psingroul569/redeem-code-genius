@@ -1,18 +1,20 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- Google tag (gtag.js) - deferred to reduce main thread work -->
+    <!-- Google tag (gtag.js) - delayed to reduce mobile INP/main-thread work -->
     <script>
       addEventListener('load', function(){
-        var s=document.createElement('script');
-        s.src='https://www.googletagmanager.com/gtag/js?id=G-GPC0S0RR5B';
-        s.async=true;
-        document.head.appendChild(s);
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        window.gtag = gtag;
-        gtag('js', new Date());
-        gtag('config', 'G-GPC0S0RR5B');
+        setTimeout(function(){
+          var s=document.createElement('script');
+          s.src='https://www.googletagmanager.com/gtag/js?id=G-GPC0S0RR5B';
+          s.async=true;
+          document.head.appendChild(s);
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          window.gtag = gtag;
+          gtag('js', new Date());
+          gtag('config', 'G-GPC0S0RR5B');
+        }, 3000);
       });
     </script>
     <meta charset="UTF-8" />
@@ -54,6 +56,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="dns-prefetch" href="https://qfhupdvvjsfbzttuhzui.supabase.co" />
+    <link rel="preload" as="font" type="font/woff2" href="https://fonts.gstatic.com/s/russoone/v18/Z9XUDmZRWg6M1LvRYsHOz8mJ.woff2" crossorigin />
     <link
       rel="preload"
       as="style"
@@ -65,15 +68,17 @@
         href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Russo+One&display=swap"
     /></noscript>
 
-    <!-- AdSense - deferred until after load, skipped on admin routes -->
+    <!-- AdSense - delayed until after first interaction window, skipped on admin routes -->
     <script>
       addEventListener('load', function(){
         if(window.location.pathname.startsWith('/admin')) return;
-        var a=document.createElement('script');
-        a.src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4839187196632541';
-        a.async=true;
-        a.crossOrigin='anonymous';
-        document.head.appendChild(a);
+        setTimeout(function(){
+          var a=document.createElement('script');
+          a.src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4839187196632541';
+          a.async=true;
+          a.crossOrigin='anonymous';
+          document.head.appendChild(a);
+        }, 5000);
       });
     </script>
 
