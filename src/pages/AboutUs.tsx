@@ -2,8 +2,14 @@ import { Header } from "@/components/ff/Header";
 import { Footer } from "@/components/ff/Footer";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Shield, Users, Zap, Target, Clock, CheckCircle, Globe, Heart } from "lucide-react";
+import { useSEO } from "@/hooks/useSEO";
 
 const AboutUs = () => {
+  useSEO({
+    title: "About FF Redeem Codes Today: Our Team & Method",
+    description: "Meet the editorial team behind FF Redeem Codes Today and learn how we verify Free Fire redeem codes from official Garena sources every hour.",
+    path: "/about-us",
+  });
   const aboutSchema = {
     "@context": "https://schema.org",
     "@type": "AboutPage",

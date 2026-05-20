@@ -3,8 +3,14 @@ import { Footer } from "@/components/ff/Footer";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Mail, Send, MessageCircle } from "lucide-react";
 import { useState } from "react";
+import { useSEO } from "@/hooks/useSEO";
 
 const Contact = () => {
+  useSEO({
+    title: "Contact FF Redeem Codes Today - Support & Feedback",
+    description: "Get in touch with the FF Redeem Codes Today team for support, feedback, or code submissions. We respond within 24 hours.",
+    path: "/contact",
+  });
   const [formData, setFormData] = useState({
     name: "",
     email: "",
