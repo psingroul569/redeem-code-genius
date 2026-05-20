@@ -1,0 +1,1 @@
+SELECT cron.unschedule('cleanup-old-synced-codes');
