@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from "react";
+import React, { Suspense, lazy, useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Index from "./pages/Index";
@@ -39,12 +39,34 @@ const Wrap = ({ children }: { children: React.ReactNode }) => (
   <Suspense fallback={null}>{children}</Suspense>
 );
 
-const App = () => (
-  <TooltipProvider>
+// Mount toasters after idle so the toast UI chunk doesn't compete with first paint on mobile.
+const DeferredToasters = () => {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    const w = window as unknown as {
+      requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
+      cancelIdleCallback?: (id: number) => void;
+    };
+    const id = w.requestIdleCallback
+      ? w.requestIdleCallback(() => setShow(true), { timeout: 4000 })
+      : window.setTimeout(() => setShow(true), 3500);
+    return () => {
+      if (w.requestIdleCallback) w.cancelIdleCallback?.(id as number);
+      else window.clearTimeout(id as number);
+    };
+  }, []);
+  if (!show) return null;
+  return (
     <Suspense fallback={null}>
       <Toaster />
       <Sonner />
     </Suspense>
+  );
+};
+
+const App = () => (
+  <TooltipProvider>
+    <DeferredToasters />
     <BrowserRouter>
       <Routes>
           <Route path="/" element={<Index />} />
