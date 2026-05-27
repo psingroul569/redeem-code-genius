@@ -137,22 +137,26 @@
     }
     </script>
 
-    <!-- Inline critical CSS for instant first paint / LCP -->
+    <!-- Inline critical CSS for instant first paint / LCP. Skeleton dimensions match React output to keep CLS near zero. -->
     <style>
       *,*::before,*::after{box-sizing:border-box}
-      :root{--background:220 20% 97%;--foreground:220 15% 15%;--success:153 80% 32%}
-      .dark{--background:0 0% 0%;--foreground:210 40% 98%;--success:153 100% 50%}
-      body{margin:0;background:hsl(var(--background));color:hsl(var(--foreground));font-family:system-ui,-apple-system,sans-serif}
-      #root-skeleton{min-height:100vh;background:hsl(var(--background));color:hsl(var(--foreground));contain:layout style paint}
-      #root-skeleton .sk-header{height:73px;border-bottom:1px solid hsl(220 13% 88%);display:flex;align-items:center;padding:16px;background:hsl(var(--background)/0.96)}
-      #root-skeleton .sk-logo{width:40px;height:40px;border-radius:12px;background:hsl(220 14% 92%);margin-right:12px;flex:0 0 auto}
-      #root-skeleton .sk-brand{font-family:'Russo One',system-ui,sans-serif;font-size:15px;text-transform:uppercase;font-style:italic;line-height:1;color:hsl(var(--foreground))}
+      :root{--background:220 20% 97%;--foreground:220 15% 15%;--success:153 80% 32%;--border:220 13% 88%;--surface:220 14% 95%;--muted:220 14% 92%}
+      .dark{--background:0 0% 0%;--foreground:210 40% 98%;--success:153 100% 50%;--border:0 0% 10%;--surface:0 0% 4%;--muted:0 0% 10%}
+      body{margin:0;background:hsl(var(--background));color:hsl(var(--foreground));font-family:system-ui,-apple-system,sans-serif;overflow-x:hidden}
+      #root-skeleton{min-height:100vh;background:hsl(var(--background));color:hsl(var(--foreground));contain:layout paint}
+      #root-skeleton .sk-header{height:73px;border-bottom:1px solid hsl(var(--border));display:flex;align-items:center;padding:16px;background:hsl(var(--background))}
+      #root-skeleton .sk-logo{width:40px;height:40px;border-radius:12px;background:hsl(var(--surface));border:1px solid hsl(var(--border));margin-right:12px;flex:0 0 auto}
       #root-skeleton .sk-hero{padding:32px 16px 8px;text-align:center}
-      #root-skeleton h1{font-family:'Russo One',system-ui,sans-serif;font-size:clamp(2.5rem,10vw,6rem);text-transform:uppercase;letter-spacing:-0.05em;line-height:0.85;text-align:center;margin:0 0 24px;color:hsl(var(--foreground))}
+      #root-skeleton h1{font-family:'Russo One',system-ui,sans-serif;font-size:clamp(2.5rem,10vw,6rem);text-transform:uppercase;letter-spacing:-0.05em;line-height:0.85;text-align:center;margin:0 0 24px;color:hsl(var(--foreground));min-height:6.5rem}
       #root-skeleton .accent{color:hsl(var(--success));font-style:italic}
-      #root-skeleton .date{font-family:'Russo One',system-ui,sans-serif;font-size:1.5rem;color:hsl(24 32% 53%);min-height:1.5rem}
-      #root-skeleton .sk-controls{height:124px;margin:48px 16px 0;border-radius:16px;background:hsl(220 14% 95%);border:1px solid hsl(220 13% 88%)}
-      
+      #root-skeleton .date{font-family:'Russo One',system-ui,sans-serif;font-size:1.5rem;color:hsl(24 32% 53%);min-height:1.5rem;line-height:1.5rem}
+      #root-skeleton .sk-node{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:hsl(220 12% 40%);margin-top:8px;min-height:14px}
+      #root-skeleton .sk-controls{margin:48px 16px 0;display:flex;flex-direction:column;gap:16px}
+      #root-skeleton .sk-tabs{height:52px;border-radius:16px;background:hsl(var(--surface));border:1px solid hsl(var(--border))}
+      #root-skeleton .sk-stats{display:flex;gap:12px}
+      #root-skeleton .sk-stat{flex:1;height:64px;border-radius:16px;background:hsl(var(--surface));border:1px solid hsl(var(--border))}
+      #root-skeleton .sk-codes{margin:48px 16px 0;min-height:1200px}
+      @media(min-width:1024px){#root-skeleton .sk-codes{min-height:1600px}}
     </style>
     <link rel="modulepreload" href="/src/main.tsx" />
   </head>
@@ -160,12 +164,17 @@
   <body>
     <div id="root">
       <div id="root-skeleton">
-        <div class="sk-header"><div class="sk-logo"></div><div class="sk-brand">Free Fire REDEEM CODE <span class="accent">TODAY</span></div></div>
+        <div class="sk-header"><div class="sk-logo"></div><div style="font-family:'Russo One',system-ui,sans-serif;font-size:15px;text-transform:uppercase;font-style:italic;line-height:1;font-weight:900">Free Fire REDEEM CODE <span class="accent">TODAY</span></div></div>
         <div class="sk-hero">
           <h1>FREE FIRE REDEEM<br /><span class="accent">CODE TODAY</span></h1>
           <div class="date"><script>document.write(new Date().toLocaleDateString('en-US',{day:'numeric',month:'short',year:'numeric'}).toUpperCase())</script></div>
+          <div class="sk-node">&bull; Active Node: GLOBAL</div>
         </div>
-        <div class="sk-controls"></div>
+        <div class="sk-controls">
+          <div class="sk-tabs"></div>
+          <div class="sk-stats"><div class="sk-stat"></div><div class="sk-stat"></div></div>
+        </div>
+        <div class="sk-codes"></div>
       </div>
     </div>
 
