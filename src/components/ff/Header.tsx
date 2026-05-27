@@ -39,7 +39,7 @@ export const Header: React.FC<HeaderProps> = ({
               <span className="text-[8px] text-t-muted tracking-[0.15em] font-tech uppercase font-bold truncate">
                 Free Fire Working Redeem Codes For
               </span>
-              <span className="text-[8px] text-success font-tech font-bold uppercase tracking-widest animate-pulse">
+              <span className="text-[8px] text-success font-tech font-bold uppercase tracking-widest ">
                 Today
               </span>
             </div>
@@ -55,7 +55,7 @@ export const Header: React.FC<HeaderProps> = ({
               <span className="text-[10px] text-t-muted tracking-[0.2em] font-tech uppercase font-bold truncate">
                 Free Fire Working Redeem Codes For
               </span>
-              <span className="text-[10px] text-success font-tech font-bold uppercase tracking-widest animate-pulse">
+              <span className="text-[10px] text-success font-tech font-bold uppercase tracking-widest ">
                 Today
               </span>
             </div>
