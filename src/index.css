@@ -134,8 +134,12 @@
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-.text-glow {
-  text-shadow: 0 0 15px hsl(var(--foreground) / calc(0.4 * var(--glow-opacity))), 0 0 30px hsl(var(--foreground) / calc(0.2 * var(--glow-opacity)));
+/* Drop text-shadow on mobile - costly paint with negligible visual gain at small sizes */
+.text-glow { text-shadow: none; }
+.date-glow { text-shadow: none; }
+@media (min-width: 768px) {
+  .text-glow { text-shadow: 0 0 15px hsl(var(--foreground) / calc(0.4 * var(--glow-opacity))), 0 0 30px hsl(var(--foreground) / calc(0.2 * var(--glow-opacity))); }
+  .date-glow { text-shadow: 0 0 15px hsl(24 32% 53% / calc(0.4 * var(--glow-opacity))); }
 }
 
 .date-glow {

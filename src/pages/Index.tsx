@@ -419,11 +419,15 @@ const Index = () => {
                 </div>
               </div>
             </section>
-            <Suspense fallback={<div className="min-h-[200px]" />}>
-              <OnPageContent />
+            <Suspense fallback={<div style={{ minHeight: 200 }} />}>
+              <div style={{ contentVisibility: 'auto', containIntrinsicSize: '1px 800px' }}>
+                <OnPageContent />
+              </div>
             </Suspense>
-            <Suspense fallback={<div className="min-h-[400px]" />}>
-              <AuthorityHub />
+            <Suspense fallback={<div style={{ minHeight: 400 }} />}>
+              <div style={{ contentVisibility: 'auto', containIntrinsicSize: '1px 1200px' }}>
+                <AuthorityHub />
+              </div>
             </Suspense>
           </>
         ) : (
