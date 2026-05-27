@@ -142,9 +142,6 @@
   .date-glow { text-shadow: 0 0 15px hsl(24 32% 53% / calc(0.4 * var(--glow-opacity))); }
 }
 
-.date-glow {
-  text-shadow: 0 0 15px hsl(24 32% 53% / calc(0.4 * var(--glow-opacity)));
-}
 
 .animate-fade-in {
   animation: fadeIn 0.5s ease-out forwards;
