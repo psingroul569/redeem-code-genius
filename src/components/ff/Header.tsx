@@ -20,16 +20,12 @@ export const Header: React.FC<HeaderProps> = ({
   onToggleTheme = () => {},
 }) => {
   return (
-    <header className="sticky top-0 bg-background/90 backdrop-blur-xl pt-4 pb-4 z-50 border-b border-border transition-all shadow-sm">
+    <header className="sticky top-0 bg-background pt-4 pb-4 z-50 border-b border-border shadow-sm">
       <div className="max-w-7xl mx-auto px-4 md:px-8 flex items-center justify-between gap-4">
         <div className="flex items-center gap-3 md:gap-5 group cursor-pointer min-w-0" onClick={() => setView("home")}>
           <div className="relative flex-shrink-0">
-            <div className="absolute -inset-1 bg-success/20 blur-md rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
-            <div className="relative w-10 h-10 md:w-12 md:h-12 bg-surface border border-border rounded-xl flex items-center justify-center group-hover:border-success/50 transition-all duration-300 shadow-inner">
+            <div className="relative w-10 h-10 md:w-12 md:h-12 bg-surface border border-border rounded-xl flex items-center justify-center shadow-inner">
               <span className="text-success text-xl md:text-2xl leading-none" aria-hidden="true">⚡</span>
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-success rounded-full border-2 border-background flex items-center justify-center">
-                <div className="w-1 h-1 bg-background rounded-full animate-ping"></div>
-              </div>
             </div>
           </div>
           {/* Mobile: compact centered branding */}
