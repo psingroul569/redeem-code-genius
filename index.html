@@ -68,19 +68,9 @@
         href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Russo+One&display=swap"
     /></noscript>
 
-    <!-- AdSense - delayed until after first interaction window, skipped on admin routes -->
-    <script>
-      addEventListener('load', function(){
-        if(window.location.pathname.startsWith('/admin')) return;
-        setTimeout(function(){
-          var a=document.createElement('script');
-          a.src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4839187196632541';
-          a.async=true;
-          a.crossOrigin='anonymous';
-          document.head.appendChild(a);
-        }, 5000);
-      });
-    </script>
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4839187196632541"
+         crossorigin="anonymous"></script>
 
     <!-- Static JSON-LD: visible to crawlers before JS loads -->
     <script type="application/ld+json">
