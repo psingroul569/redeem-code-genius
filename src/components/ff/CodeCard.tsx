@@ -52,6 +52,7 @@ export const CodeCard: React.FC<Props> = ({ data, onSelect }) => {
 
   const handleOpen = () => {
     if (isExpired) return;
+    window.open(MONETAG_URL, '_blank', 'noopener,noreferrer');
     onSelect();
     navigate(codeUrl);
   };
