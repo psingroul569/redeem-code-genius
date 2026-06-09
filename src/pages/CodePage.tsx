@@ -71,6 +71,11 @@ const CodePage = () => {
     canonical.setAttribute("rel", "canonical");
     canonical.setAttribute("href", `${DEFAULT_URL}/code/${code.slug}/`);
     if (!existing) document.head.appendChild(canonical);
+
+    // Prevent indexing of individual /code/:slug pages
+    let robots = document.head.querySelector<HTMLMetaElement>('meta[name="robots"]');
+    if (!robots) { robots = document.createElement("meta"); robots.setAttribute("name", "robots"); document.head.appendChild(robots); }
+    robots.setAttribute("content", "noindex, follow");
   }, [code]);
 
   const handleCopy = () => {
