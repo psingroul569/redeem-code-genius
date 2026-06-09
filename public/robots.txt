@@ -46,5 +46,6 @@ User-agent: *
 Allow: /
 Disallow: /admin
 Disallow: /admin/
+Disallow: /code/
 
 Sitemap: https://freefireredeemcodetoday.com/sitemap.xml
