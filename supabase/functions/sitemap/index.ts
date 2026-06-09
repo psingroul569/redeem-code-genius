@@ -89,14 +89,9 @@ Deno.serve(async () => {
     xml += `  <url>\n    <loc>${escapeXml(DOMAIN + "/" + page.slug)}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.5</priority>\n  </url>\n`;
   }
 
-  // Individual redeem code pages
-  const seenSlugs = new Set<string>();
-  for (const code of codes) {
-    if (seenSlugs.has(code.slug)) continue;
-    seenSlugs.add(code.slug);
-    const lastmod = toW3CDate(code.synced_at);
-    xml += `  <url>\n    <loc>${escapeXml(DOMAIN + "/code/" + code.slug)}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>hourly</changefreq>\n    <priority>0.8</priority>\n  </url>\n`;
-  }
+  // Individual redeem code pages are intentionally excluded from the sitemap
+  // (also Disallowed in robots.txt) to avoid indexing per-code URLs.
+
 
   xml += `</urlset>`;
 
