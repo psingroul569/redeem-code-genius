@@ -76,6 +76,12 @@ const CodePage = () => {
     let robots = document.head.querySelector<HTMLMetaElement>('meta[name="robots"]');
     if (!robots) { robots = document.createElement("meta"); robots.setAttribute("name", "robots"); document.head.appendChild(robots); }
     robots.setAttribute("content", "noindex, follow");
+
+    return () => {
+      // Restore default robots directive when navigating away
+      const r = document.head.querySelector<HTMLMetaElement>('meta[name="robots"]');
+      if (r) r.setAttribute("content", "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1");
+    };
   }, [code]);
 
   const handleCopy = () => {
