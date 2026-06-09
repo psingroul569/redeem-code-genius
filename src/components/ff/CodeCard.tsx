@@ -18,14 +18,11 @@ export const CodeCard: React.FC<Props> = ({ data, onSelect }) => {
   }));
   const proofHash = useMemo(() => Math.random().toString(16).slice(2, 8), []);
 
-  const MONETAG_URL = 'https://crn77.com/4/9422022';
-
   const handleCopy = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (data.status === 'Expired') return;
     navigator.clipboard.writeText(data.code);
     setCopied(true);
-    window.open(MONETAG_URL, '_blank', 'noopener,noreferrer');
     setTimeout(() => setCopied(false), 2000);
   };
 
@@ -52,7 +49,6 @@ export const CodeCard: React.FC<Props> = ({ data, onSelect }) => {
 
   const handleOpen = () => {
     if (isExpired) return;
-    window.open(MONETAG_URL, '_blank', 'noopener,noreferrer');
     onSelect();
     navigate(codeUrl);
   };
