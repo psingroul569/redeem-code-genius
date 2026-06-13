@@ -345,6 +345,12 @@ const Index = () => {
                 </div>
               </div>
             </section>
+            <section aria-label="Intro" className="max-w-4xl mx-auto px-4 md:px-8 pt-8 pb-2">
+              <p className="text-center text-sm md:text-base text-t-body leading-relaxed">
+                Looking for the <strong>Free Fire Redeem Code Today</strong>? You're on the right page. We publish the latest working <strong>Free Fire redeem code today</strong> for {dateStr}, verified hourly against the official Garena rewards portal at{" "}
+                <a href="https://reward.ff.garena.com" target="_blank" rel="noopener noreferrer" className="text-success font-bold underline hover:no-underline">reward.ff.garena.com</a>. Every <strong>FF redeem code today</strong> below is 100% working - copy any code, paste it on the official site and claim free diamonds, skins and bundles for the India, Brazil, Indonesia, Europe and Global servers.
+              </p>
+            </section>
             <section id="codes" className="max-w-7xl mx-auto px-4 md:px-8 py-12 min-h-[1200px] lg:min-h-[1600px]">
               <Suspense fallback={<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 animate-pulse opacity-60">{Array.from({length:12}).map((_,i)=><div key={i} className="bg-card border border-border rounded-2xl h-64" />)}</div>}>
                 <div
