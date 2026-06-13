@@ -150,13 +150,13 @@ export const CodeCard: React.FC<Props> = ({ data, onSelect }) => {
              </div>
          </div>
          <div className="flex items-center gap-2">
-            <button onClick={(e) => handleVote(e, 'like')} className={`flex items-center gap-1.5 px-2 py-1.5 rounded-lg border transition-all ${voted === 'like' ? 'bg-green-500/20 border-green-500 text-green-500' : 'bg-surface border-border text-t-muted hover:text-green-400 hover:border-green-500/50'}`}>
-                 <span aria-hidden="true">👍</span>
-                <span className="text-[10px] font-mono font-bold">{metrics.likes}</span>
-            </button>
-            <button onClick={(e) => handleVote(e, 'dislike')} className={`flex items-center gap-1.5 px-2 py-1.5 rounded-lg border transition-all ${voted === 'dislike' ? 'bg-red-500/20 border-red-500 text-red-500' : 'bg-surface border-border text-t-muted hover:text-red-400 hover:border-red-500/50'}`}>
-                 <span aria-hidden="true">👎</span>
-            </button>
+             <button type="button" aria-label="Like this code" onClick={(e) => handleVote(e, 'like')} className={`flex items-center gap-1.5 px-2 py-1.5 rounded-lg border transition-all ${voted === 'like' ? 'bg-green-500/20 border-green-500 text-green-500' : 'bg-surface border-border text-t-muted hover:text-green-400 hover:border-green-500/50'}`}>
+                  <span aria-hidden="true">👍</span>
+                 <span className="text-[10px] font-mono font-bold">{metrics.likes}</span>
+             </button>
+             <button type="button" aria-label="Dislike this code" onClick={(e) => handleVote(e, 'dislike')} className={`flex items-center gap-1.5 px-2 py-1.5 rounded-lg border transition-all ${voted === 'dislike' ? 'bg-red-500/20 border-red-500 text-red-500' : 'bg-surface border-border text-t-muted hover:text-red-400 hover:border-red-500/50'}`}>
+                  <span aria-hidden="true">👎</span>
+             </button>
          </div>
       </div>
     </article>
