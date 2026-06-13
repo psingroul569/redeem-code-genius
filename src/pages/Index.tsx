@@ -155,12 +155,12 @@ const Index = () => {
   useEffect(() => {
     const now = new Date();
     const dayMonth = now.toLocaleDateString("en-US", { day: "numeric", month: "short" });
-    document.title = `Free Fire Redeem Codes Today (${dayMonth}) - Working`;
+    document.title = `Free Fire Redeem Code Today (${dayMonth}) - 100% Working`;
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc)
       metaDesc.setAttribute(
         "content",
-        `Today's working Free Fire redeem codes (${dayMonth}). Verified hourly from official Garena servers. Free diamonds, skins, and bundles across all regions.`,
+        `Free Fire Redeem Code Today (${dayMonth}) - latest working FF redeem codes for diamonds, skins and bundles. Verified hourly from official Garena reward.ff.garena.com.`,
       );
   }, []);
 
