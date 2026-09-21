@@ -21,7 +21,7 @@ export const Schema: React.FC<SchemaProps> = ({ currentView, selectedCode, codes
     "@context": "https://schema.org",
     "@type": "LiveBlogPosting",
     "headline": `Free Fire Redeem Codes Today (${now.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}): Working Rewards`,
-    "description": "Live coverage of official Garena Free Fire redeem codes. Instant diamonds, skins, and vouchers verified hourly by our global server nodes.",
+    "description": "Live coverage of official Garena Free Fire redeem codes. Instant diamonds, skins, and vouchers re-checked hourly by our editorial team; independent fan site, not affiliated with Garena.",
     "url": DEFAULT_URL,
     "coverageStartTime": new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0).toISOString(),
     "datePublished": new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0).toISOString(),
