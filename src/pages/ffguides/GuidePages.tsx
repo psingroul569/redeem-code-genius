@@ -8,7 +8,7 @@ import { useSEO } from "@/hooks/useSEO";
 import { FF_CATEGORIES, GRADE_STYLES, GRADE_COLORS, findCategory, findItem, GuideItem } from "@/data/ffGuides";
 import { GuideShell, SectionTitle, CATEGORY_ICONS, BottomNav, useGuidePageView } from "./GuideShell";
 import { AdSlot } from "@/components/ff/AdSlot";
-import { AD_SLOTS, track, showRewardedAd } from "@/lib/ads";
+import { AD_SLOTS, ADS_CONVERSIONS, adsConversion, track, showRewardedAd } from "@/lib/ads";
 import { SERVERS, RANKS, personalTips } from "./GuideSteps";
 
 const card = "bg-surface border border-border rounded-2xl";
@@ -388,7 +388,10 @@ const ClaimModal: React.FC<{ itemName: string; category: string; item: string; o
         href={TAPZO_URL}
         target="_blank"
         rel="sponsored nofollow noopener noreferrer"
-        onClick={() => track("tapzo_install_click", { category, item, value: 1 })}
+        onClick={() => {
+          track("tapzo_install_click", { category, item, value: 1 });
+          adsConversion(ADS_CONVERSIONS.tapzoInstallClick);
+        }}
         className="mt-5 flex items-center justify-center gap-2 w-full py-4 rounded-2xl bg-gradient-to-r from-sky-300 to-blue-600 text-slate-900 font-bold uppercase tracking-[0.12em] shadow-[0_0_30px_rgba(56,189,248,0.35)] hover:brightness-110 active:scale-[0.98] transition"
       >
         <Download size={18} /> Install Tapzo
@@ -417,6 +420,7 @@ export const GuideItemPage = () => {
   const openClaim = async () => {
     const ctx = { category: category ?? "", item: itemSlug ?? "" };
     track("ffg_claim_open", ctx);
+    adsConversion(ADS_CONVERSIONS.claimPopupOpen);
     setAdLoading(true);
     await showRewardedAd(ctx);
     setAdLoading(false);

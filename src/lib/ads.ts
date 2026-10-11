@@ -1,6 +1,15 @@
 // Ads + conversion tracking for the /ff-guides web-app.
-// Events go to the GTM dataLayer (GTM-PNGQVHGJ); Google Ads conversion tags
-// (AW-18225438366) are attached to these events inside GTM, not in code.
+// Events go to the GTM dataLayer (GTM-PNGQVHGJ) for GA4. Google Ads conversions
+// (AW-18225438366) fire directly from code via gtag, since the published GTM
+// container carries no Google Ads tag.
+
+export const GOOGLE_ADS_ID = "AW-18225438366";
+
+// Conversion labels from Google Ads → Goals → Conversions → <action> → Tag setup.
+export const ADS_CONVERSIONS = {
+  tapzoInstallClick: "rgCcCJehwpkdEJ69yPJD",
+  claimPopupOpen: "",
+};
 
 export const ADSENSE_CLIENT = "ca-pub-4839187196632541";
 
@@ -41,6 +50,44 @@ export function track(event: TrackEvent, params: Record<string, string | number 
   const w = window as unknown as { dataLayer?: DL };
   w.dataLayer = w.dataLayer || [];
   w.dataLayer.push({ event, ...params });
+}
+
+/* ---------- Google Ads (gtag) ---------- */
+
+type Gtag = (...args: unknown[]) => void;
+
+function gtag(...args: unknown[]) {
+  const w = window as unknown as { dataLayer?: unknown[]; gtag?: Gtag };
+  w.dataLayer = w.dataLayer || [];
+  // gtag.js only processes Arguments objects, not plain arrays.
+  w.gtag =
+    w.gtag ||
+    function () {
+      // eslint-disable-next-line prefer-rest-params
+      w.dataLayer!.push(arguments);
+    };
+  w.gtag(...args);
+}
+
+let adsTagLoaded = false;
+
+/** Loads the Google Ads tag once so the landing click (gclid) is captured. */
+export function ensureAdsTag() {
+  if (adsTagLoaded) return;
+  adsTagLoaded = true;
+  const s = document.createElement("script");
+  s.async = true;
+  s.src = `https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ADS_ID}`;
+  document.head.appendChild(s);
+  gtag("js", new Date());
+  gtag("config", GOOGLE_ADS_ID);
+}
+
+/** Sends a Google Ads conversion. No-op when the label isn't configured. */
+export function adsConversion(label: string) {
+  if (!label) return;
+  ensureAdsTag();
+  gtag("event", "conversion", { send_to: `${GOOGLE_ADS_ID}/${label}`, transport_type: "beacon" });
 }
 
 /* ---------- rewarded (Google Publisher Tag) ---------- */

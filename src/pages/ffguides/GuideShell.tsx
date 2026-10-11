@@ -7,7 +7,7 @@ import {
 import { useTheme } from "@/hooks/useTheme";
 import { ThemeToggle } from "@/components/ff/ThemeToggle";
 import { GuideCategory } from "@/data/ffGuides";
-import { track, guidePageType } from "@/lib/ads";
+import { track, guidePageType, ensureAdsTag } from "@/lib/ads";
 
 export const CATEGORY_ICONS: Record<GuideCategory["icon"], React.ElementType> = {
   package: Package,
@@ -44,6 +44,7 @@ export function useGuidePageView() {
       level: params.get("level") ?? undefined,
       rank: params.get("rank") ?? undefined,
     };
+    ensureAdsTag();
     track("ffg_page_view", data);
     track(`ffg_view_${type}`, data);
   }, [pathname, search]);
