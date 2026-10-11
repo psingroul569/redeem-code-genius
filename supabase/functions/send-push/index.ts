@@ -53,6 +53,7 @@ serve(async (req) => {
       title: "New Free Fire Code Just Dropped",
       body: reward ? `${reward} — code ${code}. Tap to grab it before it caps out.` : `New ${region} code is live.`,
       url: "/",
+      source: "ffcodes", // lets sw.js tell our alerts apart from Monetag pushes
     });
 
     const results = await Promise.allSettled(
