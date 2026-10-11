@@ -238,7 +238,7 @@ export const SEO_FAQS: FaqItem[] = [
   {
     question: "What is the Free Fire redeem code for today?",
     answer:
-      "Today's top verified codes include FF11-NJN5-YS3E and FF11-WFNP-P956. These codes provide free Diamonds and legendary Surfboard skins. Our system verifies codes hourly from official Garena servers.",
+      "Today's top verified codes include FF11-NJN5-YS3E and FF11-WFNP-P956. These codes provide free Diamonds and legendary Surfboard skins. Our team re-checks codes hourly from Garena's public announcements. We are an independent fan site, not affiliated with Garena.",
   },
   {
     question: "How do I redeem Free Fire codes?",

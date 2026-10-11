@@ -288,7 +288,7 @@ const CodePage = () => {
             <h2 className="text-xl font-display uppercase tracking-tight mb-6">Frequently Asked Questions</h2>
             <div className="space-y-4">
               {[
-                { q: `Is ${code.code} still working?`, a: `As of ${dateStr}, this code is marked as "${code.status}" with a ${code.probability}% success rate on the ${code.server} server. Our system verifies codes every hour from official Garena servers.` },
+                { q: `Is ${code.code} still working?`, a: `As of ${dateStr}, this code is marked as "${code.status}" with a ${code.probability}% success rate on the ${code.server} server. Our team re-checks codes every hour against Garena's public announcements.` },
                 { q: `What reward does ${code.code} give?`, a: `This code provides: ${code.reward}. It falls under the ${code.category || "Bundle"} category.` },
                 { q: `Which server is ${code.code} for?`, a: `This code is available for the ${code.server} server region. Codes are region-specific and may not work on other servers.` },
                 { q: `How long is ${code.code} valid?`, a: `Free Fire redeem codes typically expire within 12–18 hours of release. We recommend redeeming immediately. Check the status badge above for real-time availability.` },

@@ -164,12 +164,12 @@ const Index = () => {
   useEffect(() => {
     const now = new Date();
     const dayMonth = now.toLocaleDateString("en-US", { day: "numeric", month: "short" });
-    document.title = `Free Fire Redeem Code Today (${dayMonth}) - 100% Working`;
+    document.title = `Free Fire Redeem Code Today (${dayMonth}) - Latest Working Codes`;
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc)
       metaDesc.setAttribute(
         "content",
-        `Free Fire Redeem Code Today (${dayMonth}) - latest working FF redeem codes for diamonds, skins and bundles. Verified hourly from official Garena reward.ff.garena.com.`,
+        `Free Fire Redeem Code Today (${dayMonth}) - unofficial fan list of the latest FF redeem codes for diamonds, skins and bundles. Not affiliated with Garena.`,
       );
   }, []);
 
@@ -375,11 +375,16 @@ const Index = () => {
               </div>
             </section>
             <section aria-label="Intro" className="max-w-4xl mx-auto px-4 md:px-8 pt-8 pb-2">
+              <p className="mb-4 text-xs md:text-sm text-t-body border border-border rounded-xl px-4 py-3 text-center">
+                <strong>Disclaimer:</strong> This is an independent fan site. We are <strong>not Garena</strong> and are not affiliated with or endorsed by Garena International. We never ask for your game login, password or personal information. All codes are redeemed on Garena's own official site,{" "}
+                <a href="https://reward.ff.garena.com" target="_blank" rel="noopener noreferrer nofollow" className="underline">reward.ff.garena.com</a>. Free Fire is a trademark of Garena International.
+              </p>
               <p className="text-center text-sm md:text-base text-t-body leading-relaxed">
-                Looking for the <strong>Free Fire Redeem Code Today</strong>? You're on the right page. We publish the latest working <strong>Free Fire redeem code today</strong> for {dateStr}, verified hourly against the official Garena rewards portal at{" "}
-                <a href="https://reward.ff.garena.com" target="_blank" rel="noopener noreferrer" className="text-success font-bold underline hover:no-underline">reward.ff.garena.com</a>. Every <strong>FF redeem code today</strong> below is 100% working - copy any code, paste it on the official site and claim free diamonds, skins and bundles for the India, Brazil, Indonesia, Europe and Global servers.
+                Looking for the <strong>Free Fire Redeem Code Today</strong>? You're on the right page. We publish the latest publicly announced <strong>Free Fire redeem code today</strong> for {dateStr}, re-checked hourly against the code lists shown on Garena's rewards portal at{" "}
+                <a href="https://reward.ff.garena.com" target="_blank" rel="noopener noreferrer nofollow" className="text-success font-bold underline hover:no-underline">reward.ff.garena.com</a>. Copy any <strong>FF redeem code today</strong> below, paste it on Garena's own site and claim diamonds, skins and bundles for the India, Brazil, Indonesia, Europe and Global servers. Codes can expire or hit their claim limit at any time.
               </p>
             </section>
+
             <section id="codes" className="max-w-7xl mx-auto px-4 md:px-8 py-12 min-h-[1200px] lg:min-h-[1600px]">
               <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3 mb-8">
                 <div className="relative flex-1 md:max-w-xs">
