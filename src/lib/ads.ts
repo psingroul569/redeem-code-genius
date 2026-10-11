@@ -8,7 +8,7 @@ export const GOOGLE_ADS_ID = "AW-18225438366";
 // Conversion labels from Google Ads → Goals → Conversions → <action> → Tag setup.
 export const ADS_CONVERSIONS = {
   tapzoInstallClick: "rgCcCJehwpkdEJ69yPJD",
-  claimPopupOpen: "",
+  claimPopupOpen: "2JtiCJqhwpkdEJ69yPJD",
 };
 
 export const ADSENSE_CLIENT = "ca-pub-4839187196632541";
