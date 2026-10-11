@@ -1,0 +1,12 @@
+{
+  "name": "Free Fire Redeem Code Today",
+  "short_name": "FF Codes Today",
+  "description": "Latest working Free Fire redeem codes, verified hourly. Get notified the instant a new code drops.",
+  "start_url": "/?source=pwa",
+  "display": "standalone",
+  "background_color": "#0a0f0c",
+  "theme_color": "#0a0f0c",
+  "icons": [
+    { "src": "/logo.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}

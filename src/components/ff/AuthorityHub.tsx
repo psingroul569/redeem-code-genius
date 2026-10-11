@@ -1,6 +1,6 @@
 import React from "react";
-import { LEAD_AUTHOR, TRUST_METRICS, COMMUNITY_TESTIMONIALS } from "@/constants";
-import { ShieldCheck, UserCheck, Award, Terminal, Twitter, MessageCircle, CheckCircle2 } from "lucide-react";
+import { LEAD_AUTHOR, TRUST_METRICS } from "@/constants";
+import { UserCheck, Award, Terminal, Twitter, CheckCircle2 } from "lucide-react";
 
 export const AuthorityHub: React.FC = () => {
   return (
@@ -88,10 +88,10 @@ export const AuthorityHub: React.FC = () => {
                     {
                       num: 1,
                       title: "Discovery",
-                      desc: "Our AI and Team monitor 150+ official Garena social channels.",
+                      desc: "Automated search checks Garena's official channels for each of our 5 server regions every hour.",
                     },
-                    { num: 2, title: "Latency Test", desc: "Team test code validity on 5 regional server nodes." },
-                    { num: 3, title: "Publication", desc: "Codes are published live with a probability score." },
+                    { num: 2, title: "Source Check", desc: "Codes without a traceable official source are flagged lower-confidence, not published as fully verified." },
+                    { num: 3, title: "Publication", desc: "Codes go live immediately, and are pulled automatically once expired or capped." },
                   ].map((step) => (
                     <div
                       key={step.num}
@@ -108,43 +108,25 @@ export const AuthorityHub: React.FC = () => {
               </div>
             </div>
             <div className="space-y-4">
-              <div className="flex items-center justify-between px-2">
-                <h3 className="text-sm font-tech font-bold text-t-body uppercase tracking-widest">
-                  Community Validated
-                </h3>
-                <div className="flex -space-x-2">
-                  {[1, 2, 3, 4].map((i) => (
-                    <div
-                      key={i}
-                      className="w-6 h-6 rounded-full bg-surface border border-background flex items-center justify-center text-[8px] text-foreground"
-                    >
-                      {i}
-                    </div>
-                  ))}
-                  <div className="w-6 h-6 rounded-full bg-success text-primary-foreground flex items-center justify-center text-[8px] font-bold border border-background">
-                    +9k
-                  </div>
-                </div>
-              </div>
+              <h3 className="text-sm font-tech font-bold text-t-body uppercase tracking-widest px-2">
+                Our Verification Promise
+              </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {COMMUNITY_TESTIMONIALS.map((t, idx) => (
+                {[
+                  { title: "No password requests", text: "We never ask for your Free Fire password, OTP, or account credentials. Redeem only ever happens on reward.ff.garena.com." },
+                  { title: "Codes pulled within 60 minutes", text: "Expired or fully-claimed codes are removed from the list automatically — you won't see a code that stopped working an hour ago." },
+                  { title: "Region-labelled, always", text: "Every code shows its exact server so you never waste a redemption attempt on the wrong region." },
+                  { title: "Source-checked, not scraped", text: "Each code traces back to an official Garena channel or event banner before it's published — not copied from another aggregator site." },
+                ].map((item) => (
                   <div
-                    key={idx}
-                    className="bg-surface border border-border p-4 rounded-xl flex flex-col justify-between hover:bg-surface-hover transition-colors"
+                    key={item.title}
+                    className="bg-surface border border-border p-4 rounded-xl hover:bg-surface-hover transition-colors"
                   >
-                    <p className="text-sm text-t-body italic mb-4">"{t.comment}"</p>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 rounded bg-gradient-to-tr from-purple-500 to-blue-500"></div>
-                        <div>
-                          <div className="text-xs font-bold text-foreground">{t.user}</div>
-                          <div className="text-[8px] text-success uppercase tracking-wider">{t.rank}</div>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-1 text-[9px] text-t-muted uppercase font-bold">
-                        {t.platform === "Discord" ? <MessageCircle size={10} /> : <Twitter size={10} />} {t.platform}
-                      </div>
+                    <div className="flex items-center gap-2 mb-2">
+                      <CheckCircle2 size={14} className="text-success shrink-0" />
+                      <span className="text-xs font-bold text-foreground">{item.title}</span>
                     </div>
+                    <p className="text-sm text-t-body leading-relaxed">{item.text}</p>
                   </div>
                 ))}
               </div>

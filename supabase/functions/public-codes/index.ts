@@ -8,6 +8,8 @@ const corsHeaders = {
   "Access-Control-Max-Age": "86400",
 };
 
+const SELECT_COLUMNS = "id,code,reward,category,slug,status,probability,recent_claims,likes,dislikes,citations,synced_at";
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { status: 204, headers: corsHeaders });
@@ -22,6 +24,20 @@ serve(async (req) => {
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
+    // Manual codes live outside the hourly AI bucketing — they stay visible
+    // until they expire (or an admin marks them Expired), not just for one hour.
+    const nowIso = new Date().toISOString();
+    const { data: manualRows, error: manualError } = await supabase
+      .from("synced_codes")
+      .select(SELECT_COLUMNS)
+      .eq("region", region)
+      .eq("source", "manual")
+      .eq("status", "Working")
+      .or(`expires_at.is.null,expires_at.gt.${nowIso}`)
+      .order("synced_at", { ascending: false });
+
+    if (manualError) throw manualError;
+
     const { data: latestLog, error: latestError } = await supabase
       .from("sync_log")
       .select("hour_key, synced_at")
@@ -32,29 +48,28 @@ serve(async (req) => {
 
     if (latestError) throw latestError;
 
-    if (!latestLog?.hour_key) {
-      return new Response(
-        JSON.stringify({ region, hourKey: null, syncedAt: null, codes: [] }),
-        { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+    let aiRows: any[] = [];
+    if (latestLog?.hour_key) {
+      const { data, error: rowsError } = await supabase
+        .from("synced_codes")
+        .select(SELECT_COLUMNS)
+        .eq("region", region)
+        .eq("hour_key", latestLog.hour_key)
+        .eq("source", "ai")
+        .order("synced_at", { ascending: false })
+        .limit(50);
+      if (rowsError) throw rowsError;
+      aiRows = data ?? [];
     }
 
-    const { data: codeRows, error: rowsError } = await supabase
-      .from("synced_codes")
-      .select("code,reward,category,slug,status,probability,recent_claims,likes,citations,synced_at")
-      .eq("region", region)
-      .eq("hour_key", latestLog.hour_key)
-      .order("synced_at", { ascending: false })
-      .limit(50);
-
-    if (rowsError) throw rowsError;
+    const codes = [...(manualRows ?? []), ...aiRows];
 
     return new Response(
       JSON.stringify({
         region,
-        hourKey: latestLog.hour_key,
-        syncedAt: latestLog.synced_at,
-        codes: codeRows ?? [],
+        hourKey: latestLog?.hour_key ?? null,
+        syncedAt: latestLog?.synced_at ?? (manualRows?.[0]?.synced_at ?? null),
+        codes,
       }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );

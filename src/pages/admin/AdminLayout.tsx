@@ -1,12 +1,13 @@
 import { Outlet, Link, useLocation } from "react-router-dom";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
-import { Loader2, LayoutDashboard, FileText, File, Image, Menu, Settings, ArrowLeftRight, LogOut, Zap, ChevronLeft, ChevronRight } from "lucide-react";
+import { Loader2, LayoutDashboard, FileText, File, Image, Menu, Settings, ArrowLeftRight, LogOut, Zap, ChevronLeft, ChevronRight, Ticket } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard, end: true },
+  { to: "/admin/codes", label: "Codes", icon: Ticket },
   { to: "/admin/posts", label: "Posts", icon: FileText },
   { to: "/admin/pages", label: "Pages", icon: File },
   { to: "/admin/media", label: "Media", icon: Image },

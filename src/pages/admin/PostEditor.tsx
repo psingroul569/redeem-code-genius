@@ -109,7 +109,22 @@ const PostEditor = () => {
     if (error) {
       toast({ title: "Error", description: error.message, variant: "destructive" });
     } else {
-      toast({ title: publishNow ? "Published!" : "Saved!" });
+      toast({
+        title: publishNow ? "Published!" : "Saved!",
+        description: publishNow
+          ? "Bing/Yandex notified instantly. For Google, use Search Console → URL Inspection → Request Indexing on the new post URL."
+          : undefined,
+      });
+      if (publishNow) {
+        // Fire-and-forget: notify IndexNow-participating engines (Bing, Yandex, etc.)
+        // right away instead of waiting for their next crawl. Never blocks the
+        // publish flow — a failed ping just means we fall back to normal crawling.
+        supabase.functions
+          .invoke("indexnow-ping", {
+            body: { urls: [`https://freefireredeemcodetoday.com/blogs/${post.slug}`, "https://freefireredeemcodetoday.com/blogs"] },
+          })
+          .catch(() => {});
+      }
       navigate("/admin/posts");
     }
     setSaving(false);

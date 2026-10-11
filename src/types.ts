@@ -20,6 +20,7 @@ export interface VerificationLog {
 }
 
 export interface RedeemCode {
+  id?: string;
   code: string;
   slug: string;
   reward: string;
@@ -36,18 +37,6 @@ export interface RedeemCode {
   dislikes?: number;
   category?: 'Diamond' | 'Skin' | 'Bundle' | 'Voucher' | 'Pet';
   citations?: { uri: string; title: string }[];
-}
-
-export interface Comment {
-  id: string;
-  user: string;
-  avatar: string;
-  text: string;
-  timeAgo: string;
-  verified: boolean;
-  timestamp?: number;
-  isAi?: boolean;
-  likes?: number;
 }
 
 export interface FaqItem {

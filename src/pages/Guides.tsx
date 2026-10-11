@@ -2,6 +2,7 @@ import React, { useState, Suspense } from 'react';
 import { Header } from '@/components/ff/Header';
 import { Footer } from '@/components/ff/Footer';
 import { useTheme } from '@/hooks/useTheme';
+import { useSEO } from '@/hooks/useSEO';
 import { AppView } from '@/types';
 import { Loader2 } from 'lucide-react';
 
@@ -12,6 +13,12 @@ const Guides = () => {
   const { theme, toggleTheme } = useTheme();
   const [currentView, setCurrentView] = useState<AppView>('content');
   const [selectedArticleId, setSelectedArticleId] = useState<string | null>(null);
+
+  useSEO({
+    title: 'Free Fire Guides: Rewards, Events & Redeem Code Tips',
+    description: 'Long-form Free Fire guides covering redeem code strategy, diamond events, Booyah Pass seasons, and region-specific reward tips from our editorial team.',
+    path: '/guides',
+  });
 
   return (
     <div className="min-h-screen bg-background text-foreground font-tech">

@@ -7,6 +7,7 @@ import { Header } from "@/components/ff/Header";
 import { useTheme } from "@/hooks/useTheme";
 import { Copy, Check, ShieldCheck, Clock, MapPin, ArrowLeft, ExternalLink, Loader2 } from "lucide-react";
 import { Suspense, lazy } from "react";
+import { formatRelativeTime } from "@/lib/time";
 
 const Footer = lazy(() => import("@/components/ff/Footer").then((m) => ({ default: m.Footer })));
 
@@ -30,6 +31,7 @@ const CodePage = () => {
 
       if (data) {
         setCode({
+          id: data.id,
           code: data.code,
           reward: data.reward,
           category: (data.category as any) || "Bundle",
@@ -37,8 +39,9 @@ const CodePage = () => {
           server: data.region,
           status: (data.status as any) || "Working",
           probability: data.probability || 85,
-          lastTested: "Cloud Verified",
+          lastTested: formatRelativeTime(data.synced_at),
           likes: data.likes || 0,
+          dislikes: (data as any).dislikes || 0,
           recentClaims: data.recent_claims || 0,
           releaseDate: new Date(data.synced_at).toLocaleDateString("en-US", { day: "2-digit", month: "long", year: "numeric" }),
           citations: Array.isArray(data.citations) ? (data.citations as any[]) : [],

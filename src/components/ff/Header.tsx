@@ -24,8 +24,8 @@ export const Header: React.FC<HeaderProps> = ({
       <div className="max-w-7xl mx-auto px-4 md:px-8 flex items-center justify-between gap-4">
         <div className="flex items-center gap-3 md:gap-5 group cursor-pointer min-w-0" onClick={() => setView("home")}>
           <div className="relative flex-shrink-0">
-            <div className="relative w-10 h-10 md:w-12 md:h-12 bg-surface border border-border rounded-xl flex items-center justify-center shadow-inner">
-              <span className="text-success text-xl md:text-2xl leading-none" aria-hidden="true">⚡</span>
+            <div className="relative w-10 h-10 md:w-12 md:h-12 bg-surface border border-border rounded-xl flex items-center justify-center shadow-inner overflow-hidden">
+              <img src="/logo.png" alt="Free Fire Redeem Code Today" className="w-full h-full object-contain p-1" />
             </div>
           </div>
           {/* Mobile: compact centered branding */}

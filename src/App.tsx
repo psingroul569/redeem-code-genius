@@ -23,6 +23,8 @@ const AdminLayout = lazy(() => import("./pages/admin/AdminLayout"));
 const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
 const PostsList = lazy(() => import("./pages/admin/PostsList"));
 const PostEditor = lazy(() => import("./pages/admin/PostEditor"));
+const CodesList = lazy(() => import("./pages/admin/CodesList"));
+const CodeEditor = lazy(() => import("./pages/admin/CodeEditor"));
 const PagesList = lazy(() => import("./pages/admin/PagesList"));
 const PageEditor = lazy(() => import("./pages/admin/PageEditor"));
 const MediaLibrary = lazy(() => import("./pages/admin/MediaLibrary"));
@@ -31,6 +33,18 @@ const RedirectsManager = lazy(() => import("./pages/admin/RedirectsManager"));
 const SiteSettings = lazy(() => import("./pages/admin/SiteSettings"));
 const ResetPassword = lazy(() => import("./pages/admin/ResetPassword"));
 const DynamicPage = lazy(() => import("./pages/DynamicPage"));
+const ffg = () => import("./pages/ffguides/GuidePages");
+const GuideSplash = lazy(() => ffg().then(m => ({ default: m.GuideSplash })));
+const GuideCategories = lazy(() => ffg().then(m => ({ default: m.GuideCategories })));
+const ffs = () => import("./pages/ffguides/GuideSteps");
+const StepServer = lazy(() => ffs().then(m => ({ default: m.StepServer })));
+const StepLevel = lazy(() => ffs().then(m => ({ default: m.StepLevel })));
+const StepRank = lazy(() => ffs().then(m => ({ default: m.StepRank })));
+const GuideHowTo = lazy(() => ffg().then(m => ({ default: m.GuideHowTo })));
+const GuidePrivacy = lazy(() => ffg().then(m => ({ default: m.GuidePrivacy })));
+const GuideDisclaimer = lazy(() => ffg().then(m => ({ default: m.GuideDisclaimer })));
+const GuideCategory = lazy(() => ffg().then(m => ({ default: m.GuideCategory })));
+const GuideItemPage = lazy(() => ffg().then(m => ({ default: m.GuideItemPage })));
 
 const Toaster = lazy(() => import("@/components/ui/toaster").then(m => ({ default: m.Toaster })));
 const Sonner = lazy(() => import("@/components/ui/sonner").then(m => ({ default: m.Toaster })));
@@ -75,6 +89,16 @@ const App = () => (
           <Route path="/blogs/:slug" element={<Wrap><BlogPost /></Wrap>} />
           <Route path="/how-to-guide" element={<Wrap><HowToGuide /></Wrap>} />
           <Route path="/guides" element={<Wrap><GuidesPage /></Wrap>} />
+          <Route path="/ff-guides" element={<Wrap><GuideSplash /></Wrap>} />
+          <Route path="/ff-guides/categories" element={<Wrap><GuideCategories /></Wrap>} />
+          <Route path="/ff-guides/how-to" element={<Wrap><GuideHowTo /></Wrap>} />
+          <Route path="/ff-guides/privacy-policy" element={<Wrap><GuidePrivacy /></Wrap>} />
+          <Route path="/ff-guides/disclaimer" element={<Wrap><GuideDisclaimer /></Wrap>} />
+          <Route path="/ff-guides/:category" element={<Wrap><GuideCategory /></Wrap>} />
+          <Route path="/ff-guides/:category/:item" element={<Wrap><GuideItemPage /></Wrap>} />
+          <Route path="/ff-guides/:category/:item/server" element={<Wrap><StepServer /></Wrap>} />
+          <Route path="/ff-guides/:category/:item/level" element={<Wrap><StepLevel /></Wrap>} />
+          <Route path="/ff-guides/:category/:item/rank" element={<Wrap><StepRank /></Wrap>} />
           <Route path="/faq" element={<Wrap><FAQ /></Wrap>} />
           <Route path="/help" element={<Wrap><Help /></Wrap>} />
           <Route path="/contact" element={<Wrap><Contact /></Wrap>} />
@@ -88,6 +112,8 @@ const App = () => (
           <Route path="/admin/reset-password" element={<Wrap><ResetPassword /></Wrap>} />
           <Route path="/admin" element={<Wrap><AdminLayout /></Wrap>}>
             <Route index element={<AdminDashboard />} />
+            <Route path="codes" element={<CodesList />} />
+            <Route path="codes/:id" element={<CodeEditor />} />
             <Route path="posts" element={<PostsList />} />
             <Route path="posts/:id" element={<PostEditor />} />
             <Route path="pages" element={<PagesList />} />

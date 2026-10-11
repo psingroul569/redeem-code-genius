@@ -3,19 +3,26 @@ import React from "react";
 import { AppView, RedeemCode } from "@/types";
 import { useTheme } from "@/hooks/useTheme";
 import { Header } from "@/components/ff/Header";
+import { CodeCard } from "@/components/ff/CodeCard";
+import { Schema } from "@/components/ff/Schema";
+import { Footer } from "@/components/ff/Footer";
+import { AuthorityHub } from "@/components/ff/AuthorityHub";
+import OnPageContent from "@/components/ff/OnPageContent";
+import { LatestBlogPosts } from "@/components/ff/LatestBlogPosts";
+import { NotifyMeButton } from "@/components/ff/NotifyMeButton";
 
-const CodeCard = lazy(() => import("@/components/ff/CodeCard").then((m) => ({ default: m.CodeCard })));
-
-const Schema = lazy(() => import("@/components/ff/Schema").then((m) => ({ default: m.Schema })));
-const Footer = lazy(() => import("@/components/ff/Footer").then((m) => ({ default: m.Footer })));
-const AuthorityHub = lazy(() => import("@/components/ff/AuthorityHub").then((m) => ({ default: m.AuthorityHub })));
-const OnPageContent = lazy(() => import("@/components/ff/OnPageContent"));
+// These four ship in the main bundle rather than as lazy chunks: they carry
+// the page's actual crawlable text (FAQ/how-to/verification copy) and its
+// structured data. Lazy-loading them risked Googlebot's render pass timing
+// out before the chunk fetched, which would mean the page's most
+// keyword-relevant content never made it into the indexed snapshot.
 const ContentView = lazy(() => import("@/components/ff/ContentView").then((m) => ({ default: m.ContentView })));
 const CodeDetailView = lazy(() =>
   import("@/components/ff/CodeDetailView").then((m) => ({ default: m.CodeDetailView })),
 );
 
 const REGIONS = ["GLOBAL", "INDIA", "BRAZIL", "INDONESIA", "EUROPE"];
+const CATEGORIES = ["All", "Diamond", "Skin", "Bundle", "Voucher", "Pet"];
 const REGION_OFFSETS: Record<string, number> = {
   GLOBAL: 3,
   INDIA: 8,
@@ -151,6 +158,8 @@ const Index = () => {
   const [nextUpdateText, setNextUpdateText] = useState("--:--");
   const [isOverdue, setIsOverdue] = useState(false);
   const [dateStr] = useState(formatDateLabel);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeCategory, setActiveCategory] = useState<string>("All");
 
   useEffect(() => {
     const now = new Date();
@@ -217,15 +226,20 @@ const Index = () => {
     return () => clearInterval(retry);
   }, [activeRegion, isPlaceholder, loadRegionData]);
 
-  // Defer realtime subscription to reduce main-thread work at load
-  const realtimeSetup = useRef(false);
+  // Defer realtime subscription to reduce main-thread work at load.
+  // Channel is tracked in a ref so it can actually be torn down — the previous
+  // version returned its cleanup from inside the setTimeout callback, where
+  // React never sees it, so channels piled up on every region switch and kept
+  // a WebSocket open forever (also blocking back/forward cache).
   useEffect(() => {
-    if (realtimeSetup.current) return;
+    let cancelled = false;
+    let channel: import("@supabase/supabase-js").RealtimeChannel | null = null;
+
     const timer = setTimeout(async () => {
-      realtimeSetup.current = true;
       const { supabase } = await import("@/integrations/supabase/client");
-      const channel = supabase
-        .channel("synced-codes-realtime")
+      if (cancelled) return;
+      channel = supabase
+        .channel(`synced-codes-realtime-${activeRegion}`)
         .on(
           "postgres_changes",
           { event: "INSERT", schema: "public", table: "synced_codes", filter: `region=eq.${activeRegion}` },
@@ -234,11 +248,18 @@ const Index = () => {
           },
         )
         .subscribe();
-      return () => {
-        supabase.removeChannel(channel);
-      };
+
+      const closeChannel = () => supabase.removeChannel(channel!);
+      window.addEventListener("pagehide", closeChannel, { once: true });
     }, 3000); // delay 3s after mount
-    return () => clearTimeout(timer);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+      if (channel) {
+        import("@/integrations/supabase/client").then(({ supabase }) => supabase.removeChannel(channel!));
+      }
+    };
   }, [activeRegion, loadRegionData]);
 
   // Start ticker after 2s delay to keep first paint light.
@@ -269,11 +290,19 @@ const Index = () => {
     window.scrollTo(0, 0);
   };
 
+  const filteredCodes = displayCodes.filter((code) => {
+    if (activeCategory !== "All" && code.category !== activeCategory) return false;
+    if (searchQuery.trim()) {
+      const q = searchQuery.trim().toLowerCase();
+      const haystack = `${code.code} ${code.reward} ${code.description || ""}`.toLowerCase();
+      if (!haystack.includes(q)) return false;
+    }
+    return true;
+  });
+
   return (
     <div className="min-h-screen bg-background text-foreground font-sans selection:bg-success selection:text-primary-foreground">
-      <Suspense fallback={null}>
-        <Schema currentView={currentView} selectedCode={selectedCode} codes={displayCodes} lastSyncIso={lastSyncIso} />
-      </Suspense>
+      <Schema currentView={currentView} selectedCode={selectedCode} codes={displayCodes} lastSyncIso={lastSyncIso} />
       <Header
         currentView={currentView}
         setView={handleSetView}
@@ -352,11 +381,40 @@ const Index = () => {
               </p>
             </section>
             <section id="codes" className="max-w-7xl mx-auto px-4 md:px-8 py-12 min-h-[1200px] lg:min-h-[1600px]">
-              <Suspense fallback={<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 animate-pulse opacity-60">{Array.from({length:12}).map((_,i)=><div key={i} className="bg-card border border-border rounded-2xl h-64" />)}</div>}>
+              <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3 mb-8">
+                <div className="relative flex-1 md:max-w-xs">
+                  <input
+                    type="search"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search by reward, e.g. Diamonds, Titan Scar..."
+                    aria-label="Search codes"
+                    className="w-full bg-surface border border-border rounded-2xl py-3 px-4 text-xs text-foreground placeholder:text-t-muted focus:border-success outline-none transition-all"
+                  />
+                </div>
+                <div className="flex gap-1.5 overflow-x-auto no-scrollbar" role="group" aria-label="Filter by category">
+                  {CATEGORIES.map((cat) => (
+                    <button
+                      key={cat}
+                      onClick={() => setActiveCategory(cat)}
+                      aria-pressed={activeCategory === cat}
+                      className={`px-4 py-2 rounded-xl text-[10px] font-tech font-bold uppercase tracking-widest whitespace-nowrap transition-all ${activeCategory === cat ? "bg-primary text-primary-foreground" : "bg-surface border border-border text-t-muted hover:text-foreground"}`}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
+                <NotifyMeButton region={activeRegion} />
+              </div>
+              {filteredCodes.length === 0 ? (
+                <div className="text-center py-24 text-t-muted">
+                  <p className="text-sm">No codes match "{searchQuery}"{activeCategory !== "All" ? ` in ${activeCategory}` : ""}. Try a different search or category.</p>
+                </div>
+              ) : (
                 <div
                   className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 ${isPlaceholder ? "animate-pulse opacity-60" : ""}`}
                 >
-                  {displayCodes.map((code, idx) => (
+                  {filteredCodes.map((code, idx) => (
                     <CodeCard
                       key={`${activeRegion}-${idx}`}
                       data={code}
@@ -369,7 +427,7 @@ const Index = () => {
                     />
                   ))}
                 </div>
-              </Suspense>
+              )}
             </section>
             <section className="max-w-7xl mx-auto px-4 md:px-8 pb-8" aria-label="Freshness and sourcing">
               <p className="text-center text-xs md:text-sm text-t-muted font-tech uppercase tracking-widest">
@@ -425,16 +483,13 @@ const Index = () => {
                 </div>
               </div>
             </section>
-            <Suspense fallback={<div style={{ minHeight: 200 }} />}>
-              <div style={{ contentVisibility: 'auto', containIntrinsicSize: '1px 800px' }}>
-                <OnPageContent />
-              </div>
-            </Suspense>
-            <Suspense fallback={<div style={{ minHeight: 400 }} />}>
-              <div style={{ contentVisibility: 'auto', containIntrinsicSize: '1px 1200px' }}>
-                <AuthorityHub />
-              </div>
-            </Suspense>
+            <div style={{ contentVisibility: 'auto', containIntrinsicSize: '1px 800px' }}>
+              <OnPageContent />
+            </div>
+            <div style={{ contentVisibility: 'auto', containIntrinsicSize: '1px 1200px' }}>
+              <AuthorityHub />
+            </div>
+            <LatestBlogPosts />
           </>
         ) : (
           <Suspense
@@ -457,9 +512,7 @@ const Index = () => {
           </Suspense>
         )}
       </main>
-      <Suspense fallback={null}>
-        <Footer />
-      </Suspense>
+      <Footer />
     </div>
   );
 };

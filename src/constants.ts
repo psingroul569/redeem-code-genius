@@ -1,4 +1,4 @@
-import { RedeemCode, FaqItem, Article, AuthorProfile, Testimonial, TrustMetric, Comment } from "@/types";
+import { RedeemCode, FaqItem, Article, AuthorProfile, TrustMetric } from "@/types";
 
 export const SITE_NAME = "FF Redeem Codes Today";
 export const DOMAIN = "freefireredeemcodetoday.com";
@@ -18,9 +18,9 @@ export const DEFAULT_URL = "https://freefireredeemcodetoday.com";
 export const LEAD_AUTHOR: AuthorProfile = {
   name: "Jaxon Lee",
   role: "Lead Rewards Analyst",
-  experience: "7 Years (Since Beta 2017)",
-  bio: "Jaxon is a Free Fire analyst with deep knowledge of Garena's in-game event and update systems. He specializes in analyzing event patterns and predicting reward code drops up to 24 hours in advance. His verification process helps gaming communities track accurate, working Free Fire redeem codes across all server regions.",
-  badges: ["Ex-Garena Moderator", "Verified Wiki Contributor", "Esports Analyst"],
+  experience: "Editor since 2023",
+  bio: "Jaxon leads the editorial and code-verification process for FF Redeem Codes Today. The team tracks Garena's official Free Fire social channels, in-game event banners, and partner livestreams every hour, and manually confirms each code before it's published to the site.",
+  badges: ["Editor Since 2023", "Manual Code Verification", "Region Coverage: 5 Servers"],
   image: "https://i.ibb.co/Kxc3C8Ts/Jaxon-Free-Fire-1.jpg?auto=format&fit=crop&q=80&w=96",
   socialHandle: "@FalconFF_Real",
 };
@@ -28,57 +28,6 @@ export const LEAD_AUTHOR: AuthorProfile = {
 export const TRUST_METRICS: TrustMetric[] = [
   { label: "Server Regions Tracked", value: "5", icon: "CheckCircle", description: "India, Brazil, Indonesia, Europe, Global" },
   { label: "Update Frequency", value: "Hourly", icon: "Zap", description: "Codes checked every 60 minutes" },
-];
-
-export const COMMUNITY_TESTIMONIALS: Testimonial[] = [
-  {
-    user: "DarkSlayer_99",
-    rank: "Grandmaster",
-    comment: "First site that actually updates HOURLY. Got the Titan Scar skin finally.",
-    date: "2 hours ago",
-    platform: "Discord",
-  },
-  {
-    user: "Priya_Gaming",
-    rank: "Heroic IV",
-    comment: "The latency checker is a game changer. Stopped wasting time on EU codes.",
-    date: "Yesterday",
-    platform: "Twitter",
-  },
-  {
-    user: "ProBooyahID",
-    rank: "Elite",
-    comment: "Accurate for Indonesia server. Terima kasih!",
-    date: "12 hours ago",
-    platform: "Reddit",
-  },
-];
-
-export const MOCK_COMMENTS: Comment[] = [
-  {
-    id: "1",
-    user: "KillerFrost",
-    avatar: "https://i.pravatar.cc/150?u=a",
-    text: "Confirmed working on IND server! Got the diamonds instantly.",
-    timeAgo: "2m ago",
-    verified: true,
-  },
-  {
-    id: "2",
-    user: "AlokMain_2025",
-    avatar: "https://i.pravatar.cc/150?u=b",
-    text: "Does not work for EU region, please fix.",
-    timeAgo: "15m ago",
-    verified: false,
-  },
-  {
-    id: "3",
-    user: "HeadshotKing",
-    avatar: "https://i.pravatar.cc/150?u=c",
-    text: "Finally a site that actually updates. Thanks admin!",
-    timeAgo: "42m ago",
-    verified: true,
-  },
 ];
 
 export const ARTICLES: Article[] = [

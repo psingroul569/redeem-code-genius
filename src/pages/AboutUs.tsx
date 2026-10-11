@@ -224,12 +224,12 @@ const AboutUs = () => {
               />
               <div>
                 <h3 className="text-foreground font-bold text-lg">Jaxon Lee</h3>
-                <p className="text-primary text-xs uppercase tracking-wider font-bold mb-2">Lead Rewards Analyst · Since 2017</p>
+                <p className="text-primary text-xs uppercase tracking-wider font-bold mb-2">Lead Rewards Analyst · Editor since 2023</p>
                 <p className="text-t-muted text-sm leading-relaxed mb-3">
-                  Jaxon has been part of the Free Fire community since its beta launch in 2017. With 7+ years of experience tracking Garena's event patterns and reward cycles, he leads our code verification process. He's a former Garena community moderator, a verified Wiki contributor, and has helped thousands of players claim legitimate rewards.
+                  Jaxon leads our code verification process: tracking Garena's official social channels, in-game event banners, and partner livestreams every hour, and manually confirming each code before it's published across all five server regions.
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  {["Ex-Garena Moderator", "Wiki Contributor", "Esports Analyst"].map(badge => (
+                  {["Editor Since 2023", "Manual Verification", "5-Region Coverage"].map(badge => (
                     <span key={badge} className="text-[10px] bg-primary/10 text-primary border border-primary/20 px-2.5 py-1 rounded-full uppercase tracking-wider font-bold">
                       {badge}
                     </span>

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { RedeemCode, AppView, Comment } from '@/types';
+import { RedeemCode, AppView } from '@/types';
 import { ArrowLeft, Copy, Check, Zap, Loader2, Send, History, ThumbsUp } from 'lucide-react';
 import { Breadcrumbs } from './Breadcrumbs';
-import { useAutoComments } from '@/hooks/useAutoComments';
+import { useComments, RealComment } from '@/hooks/useComments';
+import { getDisplayName } from '@/lib/visitor';
 
 export interface CodeDetailViewProps {
   code: RedeemCode;
@@ -13,8 +14,9 @@ export interface CodeDetailViewProps {
 export const CodeDetailView: React.FC<CodeDetailViewProps> = ({ code, setView }) => {
   const [copied, setCopied] = useState(false);
   const [userComment, setUserComment] = useState("");
+  const [userName, setUserName] = useState(() => getDisplayName() || "");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { comments, addUserComment } = useAutoComments(code);
+  const { comments, loading, addComment, toggleLike, likedIds, formatTimeAgo } = useComments(code);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(code.code);
@@ -22,11 +24,11 @@ export const CodeDetailView: React.FC<CodeDetailViewProps> = ({ code, setView })
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handlePostComment = (e: React.FormEvent) => {
+  const handlePostComment = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!userComment.trim()) return;
     setIsSubmitting(true);
-    addUserComment(userComment.trim());
+    await addComment(userComment.trim(), userName);
     setUserComment("");
     setIsSubmitting(false);
   };
@@ -80,22 +82,35 @@ export const CodeDetailView: React.FC<CodeDetailViewProps> = ({ code, setView })
                     </h3>
                  </div>
                  <div className="space-y-4 flex-1 overflow-y-auto pr-2 no-scrollbar">
-                    {comments.length === 0 ? (
+                    {loading ? (
+                        <div className="flex items-center justify-center py-24">
+                           <Loader2 size={20} className="animate-spin text-t-muted" />
+                        </div>
+                    ) : comments.length === 0 ? (
                         <div className="flex flex-col items-center justify-center py-24 text-center opacity-30 text-t-muted">
                            <History size={32} className="mb-4" />
-                           <span className="text-[9px] font-tech uppercase tracking-widest">No reports available.</span>
+                           <span className="text-[9px] font-tech uppercase tracking-widest">No reports yet — be the first.</span>
                         </div>
                     ) : (
                       comments.map((comment) => (
-                          <CommentCard key={comment.id} comment={comment} />
+                          <CommentCard
+                            key={comment.id}
+                            comment={comment}
+                            liked={likedIds.has(comment.id)}
+                            onLike={() => toggleLike(comment.id)}
+                            timeAgo={formatTimeAgo(comment.createdAt)}
+                          />
                       ))
                     )}
                  </div>
-                 <form onSubmit={handlePostComment} className="mt-6 pt-6 border-t border-border relative">
-                    <input type="text" value={userComment} onChange={(e) => setUserComment(e.target.value)} placeholder="Report status..." className="w-full bg-muted border border-border rounded-xl py-4 pl-4 pr-12 text-xs text-foreground focus:border-success outline-none transition-all" />
-                    <button type="submit" disabled={isSubmitting || !userComment.trim()} className="absolute right-2 top-8 p-2 text-success disabled:opacity-30">
-                       {isSubmitting ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />}
-                    </button>
+                 <form onSubmit={handlePostComment} className="mt-6 pt-6 border-t border-border space-y-2">
+                    <input type="text" value={userName} onChange={(e) => setUserName(e.target.value)} placeholder="Your name (optional)" maxLength={40} className="w-full bg-muted border border-border rounded-xl py-3 px-4 text-xs text-foreground focus:border-success outline-none transition-all" />
+                    <div className="relative">
+                      <input type="text" value={userComment} onChange={(e) => setUserComment(e.target.value)} placeholder="Did this code work for you?" maxLength={500} className="w-full bg-muted border border-border rounded-xl py-4 pl-4 pr-12 text-xs text-foreground focus:border-success outline-none transition-all" />
+                      <button type="submit" disabled={isSubmitting || !userComment.trim()} className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-success disabled:opacity-30">
+                         {isSubmitting ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />}
+                      </button>
+                    </div>
                  </form>
               </div>
           </div>
@@ -108,40 +123,24 @@ export const CodeDetailView: React.FC<CodeDetailViewProps> = ({ code, setView })
   );
 };
 
-const CommentCard: React.FC<{ comment: Comment }> = ({ comment }) => {
-  const [likes, setLikes] = useState(comment.likes ?? 0);
-  const [liked, setLiked] = useState(false);
-
-  const handleLike = () => {
-    if (liked) {
-      setLikes(prev => prev - 1);
-      setLiked(false);
-    } else {
-      setLikes(prev => prev + 1);
-      setLiked(true);
-    }
-  };
-
+const CommentCard: React.FC<{ comment: RealComment; liked: boolean; onLike: () => void; timeAgo: string }> = ({ comment, liked, onLike, timeAgo }) => {
   return (
-    <div className={`bg-muted p-5 rounded-2xl border transition-all animate-fade-in ${!comment.isAi ? 'border-success/30' : 'border-border'}`}>
+    <div className={`bg-muted p-5 rounded-2xl border transition-all animate-fade-in ${comment.isOwn ? 'border-success/30' : 'border-border'}`}>
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full border border-border flex items-center justify-center text-[10px] text-foreground bg-muted font-bold">{comment.user.charAt(0)}</div>
+          <div className="w-8 h-8 rounded-full border border-border flex items-center justify-center text-[10px] text-foreground bg-muted font-bold">{comment.displayName.charAt(0).toUpperCase()}</div>
           <div>
-            <div className="text-xs font-bold text-foreground">{comment.user}</div>
-            <div className="text-[7px] text-t-muted uppercase tracking-widest">{comment.isAi ? 'Community User' : 'Visitor'}</div>
+            <div className="text-xs font-bold text-foreground">{comment.displayName}</div>
+            {comment.isOwn && <div className="text-[7px] text-t-muted uppercase tracking-widest">You</div>}
           </div>
         </div>
-        <span className="text-[9px] text-t-muted font-mono italic">{comment.timeAgo}</span>
+        <span className="text-[9px] text-t-muted font-mono italic">{timeAgo}</span>
       </div>
       <p className="text-xs text-t-body italic leading-relaxed mb-4">"{comment.text}"</p>
-      <div className="flex items-center justify-between pt-3 border-t border-border">
-        <div className="flex items-center gap-1.5 text-success text-[8px] font-bold uppercase">
-          {comment.verified && <><Check size={8} /> Claimed</>}
-        </div>
-        <button onClick={handleLike} className={`flex items-center gap-1 px-2 py-1 rounded-lg text-[9px] font-mono transition-all ${liked ? 'text-success bg-success-bg' : 'text-t-muted hover:text-foreground'}`}>
+      <div className="flex items-center justify-end pt-3 border-t border-border">
+        <button onClick={onLike} className={`flex items-center gap-1 px-2 py-1 rounded-lg text-[9px] font-mono transition-all ${liked ? 'text-success bg-success-bg' : 'text-t-muted hover:text-foreground'}`}>
           <ThumbsUp size={10} />
-          <span>{likes}</span>
+          <span>{comment.likes}</span>
         </button>
       </div>
     </div>

@@ -1,11 +1,13 @@
 import { supabase } from "@/integrations/supabase/client";
 import { RedeemCode } from "@/types";
+import { formatRelativeTime } from "@/lib/time";
 
 type CodesPayload = { codes: RedeemCode[]; syncedAt: string | null; hourKey: string | null };
 
 export const codesSyncService = {
   mapRowsToCodes(data: any[], region: string): RedeemCode[] {
     return data.map((d: any) => ({
+      id: d.id,
       code: d.code,
       reward: d.reward,
       category: d.category || 'Bundle',
@@ -13,10 +15,13 @@ export const codesSyncService = {
       server: region,
       status: (d.status as 'Working' | 'Limited' | 'Expired') || 'Working',
       probability: d.probability || 85,
-      lastTested: 'Cloud Verified',
+      lastTested: formatRelativeTime(d.synced_at),
       likes: d.likes || 0,
+      dislikes: d.dislikes || 0,
       recentClaims: d.recent_claims || 0,
-      releaseDate: new Date().toLocaleDateString('en-US', { day: '2-digit', month: 'long', year: 'numeric' }),
+      releaseDate: d.synced_at
+        ? new Date(d.synced_at).toLocaleDateString('en-US', { day: '2-digit', month: 'long', year: 'numeric' })
+        : new Date().toLocaleDateString('en-US', { day: '2-digit', month: 'long', year: 'numeric' }),
       citations: Array.isArray(d.citations) ? d.citations : [],
     }));
   },
