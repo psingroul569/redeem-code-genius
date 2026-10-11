@@ -85,7 +85,19 @@ export const GuideShell: React.FC<GuideShellProps> = ({ title, backTo, dark, chi
           <h1 className="min-w-0 truncate text-center font-bold text-lg md:text-xl uppercase tracking-[0.12em]">
             {title}
           </h1>
-          <div className="flex justify-end">{!dark && <ThemeToggle theme={theme} onToggle={toggleTheme} />}</div>
+          <div className="flex justify-end">
+            {backTo ? (
+              <Link
+                to="/ff-guides"
+                aria-label="Home"
+                className="w-11 h-11 rounded-2xl border border-border bg-surface flex items-center justify-center hover:bg-surface-hover transition-colors"
+              >
+                <Home size={20} />
+              </Link>
+            ) : (
+              !dark && <ThemeToggle theme={theme} onToggle={toggleTheme} />
+            )}
+          </div>
         </div>
       </header>
 
