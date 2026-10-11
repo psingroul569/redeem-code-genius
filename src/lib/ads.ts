@@ -6,12 +6,15 @@ export const ADSENSE_CLIENT = "ca-pub-4839187196632541";
 
 // AdSense display ad unit slot IDs (AdSense → Ads → By ad unit → Display ads).
 // Empty = slot renders nothing.
+// One unit ("ffrewardsflow") for now; split per page later for per-page reporting.
+const FFG_DISPLAY_SLOT = "6406114832";
+
 export const AD_SLOTS = {
-  splash: "",
-  list: "",
-  step: "",
-  item: "",
-  page: "",
+  splash: FFG_DISPLAY_SLOT,
+  list: FFG_DISPLAY_SLOT,
+  step: FFG_DISPLAY_SLOT,
+  item: FFG_DISPLAY_SLOT,
+  page: FFG_DISPLAY_SLOT,
 };
 
 // Google Ad Manager rewarded ad unit path, e.g. "/1234567/ffg_rewarded".
