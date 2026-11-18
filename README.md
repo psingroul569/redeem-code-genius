@@ -71,3 +71,25 @@ Yes, you can!
 To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
 
 Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+
+## Tapzo landing page
+
+Ads-only install page for the Tapzo Android app, served at **`/tapzo`**.
+
+- **File:** `public/tapzo.html`. It's a standalone static page (inline CSS + JS, no React), so it loads none of the main site's AdSense, Monetag, GTM or GetTracked scripts. Cloudflare Pages serves it at `/tapzo`; `/tapzo/` and `/tapzo.html` redirect there. In `npm run dev`, open `/tapzo.html`.
+- **Images** go in `public/tapzo/`:
+  - `icon.webp` (done; the app icon)
+  - `google-play-badge.png` (done; the official badge)
+  - `shot-1.webp` (Home: Daily Check-in + Quick Earn), `shot-2.webp` (Daily Quiz), `shot-3.webp` (Wallet/Redeem): **TODO**. Portrait, ~360×760, under 80 KB each. Until they exist, each slot shows a placeholder card.
+- **Tracking IDs:** at the top of the first `<script>` in `public/tapzo.html`:
+  - `GOOGLE_ADS_ID`: Google Ads tag ID (`AW-…`)
+  - `INSTALL_CLICK_LABEL`: conversion label of the install-click conversion action
+  - `GA4_ID`: optional; set to `''` to turn off GA4 events (`page_view`, `cta_visible`, `install_click`)
+- **Coin numbers** shown on the page: `CONFIG` object at the top of the last `<script>`.
+- **Support email:** replace `support@YOURDOMAIN` in the footer (TODO).
+- **`?ag=` parameter:** the ad group tag. It's lowercased, reduced to `[a-z0-9_-]`, capped at 40 chars, and sent to Play as `utm_content` (default `none`). `gclid` / `gbraid` / `wbraid` from the landing URL are forwarded too. Everything goes inside the URL-encoded `referrer` parameter of the Play Store link.
+- **Example ad URLs:**
+  - `https://freefireredeemcodetoday.com/tapzo?ag=shorts_ci`
+  - `https://freefireredeemcodetoday.com/tapzo?ag=shorts_lal`
+  - `https://freefireredeemcodetoday.com/tapzo?ag=feed_discover_ci`
+- **Deploy:** `npm run build`, then `npx wrangler pages deploy dist --project-name freefireredeemcodetoday --branch main`.
