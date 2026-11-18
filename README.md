@@ -80,7 +80,7 @@ Ads-only install page for the Tapzo Android app, served at **`/tapzo`**.
 - **Images** go in `public/tapzo/`:
   - `icon.webp` (done; the app icon)
   - `google-play-badge.png` (done; the official badge)
-  - `shot-1.webp` (Home: Daily Check-in + Quick Earn), `shot-2.webp` (Daily Quiz), `shot-3.webp` (Wallet/Redeem): **TODO**. Portrait, ~360×760, under 80 KB each. Until they exist, each slot shows a placeholder card.
+  - `shot-1.webp` … `shot-5.webp`: app creatives in the swipe row (480×600, 4:5, under 80 KB each). Add or remove `<figure>` lines in the page to change the set. Don't use creatives showing other games, their currencies, or third-party brand logos.
 - **Tracking IDs:** at the top of the first `<script>` in `public/tapzo.html`:
   - `GOOGLE_ADS_ID`: Google Ads tag ID (`AW-…`)
   - `INSTALL_CLICK_LABEL`: conversion label of the install-click conversion action
